@@ -1117,49 +1117,73 @@ export default function Cases() {
                                                                     >
                                                                         <MoreVertIcon />
                                                                     </IconButton>
-                                                                    <MenuPopover
-                                                                        id="long-menu"
-                                                                        MenuListProps={{
-                                                                            'aria-labelledby': 'long-button',
-                                                                        }}
-                                                                        anchorEl={anchorEl}
-                                                                        open={open}
-                                                                        onClose={handleClose2}
-                                                                        sx={{
-                                                                            mt: -0.5,
-                                                                            padding:1,
-                                                                            width: 140,
-                                                                            minHeight: 160,
-                                                                            '& .MuiMenuItem-root': {
-                                                                                px: 1,
-                                                                                typography: 'body2',
-                                                                                borderRadius: 0.75,
-                                                                                '& svg': { mr: 2, width: 20, height: 20 },
-                                                                            },
-                                                                        }}
-                                                                    >
+                                                                        <Menu
+                                                                            sx={{mt: -0.5, width: 140, minHeight: 160, padding:1}}
+                                                                            anchorEl={anchorEl}
+                                                                            id="account-menu"
+                                                                            open={open}
+                                                                            onClose={handleClose2}
+                                                                            onClick={handleClose2}
+                                                                            PaperProps={{
+                                                                                elevation: 0,
+                                                                                sx: {
+                                                                                    overflow: 'visible',
+                                                                                    filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.1))',
+                                                                                    mt: 0.5,
+                                                                                    maxHeight: 180,
+                                                                                    minWidth: 130,
+
+                                                                                    '& .MuiAvatar-root': {
+                                                                                        width: 32,
+                                                                                        height: 32
+                                                                                    },
+                                                                                    '&:before': {
+                                                                                        content: '""',
+                                                                                        display: 'block',
+                                                                                        position: 'absolute',
+                                                                                        top: 0,
+                                                                                        right: 14,
+                                                                                        width: 10,
+                                                                                        height: 10,
+                                                                                        bgcolor: 'background.paper',
+                                                                                        transform: 'translateY(-50%) rotate(45deg)',
+                                                                                        zIndex: 0,
+                                                                                    },
+                                                                                },
+                                                                            }}
+                                                                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                                                        >
                                                                         <MenuItem onClick={() => navigate('/dashboard/cases/attachment/' + row.CaseeId)}>
+                                                                            <Stack mr={1}>
                                                                             <Iconify icon={'eva:attach-fill'} />
+                                                                            </Stack>
                                                                             Upload
                                                                         </MenuItem>
                                                                         <MenuItem onClick={() => getByIdCases(row.CaseeId)}>
+                                                                            <Stack mr={1}>
                                                                             <Iconify icon={'eva:layers-outline'} />
+                                                                            </Stack>
                                                                             Details
                                                                         </MenuItem>
                                                                         <MenuItem>
+                                                                            <Stack mr={1}>
                                                                             <Iconify icon={'eva:map-outline'} />
+                                                                            </Stack>
                                                                             History
                                                                         </MenuItem>
                                                                         <Divider sx={{ borderStyle: 'dashed' }} />
                                                                         {authService.DoesHaveMandatoryClaim('CaseeDelete') || authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                                                                         <>
                                                                             <MenuItem onClick={() => deleteCases(row.CaseeId)} sx={{ color: 'error.main' }}>
+                                                                                <Stack mr={1}>
                                                                             <Iconify icon={'eva:trash-2-outline'}/>
+                                                                                </Stack>
                                                                             Delete
                                                                         </MenuItem>
                                                                         </>
                                                                         ) : null}
-                                                                    </MenuPopover>
+                                                                    </Menu>
                                                                 </TableCell>
                                                                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
                                                                        hideBackdrop={true}

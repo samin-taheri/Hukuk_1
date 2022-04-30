@@ -56,6 +56,7 @@ export default function Attachment() {
     const [title, setTitle] = useState("");
     const [details, setDetails] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    const [loader, setLoader] = useState(false);
     const navigate = useNavigate();
     const popupMessageService = new PopupMessageService();
     const filesHelperService = new FilesHelperService();
@@ -78,6 +79,7 @@ export default function Attachment() {
         filesHelperService.addFileForCaseDocuments(myFile).then(
             (result) => {
                 if (result.data.Success) {
+                    setLoader(false)
                     console.log(result.data)
                     setFilePath(result.data.Data)
                 }
@@ -212,12 +214,20 @@ export default function Attachment() {
                                                 )
                                             }}
                                         />
+                                        {loader ? (
+                                            <>
+                                                <CircularProgress color="inherit" size={20}/>
+                                            </>
+                                        ) : null}
                                         <TextField
                                             type="file"
                                             fullWidth
                                             size='small'
                                             label="File"
-                                            onClick={(event) => uploadFile(event)}
+                                            onClick={(event) => {
+                                                setLoader(true)
+                                                uploadFile(event)
+                                            }}
                                             key={Math.random().toString(36).substr(2, 9)}
                                             InputProps={{
                                                 startAdornment: (
@@ -226,7 +236,8 @@ export default function Attachment() {
                                                     </InputAdornment>
                                                 )
                                             }}
-                                        />
+                                        >
+                                        </TextField>
 
                                     </Stack>
                                 </Stack>

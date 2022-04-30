@@ -100,7 +100,6 @@ function TaskItem({ formik, task, checked, ...other }) {
                 label={task.label}
                 sx={{ flexGrow: 1, m: 0 }}
             />
-
             <MoreMenuButton
                 open={open}
                 onClose={handleCloseMenu}
