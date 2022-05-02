@@ -152,6 +152,9 @@ export default function Cases() {
     }
 
     const addSelectedUserToIgnoreList = (value, label) => {
+        if(selectedUserIdForIgnore.includes(value)){
+            return
+        }
         selectedUserIdForIgnore.push(value)
         caseIdForIgnore.push(label)
         setSelectedUserIdForIgnore([...selectedUserIdForIgnore])
