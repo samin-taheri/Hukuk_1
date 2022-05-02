@@ -20,7 +20,7 @@ import {
     TableBody,
     Card,
     IconButton,
-    Divider
+    Divider, Checkbox
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -115,6 +115,8 @@ export default function Cases() {
     const [time, setTime] = useState(true);
     const [selectedUserIdForIgnore, setSelectedUserIdForIgnore] = useState([]);
     const [caseIdForIgnore, setCaseIdForIgnore] = useState([]);
+    const [hasBeenDecided, setHasBeenDecided] = useState(true);
+    const [isEndDate, setIsEndDate] = useState(true);
 
     const navigate = useNavigate();
 
@@ -410,7 +412,7 @@ export default function Cases() {
                 setStartDate(edit.StartDate.format(defaultValue))
                 setDecisionDate(edit.DecisionDate.format(defaultValue))
                 setEndDate(edit.EndDate.format(defaultValue))
-                //setCaseIdForIgnore(edit.CaseIgnoreUsers)
+                setCaseIdForIgnore(edit.CaseIgnoreUsers)
             }
         })
         setOpenModal(true)
@@ -446,6 +448,8 @@ export default function Cases() {
             roleTypeId: selectedRoleTypes,
             caseNo: caseNo,
             info: information,
+            isEnd: isEndDate,
+            hasItBeenDecide: hasBeenDecided,
             startDate: startDate,
             decisionDate: decisionDate,
             endDate: endDate,
@@ -723,7 +727,7 @@ export default function Cases() {
                                                         </Box>
                                                     ) : null}
                                                 </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                <Stack mb={1.7} ml={0.5} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
@@ -743,7 +747,31 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
+                                                    <Stack pl={2} pr={3} mb={0} direction={{xs: 'column', sm: 'row'}} spacing={3}>
+                                                        <Typography variant="body2" gutterBottom>
+                                                            Do you know the end date?
+                                                        </Typography>
+                                                        <Checkbox
+                                                            sx={{ mr: 2, width: 65 , height: 56, mt: 0.6}}
+                                                            checked={isEndDate}
+                                                            onChange={(e) => setIsEndDate(e.target.checked)}
+                                                            inputProps={{'aria-label': 'controlled'}}
+                                                        />
+                                                        <Typography variant="body2" gutterBottom>
+                                                            Has the date been decided?
+                                                        </Typography>
+                                                        <Checkbox
+                                                            sx={{ mr: 2, width: 65 , height: 56, mt: 0.6}}
+                                                            checked={hasBeenDecided}
+                                                            onChange={(e) => setHasBeenDecided(e.target.checked)}
+                                                            inputProps={{'aria-label': 'controlled'}}
+                                                        />
+                                                    </Stack>
+                                                </Stack>
+                                                <Stack mb={0} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                {hasBeenDecided ?
+                                                        <>
+                                                    <Box sx={{maxWidth: 405, minWidth: 405, mb: 3}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -762,7 +790,11 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
+                                                    </>
+                                                    :null}
+                                                    {isEndDate ?
+                                                        <>
+                                                    <Box sx={{maxWidth: 405, minWidth: 405, mb: 3}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -781,10 +813,12 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
+                                                        </>
+                                                        :null}
                                                 </Stack>
                                                 <Stack mb={3}>
-                                                <Box sx={{maxWidth: 825, minWidth: 825}}>
-                                                <TextField
+                                                    <Box sx={{maxWidth: 825, minWidth: 825}}>
+                                                        <TextField
                                                             fullWidth
                                                             type='text'
                                                             size="small"
@@ -800,7 +834,7 @@ export default function Cases() {
                                                                 )
                                                             }}
                                                         />
-                                                </Box>
+                                                    </Box>
                                                 </Stack>
                                                 <Stack mb={0} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     <Box sx={{maxWidth: 405, minWidth: 405}}>
