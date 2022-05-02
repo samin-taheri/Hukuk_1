@@ -20,8 +20,7 @@ import {
 } from '@mui/material';
 // components
 import Page from '../components/Page';
-import React, {useEffect, useState} from "react";
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import React, {useEffect, useState, useRef} from "react";
 import {Icon} from "@iconify/react";
 import navigation2Outline from "@iconify/icons-eva/navigation-2-outline";
 import PopupMessageService from "../services/popupMessage.service";
@@ -30,6 +29,8 @@ import ChatSupportService from "../services/chatSupport.service";
 import CircularProgress from "@mui/material/CircularProgress";
 import CardContent from "@mui/material/CardContent";
 import baselineDoneAll from '@iconify/icons-ic/baseline-done-all';
+import {format} from "date-fns";
+import roundUpdate from "@iconify/icons-ic/round-update";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -100,9 +101,16 @@ export default function Support() {
         })
     };
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
     useEffect(() => {
         getAllSupportMessages()
         makeTheMessageRead()
+        scrollToBottom()
     }, []);
 
     return (
@@ -112,19 +120,23 @@ export default function Support() {
                     <Typography variant="h4" gutterBottom>
                         Support
                     </Typography>
+                    <Button onClick={()=>getAllSupportMessages()} variant="contained" startIcon={<Icon icon={roundUpdate}/>}>
+                        Refresh
+                    </Button>
                 </Stack>
-                <Stack flexDirection='row' alignItems='space-between' sx={{marginBottom: '0%'}}>
+                <Stack flexDirection='column' alignItems='space-between'>
                     <Card justifyContent="center" sx={{
                         padding: 6,
                         minWidth: 450,
-                        marginLeft: 8,
-                        maxHeight: 485,
+                        maxWidth: 950,
+                        marginLeft: 7,
+                        maxHeight: 395,
                         overflow: "hidden",
-                        overflowY: "scroll"
+                        overflowY: "scroll",
                     }}>
                         <>
                             {isLoading === true ?
-                                <Stack sx={{color: 'grey.500', paddingLeft: 5, paddingTop: 25}} spacing={2}
+                                <Stack sx={{color: 'grey.500', paddingLeft: 0, paddingTop: 10}} spacing={2}
                                        direction="row"
                                        justifyContent='center' alignSelf='center' left='50%'>
                                     <CircularProgress color="inherit"/>
@@ -137,24 +149,58 @@ export default function Support() {
                                     {supportMessages.length > 0 ? (
                                         <>
                                             {supportMessages.map((row) => (
-                                                <Card sx={{
-                                                    maxWidth: 350,
-                                                    minWidth: 200,
-                                                    marginTop: 2.5,
-                                                    marginRight: 0,
-                                                    backgroundColor: '#ebf2ff'
-                                                }}>
-                                                    <CardContent>
-                                                        <Stack flexDirection='row'>
-                                                            <Typography gutterBottom fontSize={12} component="div" key={row.ChatSupportId}>
-                                                                {row.Message}
-                                                            </Typography>
-                                                            <Stack position='absolute' right='0' mr={3} mt={0.2}>
-                                                                    <Icon icon={baselineDoneAll} width={20} height={20} color={'#4fb6ec'}/>
-                                                            </Stack>
-                                                        </Stack>
-                                                    </CardContent>
-                                                </Card>
+                                                <>
+                                                {row.IsAnswer == true ?
+                                                        <Card sx={{
+                                                            maxWidth: 300,
+                                                            minWidth: 200,
+                                                            marginTop: 2.5,
+                                                            marginRight: 0,
+                                                            backgroundColor: '#fff',
+                                                            maxHeight: 75,
+                                                        }}>
+                                                            <CardContent>
+                                                                <Stack flexDirection='row'>
+                                                                    <Typography gutterBottom fontSize={12} component="div" key={row.ChatSupportId}>
+                                                                        {row.Message}
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Typography gutterBottom fontSize={10} component="div">
+                                                                    {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                        :
+                                                        <Card sx={{
+                                                            maxWidth: 350,
+                                                            minWidth: 200,
+                                                            marginTop: 2.5,
+                                                            marginRight: 0,
+                                                            backgroundColor: '#ebf2ff',
+                                                            marginLeft: 70,
+                                                            maxHeight: 75,
+                                                        }}>
+                                                            <CardContent>
+                                                                <Stack flexDirection='row'>
+                                                                    <Typography gutterBottom fontSize={12}
+                                                                                component="div" key={row.ChatSupportId}>
+                                                                        {row.Message}
+                                                                    </Typography>
+                                                                    {row.DoesItRead == true ?
+                                                                    <Stack position='absolute' right='0' mr={3}
+                                                                           mt={3}>
+                                                                        <Icon icon={baselineDoneAll} width={20}
+                                                                              height={20} color={'#4fb6ec'}/>
+                                                                    </Stack>
+                                                                        :null}
+                                                                </Stack>
+                                                                <Typography gutterBottom fontSize={10} component="div">
+                                                                    {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                }
+                                                </>
                                             ))}
                                         </>
                                     ) : (
@@ -169,7 +215,7 @@ export default function Support() {
                             }
                         </>
                     </Card>
-                    <Card justifyContent="space-around" sx={{padding: 7, minWidth: 450, marginLeft: 2, maxWidth: 450}}>
+                    <Card justifyContent="space-around" sx={{padding: 7, minWidth: 450, maxWidth: 950, marginLeft: 7, marginTop: 3}}>
                         <Typography gutterBottom variant="h6" component="div" pb={2}>
                             Send a Message
                         </Typography>
@@ -177,7 +223,7 @@ export default function Support() {
                             <TextField
                                 fullWidth
                                 multiline
-                                rows={8}
+                                rows={7}
                                 label="Message"
                                 value={message}
                                 onChange={(event) => setMessage(event.target.value)}
