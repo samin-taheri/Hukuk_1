@@ -99,8 +99,8 @@ export default function Tasks() {
     const [allTaskStatuses, setAllTaskStatuses] = useState([]);
     const [taskStatusAdd, setTaskStatusAdd] = useState(0);
     const [time, setTime] = useState(true);
-    const [isEndDate, setIsEndDate] = useState(false);
-    const [isLastDate, setIsLastDate] = useState(false);
+    const [isEndDate, setIsEndDate] = useState(true);
+    const [isLastDate, setIsLastDate] = useState(true);
 
     const [allClients, setAllClients] = useState([]);
     const [allCases, setAllCases] = useState([]);
@@ -419,7 +419,7 @@ export default function Tasks() {
                                         top: '50%',
                                         left: '50%',
                                         transform: 'translate(-50%, -50%)',
-                                        width: 470,
+                                        width: 900,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
                                         boxShadow: 24,
@@ -444,7 +444,7 @@ export default function Tasks() {
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allClients.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -475,7 +475,7 @@ export default function Tasks() {
                                                     ) : null}
                                                     {allCases.length > 0 ? (
                                                         <Stack mb={4} justifyContent="space-around">
-                                                            <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                            <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                                 <FormControl fullWidth size="small">
                                                                     <TextField
                                                                         select
@@ -505,10 +505,8 @@ export default function Tasks() {
                                                             </Box>
                                                         </Stack>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allUsers.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -537,8 +535,10 @@ export default function Tasks() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
+                                                </Stack>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allTaskTypes.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -567,10 +567,8 @@ export default function Tasks() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allTaskStatuses.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -599,7 +597,7 @@ export default function Tasks() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 select
@@ -629,7 +627,7 @@ export default function Tasks() {
                                                     </Box>
                                                 </Stack>
                                                 <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                    <Box sx={{maxWidth: 825, minWidth: 825}}>
                                                         <TextField
                                                             type='text'
                                                             size="small"
@@ -648,8 +646,8 @@ export default function Tasks() {
                                                         />
                                                     </Box>
                                                 </Stack>
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                <Stack mb={1.7} ml={0.5} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                    <Box sx={{minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -668,31 +666,32 @@ export default function Tasks() {
                                                             />
                                                         </FormControl>
                                                     </Box>
+                                                    <Stack pl={2} pr={3} mb={0} direction={{xs: 'column', sm: 'row'}} spacing={3}>
+                                                        <Typography variant="body2" gutterBottom>
+                                                            Do you know the end date?
+                                                        </Typography>
+                                                        <Checkbox
+                                                            sx={{ mr: 2, width: 65 , height: 56, mt: 0.6}}
+                                                            checked={isEndDate}
+                                                            onChange={(e) => setIsEndDate(e.target.checked)}
+                                                            inputProps={{'aria-label': 'controlled'}}
+                                                        />
+                                                        <Typography variant="body2" gutterBottom>
+                                                            Do you know the last date?
+                                                        </Typography>
+                                                        <Checkbox
+                                                            sx={{ mr: 2, width: 65 , height: 56, mt: 0.6}}
+                                                            checked={isLastDate}
+                                                            onChange={(e) => setIsLastDate(e.target.checked)}
+                                                            inputProps={{'aria-label': 'controlled'}}
+                                                        />
+                                                    </Stack>
                                                 </Stack>
-                                                <Stack pl={3} pr={3} mb={0} direction={{xs: 'column', sm: 'row'}} spacing={3}>
-                                                    <Typography variant="body2" gutterBottom mb={4}>
-                                                        Do you know the end date?
-                                                    </Typography>
-                                                    <Checkbox
-                                                        sx={{ mr: 2, width: 75 , height: 50, mt: 0.6}}
-                                                        checked={isEndDate}
-                                                        onChange={(e) => setIsEndDate(e.target.checked)}
-                                                        inputProps={{'aria-label': 'controlled'}}
-                                                    />
-                                                    <Typography variant="body2" gutterBottom mb={4}>
-                                                        Do you know the last date?
-                                                    </Typography>
-                                                    <Checkbox
-                                                        sx={{ mr: 2, width: 75 , height: 50, mt: 0.6}}
-                                                        checked={isLastDate}
-                                                        onChange={(e) => setIsLastDate(e.target.checked)}
-                                                        inputProps={{'aria-label': 'controlled'}}
-                                                    />
-                                                </Stack>
+                                                <Stack mb={0} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                 {isLastDate ?
                                                     <>
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                <Stack mb={0} justifyContent="space-around">
+                                                    <Box sx={{maxWidth: 405, minWidth: 405, mb: 3}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -716,8 +715,8 @@ export default function Tasks() {
                                                     :null}
                                                 {isEndDate ?
                                                     <>
-                                                <Stack mb={4} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                <Stack mb={0} justifyContent="space-around">
+                                                    <Box sx={{maxWidth: 405, minWidth: 405, mb: 3}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -739,6 +738,7 @@ export default function Tasks() {
                                                 </Stack>
                                                     </>
                                                     :null}
+                                                </Stack>
                                             </Stack>
                                             {openIfCaseDoesntExist === false ?
                                                 <>

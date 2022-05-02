@@ -223,7 +223,7 @@ export default function Support() {
                             <TextField
                                 fullWidth
                                 multiline
-                                rows={7}
+                                rows={6}
                                 label="Message"
                                 value={message}
                                 onChange={(event) => setMessage(event.target.value)}
