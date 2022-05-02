@@ -9,7 +9,6 @@ import {
     Container,
     Typography,
     TextField,
-    Grid,
     InputAdornment,
     Box,
     TableContainer,
@@ -361,6 +360,7 @@ export default function Cases() {
     };
     const handleClose = () => {
         setOpenModal(false)
+        setCaseIdForIgnore([])
     };
 
     const getAllCases = () => {
@@ -410,6 +410,7 @@ export default function Cases() {
                 setStartDate(edit.StartDate.format(defaultValue))
                 setDecisionDate(edit.DecisionDate.format(defaultValue))
                 setEndDate(edit.EndDate.format(defaultValue))
+                //setCaseIdForIgnore(edit.CaseIgnoreUsers)
             }
         })
         setOpenModal(true)
@@ -438,6 +439,7 @@ export default function Cases() {
         let obj = {
             courtOfficeTypeId: selectedCourtOfficeTypeId,
             courtOfficeId: courtOfficeAdd,
+            caseIgnoreUserIds: caseIdForIgnore,
             customerId: clientsAdd,
             caseTypeId: caseTypeAdd,
             caseStatusId: caseStatusAdd,
@@ -447,7 +449,6 @@ export default function Cases() {
             startDate: startDate,
             decisionDate: decisionDate,
             endDate: endDate,
-            caseIgnoreUsers: caseIdForIgnore
         }
         let re
         if (caseId > 0) {
@@ -538,7 +539,7 @@ export default function Cases() {
                                             <Stack mb={3} alignItems="center" justifyContent="space-around">
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {courtOfficeTypes.length > 0 ? (
-                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -569,7 +570,7 @@ export default function Cases() {
                                                     ) : null}
                                                     {roleTypes.length > 0 ? (
                                                         <Stack mb={4} justifyContent="space-around">
-                                                            <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                            <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                                 <FormControl fullWidth size="small">
                                                                     <TextField
                                                                         select
@@ -600,7 +601,7 @@ export default function Cases() {
                                                         </Stack>
                                                     ) : null}
                                                     {clients.length > 0 ? (
-                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -632,7 +633,7 @@ export default function Cases() {
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {courtOffices.length > 0 ? (
-                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -662,7 +663,7 @@ export default function Cases() {
                                                         </Box>
                                                     ) : null}
                                                     {caseTypes.length > 0 ? (
-                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -692,7 +693,7 @@ export default function Cases() {
                                                         </Box>
                                                     ) : null}
                                                     {caseStatuses.length > 0 ? (
-                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                        <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -723,7 +724,7 @@ export default function Cases() {
                                                     ) : null}
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -742,7 +743,7 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -761,7 +762,7 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
+                                                    <Box sx={{maxWidth: 264, minWidth: 264}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -782,7 +783,7 @@ export default function Cases() {
                                                     </Box>
                                                 </Stack>
                                                 <Stack mb={3}>
-                                                <Box sx={{maxWidth: 783, minWidth: 783}}>
+                                                <Box sx={{maxWidth: 825, minWidth: 825}}>
                                                 <TextField
                                                             fullWidth
                                                             type='text'
@@ -802,9 +803,10 @@ export default function Cases() {
                                                 </Box>
                                                 </Stack>
                                                 <Stack mb={0} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 385, minWidth: 385}}>
-                                                        <FormControl fullWidth>
+                                                    <Box sx={{maxWidth: 405, minWidth: 405}}>
+                                                        <FormControl fullWidth size="small">
                                                             <TextField
+                                                                size="small"
                                                                 type='number'
                                                                 label="Case No"
                                                                 value={caseNo}
@@ -820,7 +822,7 @@ export default function Cases() {
                                                         </FormControl>
                                                     </Box>
                                                     {usersForIgnore.length > 0 ? (
-                                                        <Box sx={{maxWidth: 385, minWidth: 385}}>
+                                                        <Box sx={{maxWidth: 405, minWidth: 405}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -834,7 +836,10 @@ export default function Cases() {
                                                                             <InputAdornment position="start">
                                                                                 <NextWeekOutlinedIcon/>
                                                                             </InputAdornment>
-                                                                        )
+                                                                        ),
+                                                                        style: {
+                                                                            height: "40px",
+                                                                        },
                                                                     }}
                                                                 >
                                                                     {usersForIgnore.map((item) => (
@@ -845,7 +850,7 @@ export default function Cases() {
                                                                             {item.label}
                                                                             <IconButton
                                                                                 onClick={() => addSelectedUserToIgnoreList(item.value, item.label)}>
-                                                                                <Icon icon={plusCircleOutline}/>
+                                                                                <Icon icon={plusCircleOutline} fontSize="inherit" color="primary"/>
                                                                             </IconButton>
                                                                         </MenuItem>
                                                                     ))}
@@ -860,17 +865,17 @@ export default function Cases() {
                                                         maxWidth: 400,
                                                         minHeight: 50,
                                                         borderRadius: 1,
-                                                        padding: 2,
+                                                        padding: 1,
                                                         paddingLeft: 4,
                                                         marginBottom: 0,
                                                         marginTop: 4
                                                     }} mb={2}>
                                                         {caseIdForIgnore.map((row) => (
-                                                            <Stack flexDirection='row' justifyContent='space-between' pt={1}>
+                                                            <Stack flexDirection='row' justifyContent='space-between' pt={1.5}>
                                                                 <Typography>
                                                                     {row}
                                                                 </Typography>
-                                                                <IconButton sx={{bottom: 4}}>
+                                                                <IconButton sx={{bottom: 5.5}}>
                                                                     <CloseIcon onClick={() => removeSelectedUserToIgnoreList(row)}/>
                                                                 </IconButton>
                                                             </Stack>
