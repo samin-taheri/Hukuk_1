@@ -9,6 +9,9 @@ export default class LicenceUsersService {
     getAll() {
         return axios.get(`${URL}GetAll`, { headers: authHeader() });
     }
+    usersForIgnore() {
+        return axios.get(`${URL}UsersForIgnore`, { headers: authHeader() });
+    }
     GetAllByUserId(UserId) {
         return axios.get(`${URL}GetAllAcceptedByUserId?userId=${UserId}`)
     }

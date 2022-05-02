@@ -64,33 +64,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Iconify from "../components/_dashboard/user/Iconify";
 import {alpha, styled} from "@mui/material/styles";
 import MenuPopover from "../components/MenuPopover";
+import LicenceUsersService from "../services/licenceUsers.service";
+import plusCircleOutline from "@iconify/icons-eva/plus-circle-outline";
 // ----------------------------------------------------------------------
-const options = [
-    'upload',
-    'Edit',
-    'Details',
-    'History',
-    'Delete'
-];
-
-const ITEM_HEIGHT = 48;
-
-const ArrowStyle = styled('span')(({ theme }) => ({
-    [theme.breakpoints.up('sm')]: {
-        top: -7,
-        zIndex: 1,
-        width: 12,
-        right: 20,
-        height: 12,
-        content: "''",
-        position: 'absolute',
-        borderRadius: '0 0 4px 0',
-        transform: 'rotate(-135deg)',
-        background: theme.palette.background.paper,
-        borderRight: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
-        borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`
-    }
-}));
 export default function Cases() {
 
     const today = new Date();
@@ -98,6 +74,7 @@ export default function Cases() {
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const popupMessageService = new PopupMessageService();
     const authService = new AuthService();
+    const licenceUsersService = new LicenceUsersService();
     const catchMessagee = Global.catchMessage;
     const casesService = new CasesService();
     const roleTypesService = new RoleTypesService();
@@ -109,7 +86,9 @@ export default function Cases() {
     const [courtOfficeTypeIdForFilter, setCourtOfficeTypeIdForFilter] = useState(-1);
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [courtOffices, setCourtOffices] = useState([]);
+    const [usersForIgnore, setUsersForIgnore] = useState([]);
     const [courtOfficeAdd, setCourtOfficeAdd] = useState(0);
+    const [usersForIgnoreForAdd, setUsersForIgnoreForAdd] = useState(0);
     const [courtOfficeIdForFilter, setCourtOfficeIdForFilter] = useState(-1);
     const [clients, setClients] = useState([]);
     const [clientsAdd, setClientsAdd] = useState(0);
@@ -135,6 +114,9 @@ export default function Cases() {
     const [customerPhone, setCustomerPhone] = useState("");
     const [customerName, setCustomerName] = useState("");
     const [time, setTime] = useState(true);
+    const [selectedUserIdForIgnore, setSelectedUserIdForIgnore] = useState([]);
+    const [caseIdForIgnore, setCaseIdForIgnore] = useState([]);
+
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -166,6 +148,23 @@ export default function Cases() {
     function handleTatChange(TatId) {
         getAllRoleTypes(TatId)
         setSelectedCourtOfficeTypeId(TatId)
+    }
+
+    const addSelectedUserToIgnoreList = (value, label) => {
+        selectedUserIdForIgnore.push(value)
+        caseIdForIgnore.push(label)
+        setSelectedUserIdForIgnore([...selectedUserIdForIgnore])
+        setCaseIdForIgnore([...caseIdForIgnore])
+    }
+
+    const removeSelectedUserToIgnoreList = (selectedUser) => {
+        console.log(selectedUser)
+        let newList = [...caseIdForIgnore]
+        const index = newList.indexOf(selectedUser);
+        if (index > -1) {
+            newList.splice(index, 1);
+        }
+        setCaseIdForIgnore(newList)
     }
 
     //Changing Activity of the current Case Status
@@ -207,6 +206,34 @@ export default function Cases() {
             popupMessageService.AlertErrorMessage(catchMessagee)
         })
     }
+
+    // List all users for ignore
+    const getAllUsersForIgnore = () => {
+        licenceUsersService
+            .usersForIgnore()
+            .then(
+                (response) => {
+                    setUsersForIgnore(response.data.Data);
+                    const UsersForIgnoresFromApi = response.data.Data;
+                    const list = [];
+                    UsersForIgnoresFromApi.forEach((item) => {
+                        list.push({
+                            value: item.Id,
+                            label: item.Title,
+                            key: item.Title
+                        });
+                    });
+                    setUsersForIgnoreForAdd(list[0].value)
+                    setUsersForIgnore(list);
+                },
+                (error) => {
+                    popupMessageService.AlertErrorMessage(error.response.data.Message);
+                }
+            )
+            .catch(() => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    };
 
     // List all court offices
     const getAllCourtOffices = () => {
@@ -330,6 +357,7 @@ export default function Cases() {
         setDecisionDate(defaultValue)
         setEndDate(defaultValue)
         setOpenModal(true)
+        setCaseIdForIgnore([])
     };
     const handleClose = () => {
         setOpenModal(false)
@@ -419,6 +447,7 @@ export default function Cases() {
             startDate: startDate,
             decisionDate: decisionDate,
             endDate: endDate,
+            caseIgnoreUsers: caseIdForIgnore
         }
         let re
         if (caseId > 0) {
@@ -450,6 +479,7 @@ export default function Cases() {
         getAllCustomers()
         getAllCaseTypes()
         getAllCaseStatuses()
+        getAllUsersForIgnore()
         setTime(false)
     }, []);
 
@@ -483,7 +513,7 @@ export default function Cases() {
                                         top: '50%',
                                         left: '50%',
                                         transform: 'translate(-50%, -50%)',
-                                        width: 470,
+                                        width: 900,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
                                         boxShadow: 24,
@@ -508,7 +538,7 @@ export default function Cases() {
                                             <Stack mb={3} alignItems="center" justifyContent="space-around">
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {courtOfficeTypes.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -539,7 +569,7 @@ export default function Cases() {
                                                     ) : null}
                                                     {roleTypes.length > 0 ? (
                                                         <Stack mb={4} justifyContent="space-around">
-                                                            <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                            <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                                 <FormControl fullWidth size="small">
                                                                     <TextField
                                                                         select
@@ -569,10 +599,8 @@ export default function Cases() {
                                                             </Box>
                                                         </Stack>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {clients.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -601,8 +629,10 @@ export default function Cases() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
+                                                </Stack>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {courtOffices.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -631,10 +661,8 @@ export default function Cases() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {caseTypes.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -664,7 +692,7 @@ export default function Cases() {
                                                         </Box>
                                                     ) : null}
                                                     {caseStatuses.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -695,25 +723,7 @@ export default function Cases() {
                                                     ) : null}
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
-                                                        <FormControl fullWidth size="small">
-                                                            <TextField
-                                                                type='number'
-                                                                size="small"
-                                                                label="Case No"
-                                                                value={caseNo}
-                                                                onChange={(event) => setCaseNo(event.target.value)}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <MedicalServicesOutlinedIcon/>
-                                                                        </InputAdornment>
-                                                                    )
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                    </Box>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -732,9 +742,7 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -753,7 +761,7 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 250, minWidth: 250}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -773,22 +781,102 @@ export default function Cases() {
                                                         </FormControl>
                                                     </Box>
                                                 </Stack>
+                                                <Stack mb={3}>
+                                                <Box sx={{maxWidth: 783, minWidth: 783}}>
                                                 <TextField
-                                                    fullWidth
-                                                    type='text'
-                                                    size="small"
-                                                    multiline
-                                                    label="Information"
-                                                    value={information}
-                                                    onChange={(event) => setInformation(event.target.value)}
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                            <InputAdornment position="start">
-                                                                <DnsOutlinedIcon/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
-                                                />
+                                                            fullWidth
+                                                            type='text'
+                                                            size="small"
+                                                            multiline
+                                                            label="Information"
+                                                            value={information}
+                                                            onChange={(event) => setInformation(event.target.value)}
+                                                            InputProps={{
+                                                                startAdornment: (
+                                                                    <InputAdornment position="start">
+                                                                        <DnsOutlinedIcon/>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
+                                                        />
+                                                </Box>
+                                                </Stack>
+                                                <Stack mb={0} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                    <Box sx={{maxWidth: 385, minWidth: 385}}>
+                                                        <FormControl fullWidth>
+                                                            <TextField
+                                                                type='number'
+                                                                label="Case No"
+                                                                value={caseNo}
+                                                                onChange={(event) => setCaseNo(event.target.value)}
+                                                                InputProps={{
+                                                                    startAdornment: (
+                                                                        <InputAdornment position="start">
+                                                                            <MedicalServicesOutlinedIcon/>
+                                                                        </InputAdornment>
+                                                                    )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                    </Box>
+                                                    {usersForIgnore.length > 0 ? (
+                                                        <Box sx={{maxWidth: 385, minWidth: 385}}>
+                                                            <FormControl fullWidth size="small">
+                                                                <TextField
+                                                                    select
+                                                                    size='small'
+                                                                    label="Hide from Users"
+                                                                    value={usersForIgnoreForAdd}
+                                                                    key={Math.random().toString(36).substr(2, 9)}
+                                                                    onChange={(event) => setUsersForIgnoreForAdd(event.target.value)}
+                                                                    InputProps={{
+                                                                        startAdornment: (
+                                                                            <InputAdornment position="start">
+                                                                                <NextWeekOutlinedIcon/>
+                                                                            </InputAdornment>
+                                                                        )
+                                                                    }}
+                                                                >
+                                                                    {usersForIgnore.map((item) => (
+                                                                        <MenuItem
+                                                                            key={Math.random().toString(36).substr(2, 9)}
+                                                                            value={item.value}
+                                                                        >
+                                                                            {item.label}
+                                                                            <IconButton
+                                                                                onClick={() => addSelectedUserToIgnoreList(item.value, item.label)}>
+                                                                                <Icon icon={plusCircleOutline}/>
+                                                                            </IconButton>
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </TextField>
+                                                            </FormControl>
+                                                        </Box>
+                                                    ) : null}
+                                                </Stack>
+                                                {caseIdForIgnore.length > 0 ?
+                                                    <Card sx={{
+                                                        minWidth: 400,
+                                                        maxWidth: 400,
+                                                        minHeight: 50,
+                                                        borderRadius: 1,
+                                                        padding: 2,
+                                                        paddingLeft: 4,
+                                                        marginBottom: 0,
+                                                        marginTop: 4
+                                                    }} mb={2}>
+                                                        {caseIdForIgnore.map((row) => (
+                                                            <Stack flexDirection='row' justifyContent='space-between' pt={1}>
+                                                                <Typography>
+                                                                    {row}
+                                                                </Typography>
+                                                                <IconButton sx={{bottom: 4}}>
+                                                                    <CloseIcon onClick={() => removeSelectedUserToIgnoreList(row)}/>
+                                                                </IconButton>
+                                                            </Stack>
+                                                        ))}
+                                                    </Card>
+                                                    : null}
                                             </Stack>
                                             {caseId > 0 ?
                                                 <Button sx={{bottom: 7}} size="large" type="submit" variant="contained"
@@ -807,7 +895,8 @@ export default function Cases() {
                             </>
                         ) : null}
                     </Stack>
-                    <Stack item xs={12} md={6} lg={4} mb={5} flexDirection="row" alignItems="center" justifyContent="space-around">
+                    <Stack item xs={12} md={6} lg={4} mb={5} flexDirection="row" alignItems="center"
+                           justifyContent="space-around">
                         <Stack mb={5} justifyContent="space-around">
                             <Typography variant="body1" gutterBottom mb={3}>
                                 Court Office Type
@@ -919,7 +1008,7 @@ export default function Cases() {
                             ) : null}
                         </Stack>
                     </Stack>
-                    <Stack  mb={5} marginTop={-7} flexDirection="row" alignItems="center" justifyContent="space-around">
+                    <Stack mb={5} marginTop={-7} flexDirection="row" alignItems="center" justifyContent="space-around">
                         <Stack mb={5} justifyContent="space-around">
                             <Typography variant="body1" gutterBottom mb={3}>
                                 Case Types
@@ -1107,7 +1196,7 @@ export default function Cases() {
                                                                 </TableCell>
                                                                 <TableCell>
                                                                     <IconButton
-                                                                        sx={{ opacity: 0.7}}
+                                                                        sx={{opacity: 0.7}}
                                                                         aria-label="more"
                                                                         id="long-button"
                                                                         aria-controls={open ? 'long-menu' : undefined}
@@ -1115,73 +1204,89 @@ export default function Cases() {
                                                                         aria-haspopup="true"
                                                                         onClick={handleClick}
                                                                     >
-                                                                        <MoreVertIcon />
+                                                                        <MoreVertIcon/>
                                                                     </IconButton>
-                                                                        <Menu
-                                                                            sx={{mt: -0.5, width: 140, minHeight: 160, padding:1}}
-                                                                            anchorEl={anchorEl}
-                                                                            id="account-menu"
-                                                                            open={open}
-                                                                            onClose={handleClose2}
-                                                                            onClick={handleClose2}
-                                                                            PaperProps={{
-                                                                                elevation: 0,
-                                                                                sx: {
-                                                                                    overflow: 'visible',
-                                                                                    filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.1))',
-                                                                                    mt: 0.5,
-                                                                                    maxHeight: 180,
-                                                                                    minWidth: 130,
+                                                                    <Menu
+                                                                        sx={{
+                                                                            mt: -0.5,
+                                                                            width: 140,
+                                                                            minHeight: 160,
+                                                                            padding: 1
+                                                                        }}
+                                                                        anchorEl={anchorEl}
+                                                                        id="account-menu"
+                                                                        open={open}
+                                                                        onClose={handleClose2}
+                                                                        onClick={handleClose2}
+                                                                        PaperProps={{
+                                                                            elevation: 0,
+                                                                            sx: {
+                                                                                overflow: 'visible',
+                                                                                filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.1))',
+                                                                                mt: 0.5,
+                                                                                maxHeight: 180,
+                                                                                minWidth: 140,
 
-                                                                                    '& .MuiAvatar-root': {
-                                                                                        width: 32,
-                                                                                        height: 32
-                                                                                    },
-                                                                                    '&:before': {
-                                                                                        content: '""',
-                                                                                        display: 'block',
-                                                                                        position: 'absolute',
-                                                                                        top: 0,
-                                                                                        right: 14,
-                                                                                        width: 10,
-                                                                                        height: 10,
-                                                                                        bgcolor: 'background.paper',
-                                                                                        transform: 'translateY(-50%) rotate(45deg)',
-                                                                                        zIndex: 0,
-                                                                                    },
+                                                                                '& .MuiAvatar-root': {
+                                                                                    width: 32,
+                                                                                    height: 32
                                                                                 },
-                                                                            }}
-                                                                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                                                        >
-                                                                        <MenuItem onClick={() => navigate('/dashboard/cases/attachment/' + row.CaseeId)}>
+                                                                                '&:before': {
+                                                                                    content: '""',
+                                                                                    display: 'block',
+                                                                                    position: 'absolute',
+                                                                                    top: 0,
+                                                                                    right: 14,
+                                                                                    width: 10,
+                                                                                    height: 10,
+                                                                                    bgcolor: 'background.paper',
+                                                                                    transform: 'translateY(-50%) rotate(45deg)',
+                                                                                    zIndex: 0,
+                                                                                },
+                                                                            },
+                                                                        }}
+                                                                        transformOrigin={{
+                                                                            horizontal: 'right',
+                                                                            vertical: 'top'
+                                                                        }}
+                                                                        anchorOrigin={{
+                                                                            horizontal: 'right',
+                                                                            vertical: 'bottom'
+                                                                        }}
+                                                                    >
+                                                                        <MenuItem
+                                                                            onClick={() => navigate('/dashboard/cases/attachment/' + row.CaseeId)}>
                                                                             <Stack mr={1}>
-                                                                            <Iconify icon={'eva:attach-fill'} />
+                                                                                <Iconify icon={'eva:attach-fill'}/>
                                                                             </Stack>
                                                                             Upload
                                                                         </MenuItem>
-                                                                        <MenuItem onClick={() => getByIdCases(row.CaseeId)}>
+                                                                        <MenuItem
+                                                                            onClick={() => getByIdCases(row.CaseeId)}>
                                                                             <Stack mr={1}>
-                                                                            <Iconify icon={'eva:layers-outline'} />
+                                                                                <Iconify icon={'eva:layers-outline'}/>
                                                                             </Stack>
                                                                             Details
                                                                         </MenuItem>
                                                                         <MenuItem>
                                                                             <Stack mr={1}>
-                                                                            <Iconify icon={'eva:map-outline'} />
+                                                                                <Iconify icon={'eva:map-outline'}/>
                                                                             </Stack>
                                                                             History
                                                                         </MenuItem>
-                                                                        <Divider sx={{ borderStyle: 'dashed' }} />
+                                                                        <Divider sx={{borderStyle: 'dashed'}}/>
                                                                         {authService.DoesHaveMandatoryClaim('CaseeDelete') || authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
-                                                                        <>
-                                                                            <MenuItem onClick={() => deleteCases(row.CaseeId)} sx={{ color: 'error.main' }}>
-                                                                                <Stack mr={1}>
-                                                                            <Iconify icon={'eva:trash-2-outline'}/>
-                                                                                </Stack>
-                                                                            Delete
-                                                                        </MenuItem>
-                                                                        </>
+                                                                            <>
+                                                                                <MenuItem
+                                                                                    onClick={() => deleteCases(row.CaseeId)}
+                                                                                    sx={{color: 'error.main'}}>
+                                                                                    <Stack mr={1}>
+                                                                                        <Iconify
+                                                                                            icon={'eva:trash-2-outline'}/>
+                                                                                    </Stack>
+                                                                                    Delete
+                                                                                </MenuItem>
+                                                                            </>
                                                                         ) : null}
                                                                     </Menu>
                                                                 </TableCell>
@@ -1217,7 +1322,7 @@ export default function Cases() {
                                                                             </IconButton>
                                                                         </Stack>
                                                                         <Stack mb={2} justifyContent="space-around">
-                                                                            <Box sx={{minWidth: 300}}>
+                                                                            <Box sx={{minWidth: 193}}>
                                                                                 <TableContainer component={Paper}>
                                                                                     <Table aria-label="simple table">
                                                                                         <TableRow sx={{
