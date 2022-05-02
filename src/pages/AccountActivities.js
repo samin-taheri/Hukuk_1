@@ -53,22 +53,6 @@ import plusSquareOutline from '@iconify/icons-eva/plus-square-outline';
 import {alpha, styled} from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
-const IconWrapperStyle = styled('div')(({ theme }) => ({
-    margin: 'auto',
-    display: 'flex',
-    borderRadius: '50%',
-    alignItems: 'center',
-    width: theme.spacing(7),
-    height: theme.spacing(7),
-    justifyContent: 'center',
-    marginBottom: theme.spacing(3),
-    color: theme.palette.green.dark,
-    backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.green.dark, 0)} 0%, ${alpha(
-        theme.palette.green.dark,
-        0.24
-    )} 100%)`
-}));
-
 export default function AccountActivities() {
 
     const today = new Date();
@@ -377,7 +361,7 @@ export default function AccountActivities() {
                                         </Stack>
                                         <Stack spacing={2}>
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
-                                                <Stack mb={4} justifyContent="space-around">
+                                                <Stack mb={3} justifyContent="space-around">
                                                     {tats.length > 0 ? (
                                                         <Box sx={{minWidth: 400}}>
                                                             <FormControl fullWidth size="small">
@@ -410,7 +394,7 @@ export default function AccountActivities() {
                                                     ) : null}
                                                 </Stack>
                                                 {tasts.length > 0 ? (
-                                                    <Stack mb={4} justifyContent="space-around">
+                                                    <Stack mb={3} justifyContent="space-around">
                                                         <Box sx={{minWidth: 400}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
@@ -441,7 +425,7 @@ export default function AccountActivities() {
                                                         </Box>
                                                     </Stack>
                                                 ) : null}
-                                                <Stack mb={4} justifyContent="space-around">
+                                                <Stack mb={3} justifyContent="space-around">
                                                     <Box sx={{minWidth: 400}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
@@ -462,7 +446,7 @@ export default function AccountActivities() {
                                                         </FormControl>
                                                     </Box>
                                                 </Stack>
-                                                <Stack mb={4} justifyContent="space-around">
+                                                <Stack mb={3} justifyContent="space-around">
                                                     <Box sx={{minWidth: 400}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
@@ -483,7 +467,7 @@ export default function AccountActivities() {
                                                         </FormControl>
                                                     </Box>
                                                 </Stack>
-                                                <Stack mb={4} justifyContent="space-around">
+                                                <Stack mb={3} justifyContent="space-around">
                                                     <Box sx={{minWidth: 400}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
@@ -511,7 +495,7 @@ export default function AccountActivities() {
                                                         </FormControl>
                                                     </Box>
                                                 </Stack>
-                                                <Stack mb={4} justifyContent="space-around">
+                                                <Stack mb={3} justifyContent="space-around">
                                                     <Box sx={{minWidth: 400}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField

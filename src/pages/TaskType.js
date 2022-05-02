@@ -257,7 +257,7 @@ export default function TaskType() {
                                     </Stack>
                                     <Stack spacing={2} >
                                         <Stack mb={2} alignItems="center" justifyContent="space-around">
-                                            <Stack mb={4} justifyContent="space-around">
+                                            <Stack mb={3} justifyContent="space-around">
                                                 <Box sx={{ minWidth: 400 }}>
                                                     <TextField
                                                         autoFocus

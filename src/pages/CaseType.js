@@ -265,7 +265,7 @@ export default function CaseType() {
                                     </Stack>
                                     <Stack spacing={2} >
                                         <Stack mb={2} alignItems="center" justifyContent="space-around">
-                                            <Stack mb={4} justifyContent="space-around">
+                                            <Stack mb={3} justifyContent="space-around">
                                                 <Box sx={{ minWidth: 400 }}>
                                                     <TextField
                                                         autoFocus
@@ -284,7 +284,7 @@ export default function CaseType() {
                                                     />
                                                 </Box>
                                             </Stack>
-                                            <Stack mb={4} justifyContent="space-around">
+                                            <Stack mb={3} justifyContent="space-around">
                                                 {courtOfficeTypes.length > 0 ? (
                                                     <Box sx={{ minWidth: 400 }}>
                                                         <FormControl fullWidth size="small">

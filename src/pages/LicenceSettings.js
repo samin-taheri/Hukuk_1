@@ -82,16 +82,7 @@ export default function LicenceSettings() {
     const [countryId, setCountryId] = useState(0);
     const [histories, setHistories] = useState([]);
     const [smsOrders, setSmsOrders] = useState([]);
-    const [clientForLicenceData, setClientForLicenceData] = useState(0);
-    const [caseForLicenceData, setCaseForLicenceData] = useState(0);
-    const [transactionActivityForLicenceData, setTransactionActivityForLicenceData] = useState(0);
-    const [currentBalanceForLicenceData, setCurrentBalanceForLicenceData] = useState(0);
-    const [currentlyUsedDiskSpaceForLicenceData, setCurrentlyUsedDiskSpaceForLicenceData] = useState(0);
-    const [totalDiskSpaceForLicenceData, setTotalDiskSpaceForLicenceData] = useState(0);
-    const [smsForLicenceData, setSmsForLicenceData] = useState(0);
-    const [numberOfMemberForLicenceData, setNumberOfMemberForLicenceData] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
 
     const {id} = useParams();
     const catchMessagee = Global.catchMessage;
@@ -259,7 +250,6 @@ export default function LicenceSettings() {
         smsOrdersService.buyTheSms(id).then(
             (result) => {
                 if (result.data.Success) {
-                    getLicenceInfo()
                     setOpenSMS(false)
                     popupMessageService.AlertSuccessMessage(result.data.Message);
                 }
@@ -274,36 +264,12 @@ export default function LicenceSettings() {
         })
     };
 
-
-    const getLicenceInfo = () => {
-        licencesService.getLicenceInfoCounts().then(
-            (result) => {
-                if (result.data.Success) {
-                    setClientForLicenceData(result.data.Data.Client)
-                    setCaseForLicenceData(result.data.Data.Case)
-                    setTransactionActivityForLicenceData(result.data.Data.TransactionActivity)
-                    setCurrentBalanceForLicenceData(result.data.Data.CurrentBalance)
-                    setCurrentlyUsedDiskSpaceForLicenceData(result.data.Data.CurrentlyUsedDiskSpace)
-                    setTotalDiskSpaceForLicenceData(result.data.Data.TotalDiskSpace)
-                    setSmsForLicenceData(result.data.Data.Sms)
-                    setNumberOfMemberForLicenceData(result.data.Data.NumberOfMember)
-                }
-            },
-            (error) => {
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
-            }
-        ).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
-        })
-    };
-
     useEffect(() => {
         getAllCities();
         getAllPersonTypes();
         licenceInfo();
         getAllCountries();
         getAllPaymentHistories();
-        getLicenceInfo();
         getAllSmsOrders();
     }, [])
 

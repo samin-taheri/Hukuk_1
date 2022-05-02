@@ -249,13 +249,13 @@ export default function User() {
                           Add new record!
                         </Typography>
                     }
-                    <IconButton sx={{bottom:4}}>
+                    <IconButton sx={{bottom:3}}>
                     <CloseIcon onClick={handleClose}/>
                     </IconButton>
                   </Stack>
                   <Stack spacing={2} >
                     <Stack mb={2} alignItems="center" justifyContent="space-around">
-                      <Stack mb={4} justifyContent="space-around">
+                      <Stack mb={3} justifyContent="space-around">
                         <Box sx={{ minWidth: 400 }}>
                           <TextField
                             autoFocus
@@ -274,7 +274,7 @@ export default function User() {
                           />
                         </Box>
                       </Stack>
-                      <Stack mb={4} justifyContent="space-around">
+                      <Stack mb={3} justifyContent="space-around">
                         {courtOfficeTypes.length > 0 ? (
                           <Box sx={{ minWidth: 400 }}>
                             <FormControl fullWidth size="small">
