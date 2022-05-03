@@ -43,6 +43,7 @@ import AdminLicences from "./adminPages/AdminLicences";
 import AdminUsers from "./adminPages/AdminUsers";
 import AdminBalanceTracking from "./adminPages/AdminBalanceTracking";
 import CaseUpdateHistory from "./pages/CaseUpdateHistory";
+import AdminLicencesDetails from "./adminPages/AdminLicencesDetails";
 
 // ----------------------------------------------------------------------
 
@@ -91,7 +92,8 @@ export default function Router() {
         { path: 'admin', element: <AdminDashboard /> },
         { path: 'licences', element: <AdminLicences /> },
         { path: 'users', element: <AdminUsers /> },
-        { path: 'balanceTracking', element: <AdminBalanceTracking /> }
+        { path: 'balanceTracking', element: <AdminBalanceTracking /> },
+        { path: 'licences/licencesDetails/:id', element: <AdminLicencesDetails /> },
       ]
     },
     {

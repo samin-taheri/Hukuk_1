@@ -22,4 +22,12 @@ export default class LicencesService {
     getLicenceInfoCounts() {
         return axios.get(`${URL}GetLicenceInfoCounts`, { headers: authHeader() });
     }
+    getAllLicencesAsAdmin(userId, profileName, email, isActive, pageNumber, pageSize) {
+        return axios.post(`${URL}GetAllLicencesAsAdmin?pageNumber=${pageNumber}&pageSize=${pageSize}`, { userId, profileName, email, isActive,
+            headers: authHeader()
+        });
+    }
+    getByIdAsAdmin(id) {
+        return axios.get(`${URL}GetByIdAsAdmin?licenceId=${id}`, { headers: authHeader() });
+    }
 }

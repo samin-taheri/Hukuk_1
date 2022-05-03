@@ -29,7 +29,7 @@ export default function SentMessages() {
     const catchMessagee = Global.catchMessage;
     const [pageNumber, setPageNumber] =useState(0);
     const [pageSize, setPageSize] = useState(3);
-    const [count, setCount] = useState(5);
+    const [count, setCount] = useState(10);
 
     const handleChangePage = (event, newPage) => {
         console.log("newPageNumber : ",newPage)
