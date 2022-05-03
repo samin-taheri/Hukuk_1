@@ -30,7 +30,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CardContent from "@mui/material/CardContent";
 import baselineDoneAll from '@iconify/icons-ic/baseline-done-all';
 import {format} from "date-fns";
-import roundUpdate from "@iconify/icons-ic/round-update";
+import ReplayIcon from '@mui/icons-material/Replay';
+import { green } from '@mui/material/colors';
+import Fab from '@mui/material/Fab';
+import CheckIcon from '@mui/icons-material/Check';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -49,6 +52,9 @@ export default function Support() {
     const [message, setMessage] = useState("");
     const [supportMessages, setSupportMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = React.useState(false);
+    const [success, setSuccess] = React.useState(false);
+    const timer = React.useRef();
 
     const getAllSupportMessages = () => {
         chatSupportService.getAllMessegaAsUser().then(
@@ -107,10 +113,36 @@ export default function Support() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
+    const buttonSx = {
+        ...(success && {
+            bgcolor: green[500],
+            '&:hover': {
+                bgcolor: green[700],
+            },
+        }),
+    };
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
+    const handleButtonClick = () => {
+        getAllSupportMessages()
+        if (!loading) {
+            setSuccess(false);
+            setLoading(true);
+            timer.current = window.setTimeout(() => {
+                setSuccess(true);
+                setLoading(false);
+            }, 2000);
+        }
+    };
+
     useEffect(() => {
         getAllSupportMessages()
         makeTheMessageRead()
-        scrollToBottom()
     }, []);
 
     return (
@@ -120,9 +152,30 @@ export default function Support() {
                     <Typography variant="h4" gutterBottom>
                         Support
                     </Typography>
-                    <Button onClick={()=>getAllSupportMessages()} variant="contained" startIcon={<Icon icon={roundUpdate}/>}>
-                        Refresh
-                    </Button>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ m: 1, position: 'relative' }}>
+                            <Fab
+                                aria-label="save"
+                                color="primary"
+                                sx={buttonSx}
+                                onClick={handleButtonClick}
+                            >
+                                {success ? <CheckIcon /> : <ReplayIcon />}
+                            </Fab>
+                            {loading && (
+                                <CircularProgress
+                                    size={68}
+                                    sx={{
+                                        color: green[500],
+                                        position: 'absolute',
+                                        top: -6,
+                                        left: -6,
+                                        zIndex: 1,
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    </Box>
                 </Stack>
                 <Stack flexDirection='column' alignItems='space-between'>
                     <Card justifyContent="center" sx={{
@@ -136,7 +189,7 @@ export default function Support() {
                     }}>
                         <>
                             {isLoading === true ?
-                                <Stack sx={{color: 'grey.500', paddingLeft: 0, paddingTop: 10}} spacing={2}
+                                <Stack sx={{color: 'grey.500', paddingLeft: 0, paddingTop: 3}} spacing={2}
                                        direction="row"
                                        justifyContent='center' alignSelf='center' left='50%'>
                                     <CircularProgress color="inherit"/>

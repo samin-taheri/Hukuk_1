@@ -1310,7 +1310,7 @@ export default function Cases() {
                                                                             </Stack>
                                                                             Details
                                                                         </MenuItem>
-                                                                        <MenuItem>
+                                                                        <MenuItem onClick={() => navigate('/dashboard/cases/caseUpdateHistory/' + row.CaseeId)}>
                                                                             <Stack mr={1}>
                                                                                 <Iconify icon={'eva:map-outline'}/>
                                                                             </Stack>

@@ -391,7 +391,6 @@ export default function Calendar() {
                                                             label="Title"
                                                             value={titleForAdd}
                                                             onChange={(e) => setTitleForAdd(e.target.value)}
-                                                            key={Math.random().toString(36).substr(2, 9)}
                                                             InputProps={{
                                                                 startAdornment: (
                                                                     <InputAdornment position="start">
@@ -654,13 +653,13 @@ export default function Calendar() {
                                                         </Typography>
                                                         <Stack sx={{flexDirection: 'row', paddingTop: 1}}>
                                                             <Typography variant="body2" color="text.secondary">
-                                                                <Label variant="ghost" color="success" sx={{fontSize:14}}>
+                                                                <Label variant="ghost" color="success" sx={{fontSize:13}}>
                                                                     Start Date: </Label>{days[new Date(row.StartDate).getDay()]}  {monthNames[new Date(row.StartDate).getMonth()]} {format(new Date(row.StartDate), 'dd kk:mm')}
                                                             </Typography>
                                                         </Stack>
                                                         <Stack sx={{flexDirection: 'row'}} mt={2}>
                                                             <Typography variant="body2" color="text.secondary">
-                                                                <Label variant="ghost" color="error" sx={{fontSize:14}}>
+                                                                <Label variant="ghost" color="error" sx={{fontSize:13}}>
                                                                      End Date: </Label> {days[new Date(row.EndDate).getDay()]} {monthNames[new Date(row.EndDate).getMonth()]} {format(new Date(row.EndDate), 'dd kk:mm')}
                                                             </Typography>
                                                         </Stack>

@@ -42,6 +42,7 @@ import AdminDashboardLayout from "./layouts/adminDashboard";
 import AdminLicences from "./adminPages/AdminLicences";
 import AdminUsers from "./adminPages/AdminUsers";
 import AdminBalanceTracking from "./adminPages/AdminBalanceTracking";
+import CaseUpdateHistory from "./pages/CaseUpdateHistory";
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +79,8 @@ export default function Router() {
         { path: 'connectedLicences', element: <ConnectedLicences /> },
         { path: 'licenceSettings/balance', element: <Balance /> },
         { path: 'profile', element: <ProfileForm /> },
-        { path: 'support', element: <Support /> }
+        { path: 'support', element: <Support /> },
+        { path: 'cases/caseUpdateHistory/:id', element: <CaseUpdateHistory /> }
       ]
     },
     {

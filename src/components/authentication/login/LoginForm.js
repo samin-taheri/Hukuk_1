@@ -154,7 +154,8 @@ export default function LoginForm() {
                     type="submit"
                     variant="contained"
                     onClick={()=>
-                        setIsLoading(true)}
+                        setIsLoading(true)
+                }
                 >
                     {isLoading ? (
                         <>
