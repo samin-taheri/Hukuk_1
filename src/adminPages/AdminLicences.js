@@ -27,7 +27,7 @@ import {format} from "date-fns";
 import layersOutline from "@iconify/icons-eva/layers-outline";
 import {useNavigate} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
-import { DataGrid } from '@mui/x-data-grid';
+import inboxOutline from '@iconify/icons-eva/inbox-outline';
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 // ----------------------------------------------------------------------
@@ -40,6 +40,7 @@ export default function AdminLicences() {
     const [userId, setUserId] = useState(0);
     const [profileName, setProfileName] = useState("");
     const [email, setEmail] = useState("");
+    const [appear, setAppear] = useState(false);
     const [isActive, setIsActive] = useState(0);
     const navigate = useNavigate();
 
@@ -77,6 +78,7 @@ export default function AdminLicences() {
     };
 
     const appearFilter = () => {
+        setAppear(true)
         getAllLicences(userId, profileName, email, isActive, pageNumber, pageSize)
     }
 
@@ -103,11 +105,12 @@ export default function AdminLicences() {
                     <Typography variant="h4" gutterBottom>
                         Licences
                     </Typography>
-                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={plusFill}/>}>
+                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={inboxOutline}/>}>
                         Filter
                     </Button>
                 </Stack>
                 <Stack spacing={2}>
+                    {appear == true ?
                     <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
                         <Stack mb={0} justifyContent="space-around">
                             <Box sx={{maxWidth: 264, minWidth: 264}}>
@@ -142,6 +145,7 @@ export default function AdminLicences() {
                             </Box>
                         </Stack>
                     </Stack>
+                        : null}
                 </Stack>
                 <Card sx={{marginTop: 6}}>
                     <Scrollbar>

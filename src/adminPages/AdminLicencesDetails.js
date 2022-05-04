@@ -157,7 +157,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <BadgeOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Profile Name"/>
+                                        <ListItemText id="switch-list-label-wifi" primary="Profile Name :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -171,7 +171,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <LocalPhoneOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-bluetooth" primary="Phone Number"/>
+                                        <ListItemText id="switch-list-label-bluetooth" primary="Phone Number :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -189,7 +189,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <EventAvailableOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Start Date"/>
+                                        <ListItemText id="switch-list-label-wifi" primary="Start Date :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -203,7 +203,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <MapsHomeWorkOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-bluetooth" primary="Tax Office"/>
+                                        <ListItemText id="switch-list-label-bluetooth" primary="Tax Office :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -221,7 +221,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <BusinessOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Bill Address"/>
+                                        <ListItemText id="switch-list-label-wifi" primary="Bill Address :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -235,7 +235,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <LanguageOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-bluetooth" primary="Country / City"/>
+                                        <ListItemText id="switch-list-label-bluetooth" primary="Country / City :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -253,7 +253,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <LocalAtmOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Balance"/>
+                                        <ListItemText id="switch-list-label-wifi" primary="Balance :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -267,7 +267,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <PersonPinOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-bluetooth" primary="Status"/>
+                                        <ListItemText id="switch-list-label-bluetooth" primary="Person Type :"/>
                                         <Typography
                                             sx={{display: 'inline'}}
                                             component="span"
@@ -285,7 +285,7 @@ export default function AdminLicencesDetails() {
                                         <ListItemIcon>
                                             <ToggleOffOutlinedIcon/>
                                         </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Balance"/>
+                                        <ListItemText id="switch-list-label-wifi" primary="Status :"/>
                                         {isActive ? (
                                                 <Label variant="ghost" color="success" sx={{fontSize: 13}}>
                                                     {sentenceCase('Active')}

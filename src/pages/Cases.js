@@ -20,7 +20,7 @@ import {
     TableBody,
     Card,
     IconButton,
-    Divider, Checkbox
+    Divider, Checkbox, Popover
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -117,17 +117,30 @@ export default function Cases() {
     const [caseIdForIgnore, setCaseIdForIgnore] = useState([]);
     const [hasBeenDecided, setHasBeenDecided] = useState(true);
     const [isEndDate, setIsEndDate] = useState(true);
-
     const navigate = useNavigate();
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState([]);
     const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+
+    //const handleClick = (event) => {
+    //    setAnchorEl(event.currentTarget);
+    //};
+    //const handleClose2 = (id) => {
+    //    setAnchorEl(null);
+    //};
+
+    const handleClick = (id, event) => {
+        let tableMenus = [...anchorEl];
+        tableMenus[id] = event.currentTarget;
+        setAnchorEl(tableMenus);
     };
-    const handleClose2 = () => {
-        setAnchorEl(null);
+
+    const handleClose2 = (id, event) => {
+        let tableMenus = [...anchorEl];
+        tableMenus[id] = null;
+        setAnchorEl(tableMenus);
     };
+
 
     function filtering(cases) {
         let filteredCaseTypes = cases
@@ -431,6 +444,8 @@ export default function Cases() {
                 setCaseNo(edit.CaseNo)
                 setInformation(edit.Info)
                 setStartDate(edit.StartDate)
+                setDecisionDate(edit.DecisionDate)
+                setEndDate(edit.EndDate)
             }
         })
         setOpenModalForDetails(true)
@@ -1183,7 +1198,7 @@ export default function Cases() {
                                                 </TableHead>
                                                 <TableBody>
                                                     <>
-                                                        {filtering(cases).map((row) => (
+                                                        {filtering(cases).map((row, index) => (
                                                             <TableRow
                                                                 key={row.CaseeId}
                                                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -1204,28 +1219,6 @@ export default function Cases() {
                                                                 <TableCell component="th" scope="row">
                                                                     {row.CaseStatus.Description}
                                                                 </TableCell>
-                                                                {/*
-                                                            <TableCell component="th" scope="row">
-                                                                {caseStatuses.length > 0 ? (
-                                                                    <TextField
-                                                                        select
-                                                                        size='small'
-                                                                        value={caseStatusAdd}
-                                                                        key={Math.random().toString(36).substr(2, 9)}
-                                                                        onChange={(event) => changeActivity(row.CaseeId, caseStatusAdd)}
-                                                                    >
-                                                                        {caseStatuses.map((item) => (
-                                                                            <MenuItem
-                                                                                key={Math.random().toString(36).substr(2, 9)}
-                                                                                value={item.value}
-                                                                            >
-                                                                                {item.label}
-                                                                            </MenuItem>
-                                                                        ))}
-                                                                    </TextField>
-                                                                ) : null}
-                                                            </TableCell>
-                                                            */}
                                                                 <TableCell>
                                                                     <Button
                                                                         onClick={() => modalForEdit(row.CaseeId)}
@@ -1244,22 +1237,24 @@ export default function Cases() {
                                                                         aria-controls={open ? 'long-menu' : undefined}
                                                                         aria-expanded={open ? 'true' : undefined}
                                                                         aria-haspopup="true"
-                                                                        onClick={handleClick}
+                                                                        onClick={(event) => handleClick(row.CaseeId, event)}
                                                                     >
                                                                         <MoreVertIcon/>
                                                                     </IconButton>
                                                                     <Menu
+                                                                        id={row.CaseeId}
+                                                                        anchorEl={anchorEl[row.CaseeId]}
+                                                                        keepMounted
+                                                                        open={Boolean(anchorEl[row.CaseeId])}
+                                                                        onClose={e => handleClose2(row.CaseeId, e)}
+                                                                        onClick={e => handleClose2(row.CaseeId, e)}
+
                                                                         sx={{
                                                                             mt: -0.5,
                                                                             width: 140,
                                                                             minHeight: 160,
                                                                             padding: 1
                                                                         }}
-                                                                        anchorEl={anchorEl}
-                                                                        id="account-menu"
-                                                                        open={open}
-                                                                        onClose={handleClose2}
-                                                                        onClick={handleClose2}
                                                                         PaperProps={{
                                                                             elevation: 0,
                                                                             sx: {
@@ -1304,7 +1299,7 @@ export default function Cases() {
                                                                             Upload
                                                                         </MenuItem>
                                                                         <MenuItem
-                                                                            onClick={() => getByIdCases(row.CaseeId)}>
+                                                                            onClick={(e) => getByIdCases(row.CaseeId,e)}>
                                                                             <Stack mr={1}>
                                                                                 <Iconify icon={'eva:layers-outline'}/>
                                                                             </Stack>

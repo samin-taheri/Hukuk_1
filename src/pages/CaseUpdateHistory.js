@@ -26,7 +26,6 @@ import {Icon} from "@iconify/react";
 import arrowBackOutline from "@iconify/icons-eva/arrow-back-outline";
 import {format} from "date-fns";
 import Label from "../components/Label";
-import {sentenceCase} from "change-case";
 import CircularProgress from "@mui/material/CircularProgress";
 // ----------------------------------------------------------------------
 
@@ -82,7 +81,6 @@ export default function CaseUpdateHistory() {
 
     useEffect(() => {
         getAllCaseUpdateHistory(skipVal, takeVal, id)
-
     }, [])
     return (
         <RootStyle title="History | MediLaw">
@@ -133,23 +131,20 @@ export default function CaseUpdateHistory() {
                                                 <Box sx={{minWidth: 300, marginLeft: -1}}>
                                                     <TableContainer component={Paper} sx={{}}>
                                                         <Table aria-label="simple table">
-                                                            <TableRow sx={{
+                                                            <TableRow key={row.CasesUpdateHistoryId} sx={{
                                                                 backgroundColor: '#f7f7f7',
                                                                 padding: 10,
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Title</TableCell>
-                                                                {row.DoesItStartDateChange ?
-                                                                    <TableCell component="th" scope="row"
-                                                                               key={row.CasesUpdateHistoryId}>
+                                                                {row.DoesInfoChange === true ?
+                                                                    <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.Info}</Label>
+                                                                               sx={{fontSize: 13}}>{row.Info}</Label>
                                                                     </TableCell>
                                                                     :
-                                                                    <TableCell component="th" scope="row"
-                                                                               key={row.CasesUpdateHistoryId}>
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.Info}</Label>
+                                                                    <TableCell component="th" scope="row">
+                                                                             {row.Info}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -159,19 +154,16 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff'
                                                             }}>
                                                                 <TableCell variant="head">Start Date</TableCell>
-                                                                {row.DoesItStartDateChange ?
+                                                                {row.DoesItStartDateChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>
+                                                                               sx={{fontSize: 13}}>
                                                                             {format(new Date(row.StartDate), 'dd/MM/yyyy')}
                                                                         </Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>
                                                                             {format(new Date(row.StartDate), 'dd/MM/yyyy')}
-                                                                        </Label>
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -181,19 +173,15 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff'
                                                             }}>
                                                                 <TableCell variant="head">Decision Date</TableCell>
-                                                                {row.DoesItDecisionDateChange ?
+                                                                {row.DoesItDecisionDateChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>
-                                                                            {format(new Date(row.DecisionDate), 'dd/MM/yyyy')}
-                                                                        </Label>
+                                                                               sx={{fontSize: 13}}>
+                                                                            {format(new Date(row.DecisionDate), 'dd/MM/yyyy')}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>
                                                                             {format(new Date(row.DecisionDate), 'dd/MM/yyyy')}
-                                                                        </Label>
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -203,19 +191,15 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff'
                                                             }}>
                                                                 <TableCell variant="head">End Date</TableCell>
-                                                                {row.DoesItEndDateChange ?
+                                                                {row.DoesItEndDateChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>
-                                                                            {format(new Date(row.EndDate), 'dd/MM/yyyy')}
-                                                                        </Label>
+                                                                               sx={{fontSize: 13}}>
+                                                                            {format(new Date(row.EndDate), 'dd/MM/yyyy')}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>
                                                                             {format(new Date(row.EndDate), 'dd/MM/yyyy')}
-                                                                        </Label>
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -225,15 +209,14 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Customer</TableCell>
-                                                                {row.DoesCustomerChange ?
+                                                                {row.DoesCustomerChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.Customer.CustomerName}</Label>
+                                                                               sx={{fontSize: 13}}>{row.Customer.CustomerName}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.Customer.CustomerName}</Label>
+                                                                        {row.Customer.CustomerName}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -243,15 +226,14 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Court Office</TableCell>
-                                                                {row.DoesCourtOfficeChange ?
+                                                                {row.DoesCourtOfficeChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.CourtOffice.CourtOfficeName}</Label>
+                                                                               sx={{fontSize: 13}}>{row.CourtOffice.CourtOfficeName}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.CourtOffice.CourtOfficeName}</Label>
+                                                                               {row.CourtOffice.CourtOfficeName}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -261,15 +243,14 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Court Office Type</TableCell>
-                                                                {row.DoesCourtOfficeTypeChange ?
+                                                                {row.DoesCourtOfficeTypeChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.CourtOfficeType.CourtOfficeTypeName}</Label>
+                                                                               sx={{fontSize: 13}}>{row.CourtOfficeType.CourtOfficeTypeName}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.CourtOfficeType.CourtOfficeTypeName}</Label>
+                                                                            {row.CourtOfficeType.CourtOfficeTypeName}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -279,15 +260,14 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Case Type</TableCell>
-                                                                {row.DoesCaseTypeChange ?
+                                                                {row.DoesCaseTypeChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.CaseType.Description}</Label>
+                                                                               sx={{fontSize: 13}}>{row.CaseType.Description}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.CaseType.Description}</Label>
+                                                                      {row.CaseType.Description}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
@@ -297,15 +277,14 @@ export default function CaseUpdateHistory() {
                                                                 border: '6px solid #fff',
                                                             }}>
                                                                 <TableCell variant="head">Case No</TableCell>
-                                                                {row.DoesCaseStatusChange ?
+                                                                {row.DoesCaseNoChange === true ?
                                                                     <TableCell component="th" scope="row">
                                                                         <Label variant="ghost" color="warning"
-                                                                               sx={{fontSize: 12}}>{row.CaseNo}</Label>
+                                                                               sx={{fontSize: 13}}>{row.CaseNo}</Label>
                                                                     </TableCell>
                                                                     :
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success"
-                                                                               sx={{fontSize: 12}}>{row.CaseNo}</Label>
+                                                                               {row.CaseNo}
                                                                     </TableCell>
                                                                 }
                                                             </TableRow>
