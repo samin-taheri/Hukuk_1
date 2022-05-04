@@ -161,26 +161,6 @@ export default function Clients() {
         })
     };
 
-    function getByIdClients(id) {
-        setOpenModalForDetails(true)
-        clientsService.getById(id).then(result => {
-                if (result.data.Success) {
-                    let details = result.data.Data
-                    setBillAddressForAdd(details.BillAddress)
-                    setTaxNoForAdd(details.TaxNo)
-                    setTaxOfficeForAdd(details.TaxOffice)
-                    setWebSiteForAdd(details.WebSite)
-                    setEmailForAdd(details.Email)
-                }
-            },
-            (error) => {
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
-            }
-        ).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
-        })
-    };
-
     function modalForEdit(id) {
         clientsService.getById(id).then(result => {
             if (result.data.Success) {

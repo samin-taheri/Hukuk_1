@@ -19,7 +19,7 @@ import {
     TableCell,
     TableBody,
     Card,
-    IconButton, CardContent
+    IconButton, CardContent, Collapse
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -51,6 +51,8 @@ import shoppingBagOutline from '@iconify/icons-eva/shopping-bag-outline';
 import minusSquareOutline from '@iconify/icons-eva/minus-square-outline';
 import plusSquareOutline from '@iconify/icons-eva/plus-square-outline';
 import {alpha, styled} from "@mui/material/styles";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // ----------------------------------------------------------------------
 
 export default function AccountActivities() {
@@ -64,6 +66,7 @@ export default function AccountActivities() {
     const tatService = new TransactionActivityTypeService();
     const tastService = new AccountActivityService();
     const transactionActivitiesService = new TransactionActivitiesService();
+    const [open, setOpen] = React.useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -79,10 +82,6 @@ export default function AccountActivities() {
     const [infoForUpdate, setInfoForUpdate] = useState("")
     const [amountForUpdate, setAmountForUpdate] = useState(0)
     const [dateForUpdate, setDateForUpdate] = useState(defaultValue)
-    const [userWhoAddFirstname, setUserWhoAddFirstname] = useState("")
-    const [userWhoAddLastname, setUserWhoAddLastname] = useState("")
-    const [userWhoAddCellphone, setUserWhoAddCellphone] = useState("")
-    const [explanation, setExplanation] = useState("")
     const [totalBalance, setTotalBalance] = useState(0)
     const [totalExpense, setTotalExpense] = useState(0)
     const [totalIncome, setTotalIncome] = useState(0)
@@ -224,26 +223,6 @@ export default function AccountActivities() {
         })
     };
 
-
-    function getByIdTransactionActivities(id) {
-        setOpenModalForDetails(true)
-        transactionActivitiesService.getById(id).then(result => {
-                if (result.data.Success) {
-                    let details = result.data.Data
-                    setUserWhoAddFirstname(details.UserWhoAdd.FirstName)
-                    setUserWhoAddLastname(details.UserWhoAdd.LastName)
-                    setUserWhoAddCellphone(details.UserWhoAdd.CellPhone)
-                    setUserWhoAddTitle(details.UserWhoAdd.Title)
-                    setExplanation(details.Info)
-                }
-            },
-            (error) => {
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
-            }
-        ).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
-        })
-    };
 
     function modalForEdit(id) {
         transactionActivitiesService.getById(id).then(result => {
@@ -626,14 +605,15 @@ export default function AccountActivities() {
                                                         <TableCell align="left">Name Surname</TableCell>
                                                         <TableCell align="left">Amount</TableCell>
                                                         <TableCell align="left">Edit</TableCell>
-                                                        <TableCell align="left">Details</TableCell>
                                                         <TableCell align="left">Delete</TableCell>
+                                                        <TableCell align="left">Details</TableCell>
                                                         <TableCell align="right"/>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
                                                     <>
                                                         {filtering(transactionActivityGetAll).map((row) => (
+                                                            <>
                                                             <TableRow
                                                                 key={row.TransactionActivityId}
                                                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -674,16 +654,6 @@ export default function AccountActivities() {
                                                                         Edit
                                                                     </Button>
                                                                 </TableCell>
-                                                                <TableCell align="right">
-                                                                    <Button
-                                                                        onClick={() => getByIdTransactionActivities(row.TransactionActivityId)}
-                                                                        variant="contained"
-                                                                        sx={{backgroundColor: '#b1b9be'}}
-                                                                        startIcon={<Icon icon={layersOutline}/>}
-                                                                    >
-                                                                        Details
-                                                                    </Button>
-                                                                </TableCell>
                                                                 {authService.DoesHaveMandatoryClaim('TransactionActivityDelete')  || authService.DoesHaveMandatoryClaim('LicenceOwner')? (
                                                                     <>
                                                                         <TableCell align="right">
@@ -696,86 +666,60 @@ export default function AccountActivities() {
                                                                         </TableCell>
                                                                     </>
                                                                 ) : null}
-                                                                <TableCell align="right"/>
-                                                                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
-                                                                       hideBackdrop={true}
-                                                                       disableEscapeKeyDown={true}
-                                                                       open={openModalForDetails}
-                                                                       aria-labelledby="modal-modal-title"
-                                                                       aria-describedby="modal-modal-description"
-                                                                >
-                                                                    <Box
-                                                                        sx={{
-                                                                            position: 'absolute',
-                                                                            top: '50%',
-                                                                            left: '50%',
-                                                                            transform: 'translate(-50%, -50%)',
-                                                                            minWidth: 500,
-                                                                            maxWidth: 500,
-                                                                            backgroundColor: 'background.paper',
-                                                                            border: '2px solid #fff',
-                                                                            boxShadow: 24,
-                                                                            p: 4,
-                                                                            borderRadius: 2
-                                                                        }}
+                                                                <TableCell>
+                                                                    <IconButton
+                                                                        sx={{marginLeft: 1}}
+                                                                        aria-label="expand row"
+                                                                        size="small"
+                                                                        onClick={() =>
+                                                                            setOpen((prev) => ({ ...prev, [row.TransactionActivityId]: !prev[row.TransactionActivityId] }))
+                                                                        }
                                                                     >
-                                                                        <Stack mb={4} flexDirection="row"
-                                                                               justifyContent='space-between'>
-                                                                            <Typography id="modal-modal-title"
-                                                                                        variant="h6" component="h2">
-                                                                                Details!
-                                                                            </Typography>
-                                                                            <IconButton sx={{bottom: 4}}>
-                                                                                <CloseIcon onClick={handleClosModal}/>
-                                                                            </IconButton>
-                                                                        </Stack>
-                                                                        <Stack mb={2} justifyContent="space-around">
-                                                                            <Box sx={{minWidth: 300}}>
-                                                                                <TableContainer component={Paper}>
-                                                                                    <Table aria-label="simple table">
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell
-                                                                                                variant="head">Title</TableCell>
-                                                                                            <TableCell>{userWhoAddTitle}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Full
-                                                                                                Name</TableCell>
-                                                                                            <TableCell>{userWhoAddFirstname} {userWhoAddLastname}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Cell
-                                                                                                phone</TableCell>
-                                                                                            <TableCell>{userWhoAddCellphone}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell
-                                                                                                variant="head">Info</TableCell>
-                                                                                            <TableCell>{explanation}</TableCell>
-                                                                                        </TableRow>
-                                                                                    </Table>
-                                                                                </TableContainer>
-                                                                            </Box>
-                                                                        </Stack>
-                                                                    </Box>
-                                                                </Modal>
+                                                                        {open[row.TransactionActivityId] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                                    </IconButton>
+                                                                </TableCell>
+                                                                <TableCell align="right"/>
                                                             </TableRow>
+                                                                <TableRow>
+                                                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+                                                                        <Collapse in={open[row.TransactionActivityId]}  timeout="auto" unmountOnExit>
+                                                                            {open[row.TransactionActivityId] && (
+                                                                                <Box sx={{ margin: 1, padding: 1.5 }}>
+                                                                                    <Typography variant="h6" gutterBottom component="div">
+                                                                                        Details
+                                                                                    </Typography>
+                                                                                    <Table size="small" aria-label="purchases">
+                                                                                        <TableHead>
+                                                                                            <TableRow>
+                                                                                                <TableCell component="th" scope="row" align="left">Title</TableCell>
+                                                                                                <TableCell align="left">Full Name</TableCell>
+                                                                                                <TableCell align="left">CellPhone</TableCell>
+                                                                                                <TableCell align="left">Info</TableCell>
+                                                                                            </TableRow>
+                                                                                        </TableHead>
+                                                                                        <TableBody>
+                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.UserWhoAdd.Title}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.UserWhoAdd.FirstName} {row.UserWhoAdd.LastName}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.UserWhoAdd.CellPhone}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.Info}
+                                                                                                </TableCell>
+                                                                                            </TableRow>
+                                                                                        </TableBody>
+                                                                                    </Table>
+                                                                                </Box>
+                                                                            )}
+                                                                        </Collapse>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </>
                                                         ))}
                                                     </>
                                                 </TableBody>

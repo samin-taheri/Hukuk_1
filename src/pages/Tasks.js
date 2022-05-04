@@ -19,7 +19,7 @@ import {
     TableBody,
     Card,
     Avatar,
-    IconButton, Checkbox
+    IconButton, Checkbox, Collapse
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -60,6 +60,8 @@ import {format} from "date-fns";
 import account from "../_mocks_/account";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // ----------------------------------------------------------------------
 
 export default function Tasks() {
@@ -79,6 +81,7 @@ export default function Tasks() {
     const [openModal, setOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [openModalForDetails, setOpenModalForDetails] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [clientIdForFilter, setClientIdForFilter] = useState(-1);
@@ -325,23 +328,6 @@ export default function Tasks() {
             }
         })
         setOpenModal(true)
-    }
-
-    function getByIdTasks(id) {
-        tasksService.getById(id).then(result => {
-            if (result.data.Success) {
-                let edit = result.data.Data
-                setInformation(edit.Info)
-                setStartDate(edit.StartDate)
-                setLastDate(edit.LastDate)
-                setEndDate(edit.EndDate)
-            }
-        })
-        setOpenModalForDetails(true)
-    }
-
-    const handleClosModal = () => {
-        setOpenModalForDetails(false)
     }
 
     function addNewRecord() {
@@ -974,14 +960,14 @@ export default function Tasks() {
                                                         <TableCell align="left">Status</TableCell>
                                                         <TableCell align="left">Change Activity</TableCell>
                                                         <TableCell align="left">Edit</TableCell>
-                                                        <TableCell align="left">Details</TableCell>
                                                         <TableCell align="left">Delete</TableCell>
-                                                        <TableCell align="right"/>
+                                                        <TableCell align="left">Details</TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
                                                     <>
                                                         {filtering(tasks).map((row) => (
+                                                            <>
                                                             <TableRow
                                                                 key={row.TaskkId}
                                                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -1030,16 +1016,6 @@ export default function Tasks() {
                                                                         Edit
                                                                     </Button>
                                                                 </TableCell>
-                                                                <TableCell align="left">
-                                                                    <Button
-                                                                        onClick={() => getByIdTasks(row.TaskkId)}
-                                                                        variant="contained"
-                                                                        sx={{backgroundColor: '#b1b9be'}}
-                                                                        startIcon={<Icon icon={layersOutline}/>}
-                                                                    >
-                                                                        Details
-                                                                    </Button>
-                                                                </TableCell>
                                                                 {authService.DoesHaveMandatoryClaim('TaskDelete') || authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                                                                     <>
                                                                         <TableCell align="left">
@@ -1052,83 +1028,59 @@ export default function Tasks() {
                                                                         </TableCell>
                                                                     </>
                                                                 ) : null}
-                                                                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
-                                                                       hideBackdrop={true}
-                                                                       disableEscapeKeyDown={true}
-                                                                       open={openModalForDetails}
-                                                                       aria-labelledby="modal-modal-title"
-                                                                       aria-describedby="modal-modal-description"
-                                                                >
-                                                                    <Box
-                                                                        sx={{
-                                                                            position: 'absolute',
-                                                                            top: '50%',
-                                                                            left: '50%',
-                                                                            transform: 'translate(-50%, -50%)',
-                                                                            minWidth: 500,
-                                                                            maxWidth: 500,
-                                                                            backgroundColor: 'background.paper',
-                                                                            border: '2px solid #fff',
-                                                                            boxShadow: 24,
-                                                                            p: 4,
-                                                                            borderRadius: 2
-                                                                        }}>
-                                                                        <Stack mb={4} flexDirection="row"
-                                                                               justifyContent='space-between'>
-                                                                            <Typography id="modal-modal-title"
-                                                                                        variant="h6"
-                                                                                        component="h2">Details!</Typography>
-                                                                            <IconButton sx={{bottom: 4}}>
-                                                                                <CloseIcon onClick={handleClosModal}/>
-                                                                            </IconButton>
-                                                                        </Stack>
-                                                                        <Stack mb={2} justifyContent="space-around">
-                                                                            <Box sx={{minWidth: 300}}>
-                                                                                <TableContainer component={Paper}>
-                                                                                    <Table aria-label="simple table">
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Start
-                                                                                                Date</TableCell>
-                                                                                            <TableCell>{format(new Date(startDate), 'dd/MM/yyyy')}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Last
-                                                                                                Date</TableCell>
-                                                                                            <TableCell>{format(new Date(lastDate), 'dd/MM/yyyy')}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">End
-                                                                                                Date</TableCell>
-                                                                                            <TableCell>{format(new Date(endDate), 'dd/MM/yyyy')}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell
-                                                                                                variant="head">Info</TableCell>
-                                                                                            <TableCell>{information}</TableCell>
-                                                                                        </TableRow>
-                                                                                    </Table>
-                                                                                </TableContainer>
-                                                                            </Box>
-                                                                        </Stack>
-                                                                    </Box>
-                                                                </Modal>
+                                                                <TableCell>
+                                                                    <IconButton
+                                                                        sx={{marginLeft: 1}}
+                                                                        aria-label="expand row"
+                                                                        size="small"
+                                                                        onClick={() =>
+                                                                            setOpen((prev) => ({ ...prev, [row.TaskkId]: !prev[row.TaskkId] }))
+                                                                        }
+                                                                    >
+                                                                        {open[row.TaskkId] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                                    </IconButton>
+                                                                </TableCell>
                                                             </TableRow>
+                                                                <TableRow>
+                                                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+                                                                        <Collapse in={open[row.TaskkId]}  timeout="auto" unmountOnExit>
+                                                                            {open[row.TaskkId] && (
+                                                                                <Box sx={{ margin: 1, padding: 1.5 }}>
+                                                                                    <Typography variant="h6" gutterBottom component="div">
+                                                                                        Details
+                                                                                    </Typography>
+                                                                                    <Table size="small" aria-label="purchases">
+                                                                                        <TableHead>
+                                                                                            <TableRow>
+                                                                                                <TableCell component="th" scope="row" align="left">Start Date</TableCell>
+                                                                                                <TableCell align="left">Last Date</TableCell>
+                                                                                                <TableCell align="left">End date</TableCell>
+                                                                                                <TableCell align="left">Info</TableCell>
+                                                                                            </TableRow>
+                                                                                        </TableHead>
+                                                                                        <TableBody>
+                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {format(new Date(row.StartDate), 'dd/MM/yyyy')}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {format(new Date(row.LastDate), 'dd/MM/yyyy')}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {format(new Date(row.EndDate), 'dd/MM/yyyy')}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.Info}
+                                                                                                </TableCell>
+                                                                                            </TableRow>
+                                                                                        </TableBody>
+                                                                                    </Table>
+                                                                                </Box>
+                                                                            )}
+                                                                        </Collapse>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </>
                                                         ))}
                                                     </>
                                                 </TableBody>
