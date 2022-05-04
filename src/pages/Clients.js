@@ -8,7 +8,18 @@ import {
     Container,
     Typography,
     TextField,
-    InputAdornment, Box, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Card, IconButton
+    InputAdornment,
+    Box,
+    TableContainer,
+    Paper,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Card,
+    IconButton,
+    Collapse
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -41,7 +52,8 @@ import AddBusinessOutlinedIcon from '@mui/icons-material/AddBusinessOutlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import {format} from "date-fns";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // ----------------------------------------------------------------------
 
 export default function Clients() {
@@ -52,6 +64,7 @@ export default function Clients() {
     const countryService = new CountryService();
     const cityService = new CityService();
     const clientsService = new ClientsServise();
+    const [open, setOpen] = React.useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -523,6 +536,7 @@ export default function Clients() {
                         </Stack>
                     </Stack>
                     <Card sx={{marginTop: -3}}>
+                        <React.Fragment>
                         <Scrollbar>
                             {isLoading === true ?
                                 <Stack sx={{color: 'grey.500', padding: 10}} spacing={2} direction="row"
@@ -533,7 +547,7 @@ export default function Clients() {
                                 <>
                                     {transactionActivityGetAll.length > 0 ? (
                                         <TableContainer component={Paper}>
-                                            <Table sx={{minWidth: 650}}  aria-label="simple table">
+                                            <Table sx={{minWidth: 650}}  aria-label="collapsible table">
                                                 <TableHead>
                                                     <TableRow>
                                                         <TableCell sx={{paddingLeft: 7}}>Customer Full Name</TableCell>
@@ -550,6 +564,7 @@ export default function Clients() {
                                                 <TableBody>
                                                     <>
                                                         {filtering(transactionActivityGetAll).map((row) => (
+                                                            <>
                                                             <TableRow
                                                                 key={row.CustomerId}
                                                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -579,7 +594,7 @@ export default function Clients() {
                                                                 )}
                                                                 <TableCell>
                                                                     <Switch
-                                                                        sx={{left: 25}}
+                                                                        sx={{marginLeft: 2}}
                                                                         checked={row.IsActive}
                                                                         onChange={() => changeActivity(row.CustomerId)}
                                                                         inputProps={{'aria-label': 'controlled'}}
@@ -595,108 +610,67 @@ export default function Clients() {
                                                                         Edit
                                                                     </Button>
                                                                 </TableCell>
-                                                                <TableCell align="right">
-                                                                    <Button
-                                                                        onClick={() => getByIdClients(row.CustomerId)}
-                                                                        variant="contained"
-                                                                        sx={{backgroundColor: '#b1b9be', right: 10}}
-                                                                        startIcon={<Icon icon={layersOutline}/>}
+                                                                <TableCell>
+                                                                    <IconButton
+                                                                        sx={{marginLeft: 1}}
+                                                                        aria-label="expand row"
+                                                                        size="small"
+                                                                        onClick={() =>
+                                                                            setOpen((prev) => ({ ...prev, [row.CustomerId]: !prev[row.CustomerId] }))
+                                                                        }
                                                                     >
-                                                                        Details
-                                                                    </Button>
+                                                                        {open[row.CustomerId] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                                    </IconButton>
                                                                 </TableCell>
                                                                 <TableCell align="right"/>
-                                                                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
-                                                                       hideBackdrop={true}
-                                                                       disableEscapeKeyDown={true}
-                                                                       open={openModalForDetails}
-                                                                       aria-labelledby="modal-modal-title"
-                                                                       aria-describedby="modal-modal-description"
-                                                                >
-                                                                    <Box
-                                                                        sx={{
-                                                                            position: 'absolute',
-                                                                            top: '50%',
-                                                                            left: '50%',
-                                                                            transform: 'translate(-50%, -50%)',
-                                                                            minWidth: 500,
-                                                                            maxWidth: 500,
-                                                                            backgroundColor: 'background.paper',
-                                                                            border: '2px solid #fff',
-                                                                            boxShadow: 24,
-                                                                            p: 4,
-                                                                            borderRadius: 2
-                                                                        }}
-                                                                    >
-                                                                        <Stack mb={4} flexDirection="row"
-                                                                               justifyContent='space-between'>
-                                                                            <Typography id="modal-modal-title"
-                                                                                        variant="h6" component="h2">
-                                                                                Details!
-                                                                            </Typography>
-                                                                            <IconButton sx={{bottom: 4}}>
-                                                                                <CloseIcon onClick={handleClosModal}/>
-                                                                            </IconButton>
-                                                                        </Stack>
-                                                                        <Stack mb={2} justifyContent="space-around">
-                                                                            <Box sx={{minWidth: 300}}>
-                                                                                <TableContainer component={Paper}>
-                                                                                    <Table aria-label="simple table">
-                                                                                        <TableRow
-                                                                                            sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Bill
-                                                                                                Address</TableCell>
-                                                                                            <TableCell>{billAddressForAdd}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Tax
-                                                                                                No</TableCell>
-                                                                                            <TableCell>{taxNoForAdd}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell variant="head">Tax
-                                                                                                Office</TableCell>
-                                                                                            <TableCell>{taxOfficeForAdd}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell
-                                                                                                variant="head">Website</TableCell>
-                                                                                            <TableCell>{webSiteForAdd}</TableCell>
-                                                                                        </TableRow>
-                                                                                        <TableRow sx={{
-                                                                                            backgroundColor: '#f7f7f7',
-                                                                                            padding: 15,
-                                                                                            border: '6px solid #fff'
-                                                                                        }}>
-                                                                                            <TableCell
-                                                                                                variant="head">Email</TableCell>
-                                                                                            <TableCell>{emailForAdd}</TableCell>
-                                                                                        </TableRow>
-                                                                                    </Table>
-                                                                                </TableContainer>
-                                                                            </Box>
-                                                                        </Stack>
-                                                                    </Box>
-                                                                </Modal>
                                                             </TableRow>
+                                                                <TableRow>
+                                                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+                                                                        <Collapse in={open[row.CustomerId]}  timeout="auto" unmountOnExit>
+                                                                            {open[row.CustomerId] && (
+                                                                            <Box sx={{ margin: 1, padding: 1.5 }}>
+                                                                                <Typography variant="h6" gutterBottom component="div">
+                                                                                    Details
+                                                                                </Typography>
+                                                                                <Table size="small" aria-label="purchases">
+                                                                                    <TableHead>
+                                                                                        <TableRow>
+                                                                                            <TableCell component="th" scope="row" align="left">Bill Address</TableCell>
+                                                                                            <TableCell align="left">Tax No</TableCell>
+                                                                                            <TableCell align="left">Tax Office</TableCell>
+                                                                                            <TableCell align="left">Website</TableCell>
+                                                                                            <TableCell align="left">Email</TableCell>
+                                                                                        </TableRow>
+                                                                                    </TableHead>
+                                                                                    <TableBody>
+                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.BillAddress}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.TaxNo}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.TaxOffice}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.WebSite}
+                                                                                                </TableCell>
+                                                                                                <TableCell component="th" scope="row">
+                                                                                                    {row.Email}
+                                                                                                </TableCell>
+                                                                                            </TableRow>
+                                                                                    </TableBody>
+                                                                                </Table>
+                                                                            </Box>
+                                                                            )}
+                                                                        </Collapse>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            </>
                                                         ))}
                                                     </>
+
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
@@ -710,6 +684,7 @@ export default function Clients() {
                                 </>
                             }
                         </Scrollbar>
+                        </React.Fragment>
                     </Card>
                 </Container>
             }
