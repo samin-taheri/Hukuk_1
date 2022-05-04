@@ -19,13 +19,12 @@ import {
     TableCell,
     TableBody,
     Card,
-    IconButton, CardContent, Collapse
+    IconButton, CardContent, Collapse, tableCellClasses
 } from '@mui/material';
 // components
 import Page from '../components/Page';
 //
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
-import layersOutline from '@iconify/icons-eva/layers-outline';
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@material-ui/icons/Close";
 import FormControl from "@mui/material/FormControl";
@@ -47,10 +46,6 @@ import Scrollbar from "../components/Scrollbar";
 import CircularProgress from "@mui/material/CircularProgress";
 import Label from "../components/Label";
 import roundUpdate from "@iconify/icons-ic/round-update";
-import shoppingBagOutline from '@iconify/icons-eva/shopping-bag-outline';
-import minusSquareOutline from '@iconify/icons-eva/minus-square-outline';
-import plusSquareOutline from '@iconify/icons-eva/plus-square-outline';
-import {alpha, styled} from "@mui/material/styles";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // ----------------------------------------------------------------------
@@ -698,7 +693,9 @@ export default function AccountActivities() {
                                                                                             </TableRow>
                                                                                         </TableHead>
                                                                                         <TableBody>
-                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                            <TableRow sx={{  [`& .${tableCellClasses.root}`]: {
+                                                                                                    borderBottom: "none"
+                                                                                                } }}>
                                                                                                 <TableCell component="th" scope="row">
                                                                                                     {row.UserWhoAdd.Title}
                                                                                                 </TableCell>

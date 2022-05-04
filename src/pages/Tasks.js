@@ -18,8 +18,7 @@ import {
     TableCell,
     TableBody,
     Card,
-    Avatar,
-    IconButton, Checkbox, Collapse
+    IconButton, Checkbox, Collapse, tableCellClasses
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -47,8 +46,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import roundUpdate from "@iconify/icons-ic/round-update";
 import ClientsServise from "../services/clients.servise";
 import CasesService from "../services/cases.service";
-import layersOutline from "@iconify/icons-eva/layers-outline";
-import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import Label from "../components/Label";
 import {sentenceCase} from "change-case";
 import Switch from "@mui/material/Switch";
@@ -57,9 +54,6 @@ import LicenceUsersService from "../services/licenceUsers.service";
 import TaskTypeService from "../services/TaskType.service";
 import TaskStatusesService from "../services/taskStatuses.service";
 import {format} from "date-fns";
-import account from "../_mocks_/account";
-import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
-import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // ----------------------------------------------------------------------
@@ -80,7 +74,6 @@ export default function Tasks() {
     const taskTypeService = new TaskTypeService();
     const [openModal, setOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const [open, setOpen] = React.useState(false);
 
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
@@ -1059,7 +1052,9 @@ export default function Tasks() {
                                                                                             </TableRow>
                                                                                         </TableHead>
                                                                                         <TableBody>
-                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                            <TableRow sx={{  [`& .${tableCellClasses.root}`]: {
+                                                                                                    borderBottom: "none"
+                                                                                                } }}>
                                                                                                 <TableCell component="th" scope="row">
                                                                                                     {format(new Date(row.StartDate), 'dd/MM/yyyy')}
                                                                                                 </TableCell>

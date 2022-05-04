@@ -19,12 +19,12 @@ import {
     TableBody,
     Card,
     IconButton,
-    Collapse
+    Collapse,
+    tableCellClasses
 } from '@mui/material';
 // components
 import Page from '../components/Page';
 //
-import layersOutline from '@iconify/icons-eva/layers-outline';
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@material-ui/icons/Close";
 import FormControl from "@mui/material/FormControl";
@@ -623,7 +623,9 @@ export default function Clients() {
                                                                                         </TableRow>
                                                                                     </TableHead>
                                                                                     <TableBody>
-                                                                                            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                                                                                            <TableRow sx={{  [`& .${tableCellClasses.root}`]: {
+                                                                                                    borderBottom: "none"
+                                                                                                } }}>
                                                                                                 <TableCell component="th" scope="row">
                                                                                                     {row.BillAddress}
                                                                                                 </TableCell>
