@@ -15,7 +15,7 @@ import {
     Typography,
     TableContainer,
     Paper,
-    TableHead, TablePagination, Box, TextField, InputAdornment,
+    TableHead, TablePagination, Box, TextField, InputAdornment, Collapse, IconButton,
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -27,7 +27,8 @@ import {format} from "date-fns";
 import layersOutline from "@iconify/icons-eva/layers-outline";
 import {useNavigate} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
-import inboxOutline from '@iconify/icons-eva/inbox-outline';
+import minusOutline from '@iconify/icons-eva/minus-outline';
+import plusOutline from '@iconify/icons-eva/plus-outline';
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 // ----------------------------------------------------------------------
@@ -40,8 +41,8 @@ export default function AdminLicences() {
     const [userId, setUserId] = useState(0);
     const [profileName, setProfileName] = useState("");
     const [email, setEmail] = useState("");
-    const [appear, setAppear] = useState(false);
     const [isActive, setIsActive] = useState(0);
+    const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
 
     const licencesService = new LicencesService();
@@ -78,7 +79,6 @@ export default function AdminLicences() {
     };
 
     const appearFilter = () => {
-        setAppear(true)
         getAllLicences(userId, profileName, email, isActive, pageNumber, pageSize)
     }
 
@@ -89,7 +89,12 @@ export default function AdminLicences() {
     const handleChangeStatus = (event) => {
         setIsActive(event.target.value);
     };
-
+    const handleChangeProfileName = (event) => {
+        setProfileName(event.target.value);
+    };
+    const handleChangeEmail = (event) => {
+        setEmail(event.target.value);
+    };
     const handleChangeUserId = (event) => {
         setUserId(event.target.value);
     };
@@ -105,49 +110,121 @@ export default function AdminLicences() {
                     <Typography variant="h4" gutterBottom>
                         Licences
                     </Typography>
-                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={inboxOutline}/>}>
-                        Filter
-                    </Button>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => {
+                            setOpen(!open)
+                            appearFilter()
+                        }}
+                    >
+                        {open ? <Button variant="contained" startIcon={<Icon icon={minusOutline}/>}>Unfilter</Button> :
+                            <Button variant="contained" startIcon={<Icon icon={plusOutline}/>}>Filter</Button>}
+                    </IconButton>
                 </Stack>
                 <Stack spacing={2}>
-                    {appear == true ?
-                    <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
-                        <Stack mb={0} justifyContent="space-around">
-                            <Box sx={{maxWidth: 264, minWidth: 264}}>
-                                <FormControl fullWidth size="small">
-                                    <TextField
-                                        select
-                                        size='small'
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={isActive}
-                                        key={createRandomKey}
-                                        label="Status"
-                                        onChange={handleChangeStatus}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <ToggleOffOutlinedIcon/>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    >
-                                        <MenuItem key={Math.random().toString(36).substr(2, 9)}
-                                                  value={-1}>All</MenuItem>
-                                        <MenuItem key={Math.random().toString(36).substr(2, 9)} value={1}>
-                                            Active
-                                        </MenuItem>
-                                        <MenuItem key={Math.random().toString(36).substr(2, 9)} value={0}>
-                                            Passive
-                                        </MenuItem>
-                                    </TextField>
-                                </FormControl>
-                            </Box>
-                        </Stack>
-                    </Stack>
-                        : null}
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{margin: 1}}>
+                            <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
+                                <Stack mb={0} justifyContent="space-around">
+                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                        <FormControl fullWidth size="small">
+                                            <TextField
+                                                size='small'
+                                                id="demo-simple-select"
+                                                value={profileName}
+                                                key={createRandomKey}
+                                                label="Profile Name"
+                                                onChange={handleChangeProfileName}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <ToggleOffOutlinedIcon/>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </Stack>
+                                <Stack mb={0} justifyContent="space-around">
+                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                        <FormControl fullWidth size="small">
+                                            <TextField
+                                                size='small'
+                                                id="demo-simple-select"
+                                                value={email}
+                                                key={createRandomKey}
+                                                label="Email"
+                                                onChange={handleChangeEmail}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <ToggleOffOutlinedIcon/>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </Stack>
+                                <Stack mb={0} justifyContent="space-around">
+                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                        <FormControl fullWidth size="small">
+                                            <TextField
+                                                size='small'
+                                                id="demo-simple-select"
+                                                value={userId}
+                                                key={createRandomKey}
+                                                label="User Id"
+                                                onChange={handleChangeUserId}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <ToggleOffOutlinedIcon/>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </Stack>
+                                <Stack mb={0} justifyContent="space-around">
+                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                        <FormControl fullWidth size="small">
+                                            <TextField
+                                                select
+                                                size='small'
+                                                id="demo-simple-select"
+                                                value={isActive}
+                                                key={createRandomKey}
+                                                label="Status"
+                                                onChange={handleChangeStatus}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <ToggleOffOutlinedIcon/>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            >
+                                                <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                          value={-1}>All</MenuItem>
+                                                <MenuItem key={Math.random().toString(36).substr(2, 9)} value={1}>
+                                                    Active
+                                                </MenuItem>
+                                                <MenuItem key={Math.random().toString(36).substr(2, 9)} value={0}>
+                                                    Passive
+                                                </MenuItem>
+                                            </TextField>
+                                        </FormControl>
+                                    </Box>
+                                </Stack>
+                            </Stack>
+                        </Box>
+                    </Collapse>
                 </Stack>
-                <Card sx={{marginTop: 6}}>
+                <Card sx={{marginTop: 5}}>
                     <Scrollbar>
                         {isLoading === true ?
                             <Stack sx={{color: 'grey.500', padding: 10}} spacing={2} direction="row"

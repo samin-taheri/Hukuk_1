@@ -38,7 +38,12 @@ import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import {format} from "date-fns";
 import Label from "../components/Label";
 import {sentenceCase} from "change-case";
-import plusFill from "@iconify/icons-eva/plus-fill";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -47,6 +52,12 @@ const RootStyle = styled(Page)(({theme}) => ({
     }
 }));
 
+const actions = [
+    { icon: <SmsOutlinedIcon />, name: 'SMS History' },
+    { icon: <AccountBalanceWalletOutlinedIcon />, name: 'Payment History' },
+    { icon: <ReceiptOutlinedIcon />, name: 'Payment List' }
+];
+
 // ----------------------------------------------------------------------
 
 export default function AdminLicencesDetails() {
@@ -54,7 +65,6 @@ export default function AdminLicencesDetails() {
     const popupMessageService = new PopupMessageService();
     const licencesService = new LicencesService();
     const catchMessagee = Global.catchMessage;
-    const [allLicenceDetails, setAllLicenceDetails] = useState([])
     const [phoneNumber, setPhoneNumber] = useState("")
     const [profilename, setProfileName] = useState("")
     const [taxOffice, setTaxOffice] = useState("")
@@ -96,21 +106,6 @@ export default function AdminLicencesDetails() {
         })
     };
 
-    const [checked, setChecked] = React.useState(['wifi']);
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
-    };
-
     useEffect(() => {
         getAllCaseUpdateHistory(id)
     }, [])
@@ -136,15 +131,15 @@ export default function AdminLicencesDetails() {
                         <>
                             <Card sx={{
                                 width: '100%',
-                                maxWidth: 950,
+                                maxWidth: 840,
                                 bgcolor: 'background.paper',
-                                marginLeft: 7,
+                                marginLeft: 10,
                                 marginTop: 3
                             }}>
                                 <List
                                     sx={{
                                         width: '100%',
-                                        maxWidth: 940,
+                                        maxWidth: 830,
                                         bgcolor: 'background.paper',
                                         marginLeft: 0.5,
                                         padding: 2
@@ -300,6 +295,22 @@ export default function AdminLicencesDetails() {
                             </Card>
                         </>
                     }
+                    <Box sx={{ height: 320, transform: 'translateX(0px)', flexGrow: 1, marginRight: 4, marginTop: -18 }}>
+                        <SpeedDial
+                            direction='down'
+                            ariaLabel="SpeedDial basic example"
+                            sx={{ position: 'absolute', bottom: 16, right: 0 }}
+                            icon={<SpeedDialIcon />}
+                        >
+                            {actions.map((action) => (
+                                <SpeedDialAction
+                                    key={action.name}
+                                    icon={action.icon}
+                                    tooltipTitle={action.name}
+                                />
+                            ))}
+                        </SpeedDial>
+                    </Box>
                 </Stack>
             </Container>
         </RootStyle>
