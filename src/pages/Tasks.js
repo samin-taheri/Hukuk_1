@@ -1039,10 +1039,8 @@ export default function Tasks() {
                                                                         <Collapse in={open[row.TaskkId]}  timeout="auto" unmountOnExit>
                                                                             {open[row.TaskkId] && (
                                                                                 <Box sx={{ margin: 1, padding: 1.5 }}>
-                                                                                    <Typography variant="h6" gutterBottom component="div">
-                                                                                        Details
-                                                                                    </Typography>
-                                                                                    <Table size="small" aria-label="purchases">
+                                                                                    <Table size="small" aria-label="purchases" sx={{[`& .${tableCellClasses.root}`]: {
+                                                                                            border: '2px solid #fff', backgroundColor: '#f7f9fa'}}}>
                                                                                         <TableHead>
                                                                                             <TableRow>
                                                                                                 <TableCell component="th" scope="row" align="left">Start Date</TableCell>

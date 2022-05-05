@@ -66,7 +66,6 @@ export default function Clients() {
     const clientsService = new ClientsServise();
     const [open, setOpen] = React.useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
@@ -90,10 +89,6 @@ export default function Clients() {
         if (isActiveForFilter > -1)
             filterdeTransactionActivities = filterdeTransactionActivities.filter(c => c.IsActive == isActiveForFilter)
         return filterdeTransactionActivities
-    }
-
-    const handleClosModal = () => {
-        setOpenModalForDetails(false)
     }
 
     function handleCountryChange(TatId) {
@@ -603,16 +598,15 @@ export default function Clients() {
                                                                     </IconButton>
                                                                 </TableCell>
                                                                 <TableCell align="right"/>
+                                                                <TableCell align="right"/>
                                                             </TableRow>
                                                                 <TableRow>
                                                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
                                                                         <Collapse in={open[row.CustomerId]}  timeout="auto" unmountOnExit>
                                                                             {open[row.CustomerId] && (
                                                                             <Box sx={{ margin: 1, padding: 1.5 }}>
-                                                                                <Typography variant="h6" gutterBottom component="div">
-                                                                                    Details
-                                                                                </Typography>
-                                                                                <Table size="small" aria-label="purchases">
+                                                                                <Table size="small" aria-label="purchases" sx={{[`& .${tableCellClasses.root}`]: {
+                                                                                        border: '2px solid #fff', backgroundColor: '#f7f9fa'}}}>
                                                                                     <TableHead>
                                                                                         <TableRow>
                                                                                             <TableCell component="th" scope="row" align="left">Bill Address</TableCell>
@@ -623,9 +617,8 @@ export default function Clients() {
                                                                                         </TableRow>
                                                                                     </TableHead>
                                                                                     <TableBody>
-                                                                                            <TableRow sx={{  [`& .${tableCellClasses.root}`]: {
-                                                                                                    borderBottom: "none"
-                                                                                                } }}>
+                                                                                            <TableRow sx={{[`& .${tableCellClasses.root}`]: {
+                                                                                                    borderBottom: "none"}}}>
                                                                                                 <TableCell component="th" scope="row">
                                                                                                     {row.BillAddress}
                                                                                                 </TableCell>
