@@ -259,10 +259,9 @@ export default function Clients() {
                                             top: '50%',
                                             left: '50%',
                                             transform: 'translate(-50%, -50%)',
-                                            width: 470,
+                                            width: 700,
                                             backgroundColor: 'background.paper',
                                             border: '2px solid #fff',
-                                            boxShadow: 24,
                                             p: 4,
                                             borderRadius: 2,
                                         }}
@@ -284,9 +283,10 @@ export default function Clients() {
                                         <Stack spacing={2}>
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
                                                 <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                    <Box sx={{minWidth: 630}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
+                                                                autoFocus
                                                                 fullWidth
                                                                 size="small"
                                                                 label="Customer Name"
@@ -303,9 +303,9 @@ export default function Clients() {
                                                         </FormControl>
                                                     </Box>
                                                 </Stack>
-                                                <Stack mb={3} justifyContent="space-around">
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {countries.length > 0 ? (
-                                                        <Box sx={{minWidth: 400}}>
+                                                        <Box sx={{minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -334,10 +334,8 @@ export default function Clients() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
                                                 {cities.length > 0 ? (
-                                                    <Stack mb={3} justifyContent="space-around">
-                                                        <Box sx={{minWidth: 400}}>
+                                                        <Box sx={{minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -365,10 +363,12 @@ export default function Clients() {
                                                                 </TextField>
                                                             </FormControl>
                                                         </Box>
-                                                    </Stack>
                                                 ) : null}
+                                                </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <TextField
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         size="small"
                                                         label="Bill Adress"
                                                         value={billAddressForAdd}
@@ -381,7 +381,11 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
-                                                    <TextField
+                                                        </FormControl>
+                                                    </Box>
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         type="number"
                                                         label="Phone Number"
                                                         size="small"
@@ -395,9 +399,13 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
+                                                        </FormControl>
+                                                    </Box>
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <TextField
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         fullWidth
                                                         size="small"
                                                         label="Tax No"
@@ -411,7 +419,11 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
-                                                    <TextField
+                                                        </FormControl>
+                                                    </Box>
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         fullWidth
                                                         size="small"
                                                         label="Tax Office"
@@ -425,9 +437,13 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
+                                                        </FormControl>
+                                                    </Box>
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <TextField
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         fullWidth
                                                         size="small"
                                                         label="Website"
@@ -441,7 +457,11 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
-                                                    <TextField
+                                                        </FormControl>
+                                                    </Box>
+                                                    <Box sx={{minWidth: 305}}>
+                                                        <FormControl fullWidth size="small">
+                                                        <TextField
                                                         fullWidth
                                                         type='email'
                                                         size="small"
@@ -456,6 +476,8 @@ export default function Clients() {
                                                             )
                                                         }}
                                                     />
+                                                        </FormControl>
+                                                    </Box>
                                                 </Stack>
                                             </Stack>
                                             {customerIdForUpdate > 0 ?

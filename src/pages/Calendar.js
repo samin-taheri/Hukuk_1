@@ -360,10 +360,9 @@ export default function Calendar() {
                                         top: '50%',
                                         left: '50%',
                                         transform: 'translate(-50%, -50%)',
-                                        width: 470,
+                                        width: 700,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}>
@@ -384,8 +383,9 @@ export default function Calendar() {
                                         <Stack spacing={2}>
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
                                                 <Stack mb={3} spacing={2}>
-                                                    <Box sx={{maxWidth: 400, minWidth: 400}}>
+                                                    <Box sx={{maxWidth: 630, minWidth: 630}}>
                                                         <TextField
+                                                            autoFocus
                                                             fullWidth
                                                             size='small'
                                                             label="Title"
@@ -403,7 +403,7 @@ export default function Calendar() {
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allEvents.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -433,7 +433,7 @@ export default function Calendar() {
                                                         </Box>
                                                     ) : null}
                                                     {allClients.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -465,7 +465,7 @@ export default function Calendar() {
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allCases.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -495,7 +495,7 @@ export default function Calendar() {
                                                         </Box>
                                                     ) : null}
                                                     {allUsers.length > 0 ? (
-                                                        <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                        <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -526,7 +526,7 @@ export default function Calendar() {
                                                     ) : null}
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 type='text'
@@ -544,7 +544,7 @@ export default function Calendar() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 select
@@ -574,7 +574,7 @@ export default function Calendar() {
                                                     </Box>
                                                 </Stack>
                                                 <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -593,7 +593,7 @@ export default function Calendar() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    <Box sx={{maxWidth: 193, minWidth: 193}}>
+                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 id="date"
@@ -684,7 +684,7 @@ export default function Calendar() {
                                                                     </Box>
                                                                 </AccountStyle>
                                                             </IconButton>
-                                                            <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
+                                                            <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.15)"}}
                                                                    hideBackdrop={true}
                                                                    disableEscapeKeyDown={true}
                                                                    open={openModalForDetails}
@@ -697,16 +697,14 @@ export default function Calendar() {
                                                                         top: '50%',
                                                                         left: '50%',
                                                                         transform: 'translate(-50%, -50%)',
-                                                                        minWidth: 500,
-                                                                        maxWidth: 500,
+                                                                        width: 470,
                                                                         backgroundColor: 'background.paper',
                                                                         border: '2px solid #fff',
-                                                                        boxShadow: 24,
                                                                         p: 4,
                                                                         borderRadius: 2
                                                                     }}
                                                                 >
-                                                                    <Stack mb={4} flexDirection="row"
+                                                                    <Stack mb={2} flexDirection="row"
                                                                            justifyContent='space-between'>
                                                                         <Typography id="modal-modal-title"
                                                                                     variant="h6" component="h2">
@@ -716,7 +714,7 @@ export default function Calendar() {
                                                                             <CloseIcon onClick={handleClosModal}/>
                                                                         </IconButton>
                                                                     </Stack>
-                                                                    <Stack mb={2} justifyContent="space-around">
+                                                                    <Stack mb={0} justifyContent="space-around">
                                                                         <Box sx={{minWidth: 300}}>
                                                                             <TableContainer component={Paper} keey>
                                                                                 <Table aria-label="simple table">

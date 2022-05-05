@@ -311,10 +311,9 @@ export default function AccountActivities() {
                                             top: '50%',
                                             left: '50%',
                                             transform: 'translate(-50%, -50%)',
-                                            width: 470,
+                                            width: 700,
                                             backgroundColor: 'background.paper',
                                             border: '2px solid #fff',
-                                            boxShadow: 24,
                                             p: 4,
                                             borderRadius: 2
                                         }}
@@ -335,9 +334,9 @@ export default function AccountActivities() {
                                         </Stack>
                                         <Stack spacing={2}>
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
-                                                <Stack mb={3} justifyContent="space-around">
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {tats.length > 0 ? (
-                                                        <Box sx={{minWidth: 400}}>
+                                                        <Box sx={{minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -366,10 +365,8 @@ export default function AccountActivities() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
                                                 {tasts.length > 0 ? (
-                                                    <Stack mb={3} justifyContent="space-around">
-                                                        <Box sx={{minWidth: 400}}>
+                                                        <Box sx={{minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField
                                                                     select
@@ -397,52 +394,10 @@ export default function AccountActivities() {
                                                                 </TextField>
                                                             </FormControl>
                                                         </Box>
-                                                    </Stack>
                                                 ) : null}
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
-                                                        <FormControl fullWidth size="small">
-                                                            <TextField
-                                                                type="text"
-                                                                multiline
-                                                                label="Explanation"
-                                                                size="small"
-                                                                value={infoForUpdate}
-                                                                onChange={(e) => setInfoForUpdate(e.target.value)}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <TextSnippetOutlinedIcon/>
-                                                                        </InputAdornment>
-                                                                    )
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                    </Box>
                                                 </Stack>
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
-                                                        <FormControl fullWidth size="small">
-                                                            <TextField
-                                                                id="date"
-                                                                label="Date"
-                                                                type="date"
-                                                                size="small"
-                                                                value={dateForUpdate}
-                                                                onChange={(e) => setDateForUpdate(e.target.value)}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <EventOutlinedIcon/>
-                                                                        </InputAdornment>
-                                                                    )
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                    </Box>
-                                                </Stack>
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                    <Box sx={{minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 select
@@ -468,9 +423,7 @@ export default function AccountActivities() {
                                                             </TextField>
                                                         </FormControl>
                                                     </Box>
-                                                </Stack>
-                                                <Stack mb={3} justifyContent="space-around">
-                                                    <Box sx={{minWidth: 400}}>
+                                                    <Box sx={{minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
                                                                 type="number"
@@ -482,6 +435,48 @@ export default function AccountActivities() {
                                                                     startAdornment: (
                                                                         <InputAdornment position="start">
                                                                             <MonetizationOnOutlinedIcon/>
+                                                                        </InputAdornment>
+                                                                    )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                    </Box>
+                                                </Stack>
+                                                <Stack mb={3}>
+                                                    <Box sx={{minWidth: 630}}>
+                                                        <FormControl fullWidth size="small">
+                                                            <TextField
+                                                                id="date"
+                                                                label="Date"
+                                                                type="date"
+                                                                size="small"
+                                                                value={dateForUpdate}
+                                                                onChange={(e) => setDateForUpdate(e.target.value)}
+                                                                InputProps={{
+                                                                    startAdornment: (
+                                                                        <InputAdornment position="start">
+                                                                            <EventOutlinedIcon/>
+                                                                        </InputAdornment>
+                                                                    )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                    </Box>
+                                                </Stack>
+                                                <Stack mb={3}>
+                                                    <Box sx={{minWidth: 630}}>
+                                                        <FormControl fullWidth size="small">
+                                                            <TextField
+                                                                type="text"
+                                                                multiline
+                                                                label="Explanation"
+                                                                size="small"
+                                                                value={infoForUpdate}
+                                                                onChange={(e) => setInfoForUpdate(e.target.value)}
+                                                                InputProps={{
+                                                                    startAdornment: (
+                                                                        <InputAdornment position="start">
+                                                                            <TextSnippetOutlinedIcon/>
                                                                         </InputAdornment>
                                                                     )
                                                                 }}
@@ -547,32 +542,47 @@ export default function AccountActivities() {
                                 </Box>
                             ) : null}
                         </Stack>
-                        <Card sx={{maxWidth: 580, maxHeight: 170, marginTop: 2, marginRight:0, marginBottom: 3}}>
+                        <Card sx={{maxWidth: 580, maxHeight: 170, marginTop: 2, marginRight: 0, marginBottom: 3}}>
                             <CardContent>
                                 <Stack flexDirection='row'>
-                                <Stack flexDirection='row'>
-                                    <Typography fontSize={14}>Total Balance</Typography>
                                     <Stack flexDirection='row'>
-                                    <Typography variant="h5" gutterBottom component="div" color='#959ea3' sx={{borderRight: '1px dashed #b1b9be', padding: '0.4em', p: 4, maxHeight:50}}>
-                                        <Label variant="ghost" color="primary" sx={{fontSize:15}}>
-                                            {totalBalance} ₺</Label>
-                                    </Typography>
+                                        <Typography fontSize={14}>Total Balance</Typography>
+                                        <Stack flexDirection='row'>
+                                            <Typography variant="h5" gutterBottom component="div" color='#959ea3' sx={{
+                                                borderRight: '1px dashed #b1b9be',
+                                                padding: '0.4em',
+                                                p: 4,
+                                                maxHeight: 50
+                                            }}>
+                                                <Label variant="ghost" color="primary" sx={{fontSize: 15}}>
+                                                    {totalBalance} ₺</Label>
+                                            </Typography>
+                                        </Stack>
                                     </Stack>
-                                </Stack>
-                                <Stack flexDirection='row' paddingLeft={3}>
-                                    <Typography fontSize={14}>Total Expense</Typography>
-                                    <Typography variant="h5" gutterBottom component="div" color='#c9505c' sx={{borderRight: '1px dashed #b1b9be', padding: '0.4em', p: 4, maxHeight:50}}>
-                                        <Label variant="ghost" color="error" sx={{fontSize:15}}>
-                                            -{totalExpense} ₺</Label>
-                                    </Typography>
-                                </Stack>
+                                    <Stack flexDirection='row' paddingLeft={3}>
+                                        <Typography fontSize={14}>Total Expense</Typography>
+                                        <Typography variant="h5" gutterBottom component="div" color='#c9505c' sx={{
+                                            borderRight: '1px dashed #b1b9be',
+                                            padding: '0.4em',
+                                            p: 4,
+                                            maxHeight: 50
+                                        }}>
+                                            <Label variant="ghost" color="error" sx={{fontSize: 15}}>
+                                                -{totalExpense} ₺</Label>
+                                        </Typography>
+                                    </Stack>
                                     <Stack flexDirection='row' paddingLeft={3}>
                                         <Stack flexDirection='row'>
-                                        <Typography fontSize={14}>Total Income</Typography>
-                                            </Stack>
+                                            <Typography fontSize={14}>Total Income</Typography>
+                                        </Stack>
                                     </Stack>
-                                    <Typography variant="h5" gutterBottom component="div" color='#437a54'  sx={{borderRight: '1px dashed #fff', padding: '0.4em', p: 4, maxHeight:50}}>
-                                        <Label variant="ghost" color="success" sx={{fontSize:15}}>
+                                    <Typography variant="h5" gutterBottom component="div" color='#437a54' sx={{
+                                        borderRight: '1px dashed #fff',
+                                        padding: '0.4em',
+                                        p: 4,
+                                        maxHeight: 50
+                                    }}>
+                                        <Label variant="ghost" color="success" sx={{fontSize: 15}}>
                                             {totalIncome} ₺</Label>
                                     </Typography>
                                 </Stack>
@@ -609,101 +619,131 @@ export default function AccountActivities() {
                                                     <>
                                                         {filtering(transactionActivityGetAll).map((row) => (
                                                             <>
-                                                            <TableRow
-                                                                key={row.TransactionActivityId}
-                                                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                                            >
-                                                                <TableCell component="th" scope="row"
-                                                                           sx={{paddingLeft: 7}}>
-                                                                    {row.TransactionActivitySubTypeGetDto.TransactionActivityType.TransactionActivityTypeName}
-                                                                </TableCell>
-                                                                <TableCell component="th" scope="row">
-                                                                    {row.TransactionActivitySubTypeGetDto.TransactionAcitivitySubTypeName}
-                                                                </TableCell>
-                                                                <TableCell component="th" scope="row">
-                                                                    {format(new Date(row.Date), 'dd/MM/yyyy')}
-                                                                </TableCell>
-                                                                <TableCell component="th" scope="row">
-                                                                    {row.UserWhoAdd.FirstName} {row.UserWhoAdd.LastName}
-                                                                </TableCell>
-                                                                {row.IsItExpense ? (
-                                                                    <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="error" sx={{fontSize:15}}>
-                                                                            - {row.Amount} ₺
-                                                                        </Label>
+                                                                <TableRow
+                                                                    key={row.TransactionActivityId}
+                                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                                                >
+                                                                    <TableCell component="th" scope="row"
+                                                                               sx={{paddingLeft: 7}}>
+                                                                        {row.TransactionActivitySubTypeGetDto.TransactionActivityType.TransactionActivityTypeName}
                                                                     </TableCell>
-                                                                ) : (
                                                                     <TableCell component="th" scope="row">
-                                                                        <Label variant="ghost" color="success" sx={{fontSize:15}}>
-                                                                            {row.Amount} ₺
-                                                                        </Label>
+                                                                        {row.TransactionActivitySubTypeGetDto.TransactionAcitivitySubTypeName}
                                                                     </TableCell>
-                                                                )}
-                                                                <TableCell>
-                                                                    <Button
-                                                                        onClick={() => modalForEdit(row.TransactionActivityId)}
-                                                                        variant="contained"
-                                                                        sx={{backgroundColor: '#b1b9be'}}
-                                                                        startIcon={<Icon icon={roundUpdate}/>}
-                                                                    >
-                                                                        Edit
-                                                                    </Button>
-                                                                </TableCell>
-                                                                {authService.DoesHaveMandatoryClaim('TransactionActivityDelete')  || authService.DoesHaveMandatoryClaim('LicenceOwner')? (
-                                                                    <>
-                                                                        <TableCell align="right">
-                                                                            <Button
-                                                                                onClick={() => deleteTransactionActivity(row.TransactionActivityId)}
-                                                                                variant="contained"
-                                                                                sx={{backgroundColor: '#c9505c'}}
-                                                                                startIcon={<Icon
-                                                                                    icon={trash2Outline}/>}>Delete</Button>
+                                                                    <TableCell component="th" scope="row">
+                                                                        {format(new Date(row.Date), 'dd/MM/yyyy')}
+                                                                    </TableCell>
+                                                                    <TableCell component="th" scope="row">
+                                                                        {row.UserWhoAdd.FirstName} {row.UserWhoAdd.LastName}
+                                                                    </TableCell>
+                                                                    {row.IsItExpense ? (
+                                                                        <TableCell component="th" scope="row">
+                                                                            <Label variant="ghost" color="error"
+                                                                                   sx={{fontSize: 15}}>
+                                                                                - {row.Amount} ₺
+                                                                            </Label>
                                                                         </TableCell>
-                                                                    </>
-                                                                ) : null}
-                                                                <TableCell>
-                                                                    <IconButton
-                                                                        sx={{marginLeft: 1}}
-                                                                        aria-label="expand row"
-                                                                        size="small"
-                                                                        onClick={() =>
-                                                                            setOpen((prev) => ({ ...prev, [row.TransactionActivityId]: !prev[row.TransactionActivityId] }))
-                                                                        }
-                                                                    >
-                                                                        {open[row.TransactionActivityId] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                                                    </IconButton>
-                                                                </TableCell>
-                                                                <TableCell align="right"/>
-                                                            </TableRow>
+                                                                    ) : (
+                                                                        <TableCell component="th" scope="row">
+                                                                            <Label variant="ghost" color="success"
+                                                                                   sx={{fontSize: 15}}>
+                                                                                {row.Amount} ₺
+                                                                            </Label>
+                                                                        </TableCell>
+                                                                    )}
+                                                                    <TableCell>
+                                                                        <Button
+                                                                            onClick={() => modalForEdit(row.TransactionActivityId)}
+                                                                            variant="contained"
+                                                                            sx={{backgroundColor: '#b1b9be'}}
+                                                                            startIcon={<Icon icon={roundUpdate}/>}
+                                                                        >
+                                                                            Edit
+                                                                        </Button>
+                                                                    </TableCell>
+                                                                    {authService.DoesHaveMandatoryClaim('TransactionActivityDelete') || authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
+                                                                        <>
+                                                                            <TableCell align="right">
+                                                                                <Button
+                                                                                    onClick={() => deleteTransactionActivity(row.TransactionActivityId)}
+                                                                                    variant="contained"
+                                                                                    sx={{backgroundColor: '#c9505c'}}
+                                                                                    startIcon={<Icon
+                                                                                        icon={trash2Outline}/>}>Delete</Button>
+                                                                            </TableCell>
+                                                                        </>
+                                                                    ) : null}
+                                                                    <TableCell>
+                                                                        <IconButton
+                                                                            sx={{marginLeft: 1}}
+                                                                            aria-label="expand row"
+                                                                            size="small"
+                                                                            onClick={() =>
+                                                                                setOpen((prev) => ({
+                                                                                    ...prev,
+                                                                                    [row.TransactionActivityId]: !prev[row.TransactionActivityId]
+                                                                                }))
+                                                                            }
+                                                                        >
+                                                                            {open[row.TransactionActivityId] ?
+                                                                                <KeyboardArrowUpIcon/> :
+                                                                                <KeyboardArrowDownIcon/>}
+                                                                        </IconButton>
+                                                                    </TableCell>
+                                                                    <TableCell align="right"/>
+                                                                </TableRow>
                                                                 <TableRow>
-                                                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
-                                                                        <Collapse in={open[row.TransactionActivityId]}  timeout="auto" unmountOnExit>
+                                                                    <TableCell style={{paddingBottom: 0, paddingTop: 0}}
+                                                                               colSpan={9}>
+                                                                        <Collapse in={open[row.TransactionActivityId]}
+                                                                                  timeout="auto" unmountOnExit>
                                                                             {open[row.TransactionActivityId] && (
-                                                                                <Box sx={{ margin: 1, padding: 1.5 }}>
-                                                                                    <Table size="small" aria-label="purchases" sx={{[`& .${tableCellClasses.root}`]: {
-                                                                                            border: '2px solid #fff', backgroundColor: '#f7f9fa'}}}>
+                                                                                <Box sx={{margin: 1, padding: 1.5}}>
+                                                                                    <Table size="small"
+                                                                                           aria-label="purchases" sx={{
+                                                                                        [`& .${tableCellClasses.root}`]: {
+                                                                                            border: '2px solid #fff',
+                                                                                            backgroundColor: '#f7f9fa'
+                                                                                        }
+                                                                                    }}>
                                                                                         <TableHead>
                                                                                             <TableRow>
-                                                                                                <TableCell component="th" scope="row" align="left">Title</TableCell>
-                                                                                                <TableCell align="left">Full Name</TableCell>
-                                                                                                <TableCell align="left">CellPhone</TableCell>
-                                                                                                <TableCell align="left">Info</TableCell>
+                                                                                                <TableCell
+                                                                                                    component="th"
+                                                                                                    scope="row"
+                                                                                                    align="left">Title</TableCell>
+                                                                                                <TableCell align="left">Full
+                                                                                                    Name</TableCell>
+                                                                                                <TableCell
+                                                                                                    align="left">CellPhone</TableCell>
+                                                                                                <TableCell
+                                                                                                    align="left">Info</TableCell>
                                                                                             </TableRow>
                                                                                         </TableHead>
                                                                                         <TableBody>
-                                                                                            <TableRow sx={{  [`& .${tableCellClasses.root}`]: {
+                                                                                            <TableRow sx={{
+                                                                                                [`& .${tableCellClasses.root}`]: {
                                                                                                     borderBottom: "none"
-                                                                                                } }}>
-                                                                                                <TableCell component="th" scope="row">
+                                                                                                }
+                                                                                            }}>
+                                                                                                <TableCell
+                                                                                                    component="th"
+                                                                                                    scope="row">
                                                                                                     {row.UserWhoAdd.Title}
                                                                                                 </TableCell>
-                                                                                                <TableCell component="th" scope="row">
+                                                                                                <TableCell
+                                                                                                    component="th"
+                                                                                                    scope="row">
                                                                                                     {row.UserWhoAdd.FirstName} {row.UserWhoAdd.LastName}
                                                                                                 </TableCell>
-                                                                                                <TableCell component="th" scope="row">
+                                                                                                <TableCell
+                                                                                                    component="th"
+                                                                                                    scope="row">
                                                                                                     {row.UserWhoAdd.CellPhone}
                                                                                                 </TableCell>
-                                                                                                <TableCell component="th" scope="row">
+                                                                                                <TableCell
+                                                                                                    component="th"
+                                                                                                    scope="row">
                                                                                                     {row.Info}
                                                                                                 </TableCell>
                                                                                             </TableRow>

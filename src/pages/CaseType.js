@@ -244,7 +244,6 @@ export default function CaseType() {
                                         width: 470,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}
@@ -455,8 +454,8 @@ export default function CaseType() {
                                                     <TableCell align="left">Court Office Name</TableCell>
                                                     <TableCell align="left">Status</TableCell>
                                                     <TableCell align="left">Change Activity</TableCell>
-                                                    <TableCell align="center">Edit</TableCell>
-                                                    <TableCell align="center">delete</TableCell>
+                                                    <TableCell align="left">Edit</TableCell>
+                                                    <TableCell align="left">delete</TableCell>
                                                     <TableCell align="right"/>
                                                 </TableRow>
                                             </TableHead>
@@ -496,7 +495,7 @@ export default function CaseType() {
                                                                             inputProps={{'aria-label': 'controlled'}}
                                                                         />
                                                                     </TableCell>
-                                                                    <TableCell align="right">
+                                                                    <TableCell align="left">
                                                                         <Button
                                                                             variant="contained"
                                                                             onClick={() => openModelForUpdate(row.CaseTypeId)}
@@ -508,7 +507,7 @@ export default function CaseType() {
                                                                     </TableCell>
                                                                     {authService.DoesHaveMandatoryClaim('CaseTypeDelete')  || authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                                                                         <>
-                                                                    <TableCell align="right">
+                                                                    <TableCell align="left">
                                                                         <Button
                                                                             variant="contained"
                                                                             onClick={() =>

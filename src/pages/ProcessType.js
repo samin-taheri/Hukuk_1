@@ -219,7 +219,6 @@ export default function ProcessType() {
                                         width: 470,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}

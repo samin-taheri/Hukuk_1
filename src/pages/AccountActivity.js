@@ -258,7 +258,6 @@ export default function AccountActivity() {
                                         width: 470,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}
@@ -466,8 +465,8 @@ export default function AccountActivity() {
                                                     <TableCell align="center">Transaction Activity Subtype</TableCell>
                                                     <TableCell align="left">Status</TableCell>
                                                     <TableCell align="left">Change Activity</TableCell>
-                                                    <TableCell align="center">Edit</TableCell>
-                                                    <TableCell align="center">Delete</TableCell>
+                                                    <TableCell align="left">Edit</TableCell>
+                                                    <TableCell align="left">Delete</TableCell>
                                                     <TableCell align="right"/>
                                                 </TableRow>
                                             </TableHead>
@@ -484,8 +483,7 @@ export default function AccountActivity() {
                                                                                sx={{paddingLeft: 7}}>
                                                                         {row.TransactionActivityType.TransactionActivityTypeName}
                                                                     </TableCell>
-                                                                    <TableCell component="th" scope="row"
-                                                                               sx={{paddingLeft: 7}}>
+                                                                    <TableCell component="th" scope="row">
                                                                         {row.TransactionAcitivitySubTypeName}
                                                                     </TableCell>
                                                                     {row.IsActive ? (
@@ -513,7 +511,7 @@ export default function AccountActivity() {
                                                                         <Button
                                                                             variant="contained"
                                                                             onClick={() => openModelForUpdate(row.TransactionAcitivitySubTypeId)}
-                                                                            sx={{backgroundColor: '#b1b9be', left: 15}}
+                                                                            sx={{backgroundColor: '#b1b9be', right: 15}}
                                                                             startIcon={<Icon icon={roundUpdate}/>}
                                                                         >
                                                                             Edit
@@ -527,7 +525,7 @@ export default function AccountActivity() {
                                                                                     onClick={() => deleteTransactionActivitysubType(row.TransactionAcitivitySubTypeId)}
                                                                                     sx={{
                                                                                         backgroundColor: '#c9505c',
-                                                                                        left: 15
+                                                                                        right: 15
                                                                                     }}
                                                                                     startIcon={<Icon
                                                                                         icon={trash2Outline}/>}

@@ -316,7 +316,6 @@ export default function CourtOffice() {
                                         width: 470,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}
@@ -625,13 +624,13 @@ export default function CourtOffice() {
                                         <Table sx={{minWidth: 650}} aria-label="simple table">
                                             <TableHead>
                                                 <TableRow sx={{backgroundColor: '#f7f7f7'}}>
-                                                    <TableCell align="center">Court Office Name</TableCell>
-                                                    <TableCell align="center">Court Office Type</TableCell>
-                                                    <TableCell align="center">City / Country</TableCell>
+                                                    <TableCell sx={{paddingLeft: 7}}>Court Office Name</TableCell>
+                                                    <TableCell align="left">Court Office Type</TableCell>
+                                                    <TableCell align="left">City / Country</TableCell>
                                                     <TableCell align="left">Status</TableCell>
-                                                    <TableCell align="center">Change Activity</TableCell>
-                                                    <TableCell align="center">Edit</TableCell>
-                                                    <TableCell align="center">Delete</TableCell>
+                                                    <TableCell align="left">Change Activity</TableCell>
+                                                    <TableCell align="left">Edit</TableCell>
+                                                    <TableCell align="left">Delete</TableCell>
                                                     <TableCell align="right"/>
                                                 </TableRow>
                                             </TableHead>
@@ -648,12 +647,10 @@ export default function CourtOffice() {
                                                                                sx={{paddingLeft: 7}}>
                                                                         {row.CourtOfficeName}
                                                                     </TableCell>
-                                                                    <TableCell component="th" scope="row"
-                                                                               sx={{paddingLeft: 7}}>
+                                                                    <TableCell component="th" scope="row">
                                                                         {row.CourtOfficeTypeGetDto.CourtOfficeTypeName}
                                                                     </TableCell>
-                                                                    <TableCell component="th" scope="row"
-                                                                               sx={{paddingLeft: 7}}>
+                                                                    <TableCell component="th" scope="row">
                                                                         {row.City.CityName} / {row.City.Country.CountryName}
                                                                     </TableCell>
                                                                     {row.IsActive ? (
@@ -681,7 +678,7 @@ export default function CourtOffice() {
                                                                         <Button
                                                                             variant="contained"
                                                                             onClick={() => openModelForUpdate(row.CourtOfficeId)}
-                                                                            sx={{backgroundColor: '#b1b9be', left: 15}}
+                                                                            sx={{backgroundColor: '#b1b9be', right: 13}}
                                                                             startIcon={<Icon icon={roundUpdate}/>}
                                                                         >
                                                                             Edit
@@ -693,7 +690,7 @@ export default function CourtOffice() {
                                                                         <Button
                                                                             variant="contained"
                                                                             onClick={() => deleteCourtOffice(row.CourtOfficeId)}
-                                                                            sx={{backgroundColor: '#c9505c', left: 15}}
+                                                                            sx={{backgroundColor: '#c9505c', right: 13}}
                                                                             startIcon={<Icon icon={trash2Outline}/>}
                                                                         >
                                                                             Delete

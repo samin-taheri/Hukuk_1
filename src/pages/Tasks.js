@@ -401,7 +401,6 @@ export default function Tasks() {
                                         width: 900,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}>

@@ -155,7 +155,6 @@ export default function PostDrafts() {
                             width: 470,
                             backgroundColor: 'background.paper',
                             border: '2px solid #fff',
-                            boxShadow: 24,
                             p: 4,
                             borderRadius: 2
                         }}>
@@ -175,6 +174,7 @@ export default function PostDrafts() {
                             </Stack>
                             <Stack spacing={3.5} mb={2}>
                                 <TextField
+                                        autoFocus
                                         size='small'
                                         label="Title"
                                         fullWidth

@@ -539,7 +539,6 @@ export default function Cases() {
                                         width: 900,
                                         backgroundColor: 'background.paper',
                                         border: '2px solid #fff',
-                                        boxShadow: 24,
                                         p: 4,
                                         borderRadius: 2
                                     }}>
@@ -1292,18 +1291,18 @@ export default function Cases() {
                                                                         }}
                                                                     >
                                                                         <MenuItem
-                                                                            onClick={() => navigate('/dashboard/cases/attachment/' + row.CaseeId)}>
-                                                                            <Stack mr={1}>
-                                                                                <Iconify icon={'eva:attach-fill'}/>
-                                                                            </Stack>
-                                                                            Upload
-                                                                        </MenuItem>
-                                                                        <MenuItem
                                                                             onClick={(e) => getByIdCases(row.CaseeId,e)}>
                                                                             <Stack mr={1}>
                                                                                 <Iconify icon={'eva:layers-outline'}/>
                                                                             </Stack>
                                                                             Details
+                                                                        </MenuItem>
+                                                                        <MenuItem
+                                                                            onClick={() => navigate('/dashboard/cases/attachment/' + row.CaseeId)}>
+                                                                            <Stack mr={1}>
+                                                                                <Iconify icon={'eva:attach-fill'}/>
+                                                                            </Stack>
+                                                                            Upload
                                                                         </MenuItem>
                                                                         <MenuItem onClick={() => navigate('/dashboard/cases/caseUpdateHistory/' + row.CaseeId)}>
                                                                             <Stack mr={1}>
@@ -1327,7 +1326,7 @@ export default function Cases() {
                                                                         ) : null}
                                                                     </Menu>
                                                                 </TableCell>
-                                                                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}
+                                                                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
                                                                        hideBackdrop={true}
                                                                        disableEscapeKeyDown={true}
                                                                        open={openModalForDetails}
@@ -1340,15 +1339,14 @@ export default function Cases() {
                                                                             top: '50%',
                                                                             left: '50%',
                                                                             transform: 'translate(-50%, -50%)',
-                                                                            minWidth: 500,
-                                                                            maxWidth: 500,
+                                                                            minWidth: 550,
+                                                                            maxWidth: 550,
                                                                             backgroundColor: 'background.paper',
                                                                             border: '2px solid #fff',
-                                                                            boxShadow: 24,
                                                                             p: 4,
                                                                             borderRadius: 2
                                                                         }}>
-                                                                        <Stack mb={4} flexDirection="row"
+                                                                        <Stack mb={2} flexDirection="row"
                                                                                justifyContent='space-between'>
                                                                             <Typography id="modal-modal-title"
                                                                                         variant="h6" component="h2">
@@ -1358,7 +1356,7 @@ export default function Cases() {
                                                                                 <CloseIcon onClick={handleClosModal}/>
                                                                             </IconButton>
                                                                         </Stack>
-                                                                        <Stack mb={2} justifyContent="space-around">
+                                                                        <Stack mb={0} justifyContent="space-around">
                                                                             <Box sx={{minWidth: 193}}>
                                                                                 <TableContainer component={Paper}>
                                                                                     <Table aria-label="simple table">
@@ -1385,8 +1383,7 @@ export default function Cases() {
                                                                                             padding: 15,
                                                                                             border: '6px solid #fff'
                                                                                         }}>
-                                                                                            <TableCell variant="head">Customer
-                                                                                                Phone Number</TableCell>
+                                                                                            <TableCell variant="head">Phone Number</TableCell>
                                                                                             <TableCell>{customerPhone}</TableCell>
                                                                                         </TableRow>
                                                                                         <TableRow sx={{
