@@ -1,10 +1,11 @@
 // material
 import {styled} from '@mui/material/styles';
 import {
+    Avatar,
     Box,
     Button,
     Card,
-    Container,
+    Container, Divider,
     Grid,
     IconButton,
     InputAdornment,
@@ -31,9 +32,10 @@ import CardContent from "@mui/material/CardContent";
 import baselineDoneAll from '@iconify/icons-ic/baseline-done-all';
 import {format} from "date-fns";
 import ReplayIcon from '@mui/icons-material/Replay';
-import { green } from '@mui/material/colors';
+import {green} from '@mui/material/colors';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
+import account from "../_mocks_/account";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -41,6 +43,15 @@ const RootStyle = styled(Page)(({theme}) => ({
         display: 'flex',
     }
 }));
+const AccountStyle = styled('div')(({theme}) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(2, 2.5),
+    borderRadius: theme.shape.borderRadius,
+    width: 110,
+    height: 65
+}));
+
 
 // ----------------------------------------------------------------------
 
@@ -109,9 +120,8 @@ export default function Support() {
 
     const messagesEndRef = useRef(null)
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-    }
+    const messageEl = useRef(null);
+
 
     const buttonSx = {
         ...(success && {
@@ -143,6 +153,12 @@ export default function Support() {
     useEffect(() => {
         getAllSupportMessages()
         makeTheMessageRead()
+        if (messageEl) {
+            messageEl.current.addEventListener('DOMNodeInserted', event => {
+                const {currentTarget: target} = event;
+                target.scroll({top: target.scrollHeight, behavior: 'smooth'});
+            });
+        }
     }, []);
 
     return (
@@ -152,15 +168,15 @@ export default function Support() {
                     <Typography variant="h4" gutterBottom>
                         Support
                     </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box sx={{ m: 1, position: 'relative' }}>
+                    <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <Box sx={{m: 1, position: 'relative'}}>
                             <Fab
                                 aria-label="save"
                                 color="primary"
                                 sx={buttonSx}
                                 onClick={handleButtonClick}
                             >
-                                {success ? <CheckIcon /> : <ReplayIcon />}
+                                {success ? <CheckIcon/> : <ReplayIcon/>}
                             </Fab>
                             {loading && (
                                 <CircularProgress
@@ -178,120 +194,146 @@ export default function Support() {
                     </Box>
                 </Stack>
                 <Stack flexDirection='column' alignItems='space-between'>
-                    <Card justifyContent="center" sx={{
-                        padding: 6,
-                        minWidth: 450,
-                        maxWidth: 950,
-                        marginLeft: 7,
-                        maxHeight: 395,
-                        overflow: "hidden",
-                        overflowY: "scroll",
-                    }}>
-                        <>
-                            {isLoading === true ?
-                                <Stack sx={{color: 'grey.500', paddingLeft: 0, paddingTop: 3}} spacing={2}
-                                       direction="row"
-                                       justifyContent='center' alignSelf='center' left='50%'>
-                                    <CircularProgress color="inherit"/>
-                                </Stack>
-                                :
-                                <>
-                                    <Typography gutterBottom variant="h6" component="div" pb={2}>
-                                        Sent Messages
-                                    </Typography>
-                                    {supportMessages.length > 0 ? (
-                                        <>
-                                            {supportMessages.map((row) => (
-                                                <>
-                                                {row.IsAnswer == true ?
-                                                        <Card sx={{
-                                                            maxWidth: 300,
-                                                            minWidth: 200,
-                                                            marginTop: 2.5,
-                                                            marginRight: 0,
-                                                            backgroundColor: '#fff',
-                                                            maxHeight: 75,
-                                                        }}>
-                                                            <CardContent>
-                                                                <Stack flexDirection='row'>
-                                                                    <Typography gutterBottom fontSize={12} component="div" key={row.ChatSupportId}>
-                                                                        {row.Message}
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Typography gutterBottom fontSize={10} component="div">
-                                                                    {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
-                                                                </Typography>
-                                                            </CardContent>
-                                                        </Card>
-                                                        :
-                                                        <Card sx={{
-                                                            maxWidth: 350,
-                                                            minWidth: 200,
-                                                            marginTop: 2.5,
-                                                            marginRight: 0,
-                                                            backgroundColor: '#ebf2ff',
-                                                            marginLeft: 70,
-                                                            maxHeight: 75,
-                                                        }}>
-                                                            <CardContent>
-                                                                <Stack flexDirection='row'>
-                                                                    <Typography gutterBottom fontSize={12}
-                                                                                component="div" key={row.ChatSupportId}>
-                                                                        {row.Message}
-                                                                    </Typography>
-                                                                    {row.DoesItRead == true ?
-                                                                    <Stack position='absolute' right='0' mr={3}
-                                                                           mt={3}>
-                                                                        <Icon icon={baselineDoneAll} width={20}
-                                                                              height={20} color={'#4fb6ec'}/>
-                                                                    </Stack>
-                                                                        :null}
-                                                                </Stack>
-                                                                <Typography gutterBottom fontSize={10} component="div">
-                                                                    {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
-                                                                </Typography>
-                                                            </CardContent>
-                                                        </Card>
-                                                }
-                                                </>
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <card sx={{width: '40%'}}>
-                                            <img src="/static/illustrations/no.png" alt="login"/>
-                                            <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No
-                                                Data
-                                                Found</Typography>
-                                        </card>
-                                    )}
-                                </>
-                            }
-                        </>
-                    </Card>
-                    <Card justifyContent="space-around" sx={{padding: 7, minWidth: 450, maxWidth: 950, marginLeft: 7, marginTop: 3}}>
-                        <Typography gutterBottom variant="h6" component="div" pb={2}>
-                            Send a Message
-                        </Typography>
-                        <Stack mb={5} mt={2} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                            <TextField
-                                fullWidth
-                                multiline
-                                rows={6}
-                                label="Message"
-                                value={message}
-                                onChange={(event) => setMessage(event.target.value)}
-
-                            />
+                    <Card sx={{minWidth: 450, maxWidth: 950, marginLeft: 7, paddingTop: 3}}>
+                        <Stack flexDirection='row' alignItems='space-between'>
+                        <Avatar src={account.photoURL} alt="photoURL" sx={{marginLeft: 4, marginTop: -1}}/>
+                            <Typography variant="h6" gutterBottom sx={{paddingBottom: 1.5, paddingLeft: 2.4, color: 'primary'}}>
+                                Messages
+                            </Typography>
                         </Stack>
-                        <Button
-                            onClick={() => addNewRecord()}
-                            fullWidth
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            startIcon={<Icon icon={navigation2Outline}/>}>
-                            Send
-                        </Button>
+                        <Box ref={messageEl} justifyContent="center" sx={{
+                            paddingLeft: 3,
+                            paddingRight: 3,
+                            paddingTop: 3,
+                            paddingBottom: 3,
+                            marginLeft: 0,
+                            maxHeight: 375,
+                            overflow: "hidden",
+                            overflowY: "scroll",
+                            p: 1 ,borderTop: '1px dashed #b1b9be'
+                        }}>
+                            <>
+                                {isLoading === true ?
+                                    <Stack sx={{color: 'grey.500', paddingLeft: 0, paddingTop: 3}} spacing={2}
+                                           direction="row"
+                                           justifyContent='center' alignSelf='center' left='50%'>
+                                        <CircularProgress color="inherit"/>
+                                    </Stack>
+                                    :
+                                    <>
+                                        {supportMessages.length > 0 ? (
+                                            <>
+                                                {supportMessages.map((row) => (
+                                                    <>
+                                                        {row.IsAnswer == true ?
+                                                            <Card sx={{
+                                                                maxWidth: '36%',
+                                                                minWidth: '20%',
+                                                                marginTop: 2.2,
+                                                                marginLeft: 2.5,
+                                                                backgroundColor: '#fff',
+                                                                maxHeight: 75,
+                                                                boxShadow: 7
+                                                            }}>
+                                                                <CardContent>
+                                                                    <Stack flexDirection='row'>
+                                                                        <Typography gutterBottom fontSize={12}
+                                                                                    component="div"
+                                                                                    key={row.ChatSupportId}>
+                                                                            {row.Message}
+                                                                        </Typography>
+                                                                    </Stack>
+                                                                    <Typography gutterBottom fontSize={10}
+                                                                                component="div" color='gray'>
+                                                                        {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
+                                                                    </Typography>
+                                                                </CardContent>
+                                                            </Card>
+                                                            :
+                                                            <Card sx={{
+                                                                maxWidth: 350,
+                                                                minWidth: 200,
+                                                                marginTop: 2.2,
+                                                                marginRight: 0,
+                                                                backgroundColor: '#ebf2ff',
+                                                                marginLeft: 70,
+                                                                maxHeight: 75,
+                                                                boxShadow: 7
+
+                                                            }}>
+                                                                <CardContent>
+                                                                    <Stack flexDirection='row'>
+                                                                        <Typography gutterBottom fontSize={12} component="div" key={row.ChatSupportId} sx={{paddingTop: -4}}>
+                                                                            {row.Message}
+                                                                        </Typography>
+                                                                        {row.DoesItRead == true ?
+                                                                            <Stack position='absolute' right='0' mr={3}
+                                                                                   mt={2.5}>
+                                                                                <Icon icon={baselineDoneAll} width={20}
+                                                                                      height={20} color={'#4fb6ec'}/>
+                                                                            </Stack>
+                                                                            : <Stack position='absolute' right='0' mr={3}
+                                                                                     mt={2.5}>
+                                                                                <Icon icon={baselineDoneAll} width={20}
+                                                                                      height={20} color={'#a9a9a9'}/>
+                                                                            </Stack>}
+                                                                    </Stack>
+                                                                    <Typography gutterBottom fontSize={10}
+                                                                                component="div" color='gray' sx={{paddingLeft: 23}}>
+                                                                        {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
+                                                                    </Typography>
+                                                                </CardContent>
+                                                            </Card>
+                                                        }
+                                                    </>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <card sx={{width: '40%'}}>
+                                                <img src="/static/illustrations/no.png" alt="login"/>
+                                                <Typography variant="h3" gutterBottom textAlign='center'
+                                                            color='#a9a9a9'>No
+                                                    Data
+                                                    Found</Typography>
+                                            </card>
+                                        )}
+                                    </>
+                                }
+                            </>
+                        </Box>
+                        <Stack padding={2.5} mb={0} mt={0} flexDirection='row' spacing={2}>
+                            <Box sx={{
+                                maxWidth: 908,
+                                minWidth: 908,
+                                p: 1,
+                                border: '1px dashed #b1b9be',
+                                borderRadius: 1,
+                            }}>
+                                    <TextField
+                                        variant="standard" // <== changed this
+                                        fullWidth
+                                        size='small'
+                                        multiline
+                                        placeholder="Type a message"
+                                        value={message}
+                                        onChange={(event) => setMessage(event.target.value)}
+                                        InputProps={{
+                                            disableUnderline: true,
+                                            style: {
+                                                height: "55px",
+                                                paddingLeft: 10
+                                            }
+                                        }}
+                                    />
+
+                                <IconButton onClick={() => addNewRecord()} disableRipple
+                                            sx={{ position: 'absolute', right: '0', mr: -1.5, mt: -1.7, "&.MuiButtonBase-root:hover": {bgcolor: "transparent"}}}>
+                                    <AccountStyle sx={{ p: 3, borderLeft: '1px dashed #b1b9be', borderRadius: 0, '&:hover': {boxShadow: 'none'}}}>
+                                    <Icon icon={navigation2Outline} width={33} height={33} color='#a19f9f'/>
+                                    </AccountStyle>
+                                </IconButton>
+                            </Box>
+                        </Stack>
                     </Card>
                 </Stack>
             </Container>

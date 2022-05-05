@@ -63,7 +63,6 @@ export default function AccountActivities() {
     const transactionActivitiesService = new TransactionActivitiesService();
     const [open, setOpen] = React.useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [tats, setTats] = useState([]);
     const [isItExpenseForUpdate, setIsItExpenseForUpdate] = useState(-1);
@@ -80,8 +79,6 @@ export default function AccountActivities() {
     const [totalBalance, setTotalBalance] = useState(0)
     const [totalExpense, setTotalExpense] = useState(0)
     const [totalIncome, setTotalIncome] = useState(0)
-
-    const [userWhoAddTitle, setUserWhoAddTitle] = useState("")
     const [transactionActivityGetAll, setTransactionActivityGetAll] = useState([]);
     const [transactionActivityTypeForFilter, setTransactionActivityTypeForFilter] = useState(-1);
 
@@ -90,10 +87,6 @@ export default function AccountActivities() {
         if (transactionActivityTypeForFilter > 0)
             filterdeTransactionActivities = filterdeTransactionActivities.filter(c => c.TransactionActivitySubTypeGetDto.TransactionActivityType.TransactionActivityTypeId === transactionActivityTypeForFilter)
         return filterdeTransactionActivities
-    }
-
-    const handleClosModal = () => {
-        setOpenModalForDetails(false)
     }
 
     function handleTatChange(TatId) {
@@ -224,12 +217,10 @@ export default function AccountActivities() {
             if (result.data.Success) {
                 let edit = result.data.Data
                 setTransactionActivityIdForUpdate(edit.TransactionActivityId)
-
                 setselectedTastId(edit.TransactionActivitySubTypeGetDto.TransactionAcitivitySubTypeId)
                 setInfoForUpdate(edit.Info)
                 setselectedTatId(edit.TransactionActivitySubTypeGetDto.TransactionActivityType.TransactionActivityTypeId)
-
-                setAmountForUpdate(edit.Amount.format(defaultValue))
+                setAmountForUpdate(edit.Amount)
                 setDateForUpdate(edit.StartDate)
                 setIsItExpenseForUpdate(isItExpenseForUpdate)
 

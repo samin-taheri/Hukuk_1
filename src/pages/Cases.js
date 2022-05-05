@@ -1262,7 +1262,6 @@ export default function Cases() {
                                                                                 mt: 0.5,
                                                                                 maxHeight: 180,
                                                                                 minWidth: 140,
-
                                                                                 '& .MuiAvatar-root': {
                                                                                     width: 32,
                                                                                     height: 32
