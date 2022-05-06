@@ -27,4 +27,9 @@ export default class LicenceUsersService {
     getById(UserId) {
         return axios.get(`${URL}GetById?id=${UserId}`, { headers: authHeader() })
     }
+    getAllUserRecordToLicence(pageNumber, pageSize, licenceId) {
+        return axios.get(`${URL}GetAllUserRecordToLicence?pageNumber=${pageNumber}&pageSize=${pageSize}&licenceId=${licenceId}`, {
+            headers: authHeader()
+        });
+    }
 }

@@ -8,4 +8,9 @@ export default class PaymentHistoriesService {
     getAll() {
         return axios.get(`${URL}GetAll`, { headers: authHeader() });
     }
+    getAllAsAdmin(pageNumber, pageSize, licenceId) {
+        return axios.get(`${URL}GetAllAsAdmin?pageNumber=${pageNumber}&pageSize=${pageSize}&licenceId=${licenceId}`, {
+            headers: authHeader()
+        });
+    }
 }

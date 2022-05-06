@@ -309,6 +309,7 @@ export default function Support() {
                                 borderRadius: 1,
                             }}>
                                     <TextField
+                                        autoFocus
                                         variant="standard" // <== changed this
                                         fullWidth
                                         size='small'

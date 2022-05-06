@@ -47,13 +47,29 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import CloseIcon from "@material-ui/icons/Close";
 import Modal from "@mui/material/Modal";
 import SmsHistoryService from "../services/smsHistory.service";
-import plusFill from "@iconify/icons-eva/plus-fill";
-import layersOutline from "@iconify/icons-eva/layers-outline";
+import PaymentHistoriesService from "../services/paymentHistories.service";
+import LicenceUsersService from "../services/licenceUsers.service";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
     [theme.breakpoints.up('md')]: {
         display: 'flex'
+    }
+}));
+
+const CustomBox = styled(Page)(({theme}) => ({
+    [theme.breakpoints.up('md')]: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        minWidth: 650,
+        maxWidth: 800,
+        backgroundColor: '#fff',
+        border: '2px solid #fff',
+        p: 4,
+        borderRadius: 15,
+        padding: 35
     }
 }));
 
@@ -64,6 +80,8 @@ export default function AdminLicencesDetails() {
     const popupMessageService = new PopupMessageService();
     const licencesService = new LicencesService();
     const smsHistoryService = new SmsHistoryService();
+    const paymentHistoriesService = new PaymentHistoriesService();
+    const licenceUsersService = new LicenceUsersService();
     const catchMessagee = Global.catchMessage;
     const [phoneNumber, setPhoneNumber] = useState("")
     const [profilename, setProfileName] = useState("")
@@ -71,8 +89,15 @@ export default function AdminLicencesDetails() {
     const [billAddress, setBillAddress] = useState("")
     const [pageNumber, setPageNumber] =useState(0);
     const [pageSize, setPageSize] = useState(4);
+    const [pageNumberForPayment, setPageNumberForPayment] =useState(0);
+    const [pageSizeForPayment, setPageSizeForPayment] = useState(4);
+    const [pageNumberForUsers, setPageNumberForUsers] =useState(0);
+    const [pageSizeForUsers, setPageSizeForUsers] = useState(3);
     const [count, setCount] = useState(10);
+    const [countForPayment, setCountForPayment] = useState(200);
     const [smsHistories, setSmsHistories] = useState([])
+    const [paymentHistories, setPaymentHistories] = useState([])
+    const [registeredUsers, setRegisteredUsers] = useState([])
     const [city, setCity] = useState("")
     const [country, setCountry] = useState("")
     const [balance, setBalance] = useState("")
@@ -83,7 +108,9 @@ export default function AdminLicencesDetails() {
     const date = today.setDate(today.getDate());
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const [startDate, setStartDate] = useState(defaultValue);
-    const [openModalForDetails, setOpenModalForDetails] = useState(false);
+    const [openModalForSmsHistory, setOpenModalForSmsHistory] = useState(false);
+    const [openModalForPaymentHistory, setOpenModalForPaymentHistory] = useState(false);
+    const [openModalForRegisteredUsers, setOpenModalForRegisteredUsers] = useState(false);
     const navigate = useNavigate();
 
     const getAllCaseUpdateHistory = (Lid) => {
@@ -121,13 +148,70 @@ export default function AdminLicencesDetails() {
         getAllSmsHistories(1, event.target.value, id)
     };
 
+
+    const handleChangePageForPayment = (event, newPage) => {
+        getAllPaymentHistories(newPage, pageSizeForPayment, id)
+        setPageNumberForPayment(newPage);
+    };
+
+    const handleChangeRowsPerPageForPayment = (event) => {
+        setPageSizeForPayment(event.target.value);
+        setPageNumberForPayment(1);
+        getAllPaymentHistories(1, event.target.value, id)
+    };
+
+
+    const handleChangePageForUsers = (event, newPage) => {
+        getAllRegisteredUsers(newPage, pageSizeForUsers, id)
+        setPageNumberForUsers(newPage);
+    };
+
+    const handleChangeRowsPerPageForUsers = (event) => {
+        setPageSizeForUsers(event.target.value);
+        setPageNumberForUsers(1);
+        getAllRegisteredUsers(1, event.target.value, id)
+    };
+
+
     function getAllSmsHistories(pageNumber, pageSize, licenceId) {
         smsHistoryService.getAllAsAdmin(pageNumber, pageSize, licenceId).then(
             (result) => {
                 if (result.data.Success) {
                     setSmsHistories(result.data.Data)
                 }
-                setOpenModalForDetails(true)
+                setOpenModalForSmsHistory(true)
+            },
+            (error) => {
+                popupMessageService.AlertErrorMessage(error.response.data.Message);
+            }
+        ).catch(() => {
+            popupMessageService.AlertErrorMessage(catchMessagee)
+        })
+    }
+
+    function getAllPaymentHistories(pageNumberForPayment, pageSizeForPayment, licenceId) {
+        paymentHistoriesService.getAllAsAdmin(pageNumberForPayment, pageSizeForPayment, licenceId).then(
+            (result) => {
+                if (result.data.Success) {
+                    setPaymentHistories(result.data.Data)
+                }
+                setOpenModalForPaymentHistory(true)
+            },
+            (error) => {
+                popupMessageService.AlertErrorMessage(error.response.data.Message);
+            }
+        ).catch(() => {
+            popupMessageService.AlertErrorMessage(catchMessagee)
+        })
+    }
+
+    function getAllRegisteredUsers(pageNumberForPayment, pageSizeForPayment, licenceId) {
+        licenceUsersService.getAllUserRecordToLicence(pageNumberForPayment, pageSizeForPayment, licenceId).then(
+            (result) => {
+                if (result.data.Success) {
+                    setRegisteredUsers(result.data.Data)
+                }
+                setOpenModalForRegisteredUsers(true)
             },
             (error) => {
                 popupMessageService.AlertErrorMessage(error.response.data.Message);
@@ -138,7 +222,15 @@ export default function AdminLicencesDetails() {
     }
 
     const handleClosModal = () => {
-        setOpenModalForDetails(false)
+        setOpenModalForSmsHistory(false)
+    }
+
+    const handleClosModalForPayment = () => {
+        setOpenModalForPaymentHistory(false)
+    }
+
+    const handleClosModalForUsers = () => {
+        setOpenModalForRegisteredUsers(false)
     }
 
     useEffect(() => {
@@ -338,6 +430,7 @@ export default function AdminLicencesDetails() {
                             icon={<SpeedDialIcon/>}
                         >
                             <SpeedDialAction
+                                key={Math.random().toString(36).substr(2, 9)}
                                 icon={<SmsOutlinedIcon/>}
                                 tooltipTitle='SMS History'
                                 onClick={(e) => {
@@ -348,11 +441,17 @@ export default function AdminLicencesDetails() {
                                 key={Math.random().toString(36).substr(2, 9)}
                                 icon={<AccountBalanceWalletOutlinedIcon/>}
                                 tooltipTitle='Payment History'
+                                onClick={(e) => {
+                                    getAllPaymentHistories(pageNumberForPayment, pageSizeForPayment, id, e)
+                                }}
                             />
                             <SpeedDialAction
                                 key={Math.random().toString(36).substr(2, 9)}
                                 icon={<PeopleAltOutlinedIcon/>}
                                 tooltipTitle='Registered Users'
+                                onClick={(e) => {
+                                    getAllRegisteredUsers(pageNumberForUsers, pageSizeForUsers, id, e)
+                                }}
                             />
                         </SpeedDial>
                     </Box>
@@ -360,23 +459,9 @@ export default function AdminLicencesDetails() {
                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
                        hideBackdrop={true}
                        disableEscapeKeyDown={true}
-                       open={openModalForDetails}
-                       aria-labelledby="modal-modal-title"
-                       aria-describedby="modal-modal-description"
+                       open={openModalForSmsHistory}
                 >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            minWidth: 700,
-                            maxWidth: 700,
-                            backgroundColor: 'background.paper',
-                            border: '2px solid #fff',
-                            p: 4,
-                            borderRadius: 2
-                        }}>
+                    <CustomBox>
                         <Stack mb={2} flexDirection="row"
                                justifyContent='space-between'>
                             <Typography id="modal-modal-title"
@@ -439,10 +524,149 @@ export default function AdminLicencesDetails() {
                                 <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
                             </Box>
                         )}
-                    </Box>
+                    </CustomBox>
+                </Modal>
+                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
+                       hideBackdrop={true}
+                       disableEscapeKeyDown={true}
+                       open={openModalForPaymentHistory}
+                >
+                    <CustomBox>
+                        <Stack mb={2} flexDirection="row"
+                               justifyContent='space-between'>
+                            <Typography id="modal-modal-title"
+                                        variant="h6" component="h2">
+                                Payment History!
+                            </Typography>
+                            <IconButton sx={{bottom: 4}}>
+                                <CloseIcon onClick={handleClosModalForPayment}/>
+                            </IconButton>
+                        </Stack>
+                        {paymentHistories.length > 0 ? (
+                            <TableContainer component={Paper} sx={{maxHeight: 350}}>
+                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                            <TableCell sx={{paddingLeft: 3}}>Profile Name</TableCell>
+                                            <TableCell align="left">Payment Date</TableCell>
+                                            <TableCell align="left">Balance</TableCell>
+                                            <TableCell align="right"/>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <>
+                                            {paymentHistories.map((row) => (
+                                                <TableRow
+                                                    key={row.Id}
+                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
+                                                        {row.LicenceProfileName}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {format(new Date(row.PaymentDate), 'dd/MM/yyyy')}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.Balance}
+                                                    </TableCell>
+                                                    <TableCell align="right"/>
+                                                </TableRow>
+                                            ))}
+                                        </>
+                                    </TableBody>
+                                </Table>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    component="div"
+                                    count={countForPayment}
+                                    page={pageNumberForPayment}
+                                    onPageChange={handleChangePageForPayment}
+                                    rowsPerPage={pageSizeForPayment}
+                                    onRowsPerPageChange={handleChangeRowsPerPageForPayment}
+                                />
+                            </TableContainer>
+                        ) : (
+                            <Box>
+                                <img src="/static/illustrations/no.png" alt="login"/>
+                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
+                            </Box>
+                        )}
+                    </CustomBox>
+                </Modal>
+                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
+                       hideBackdrop={true}
+                       disableEscapeKeyDown={true}
+                       open={openModalForRegisteredUsers}
+                >
+                    <CustomBox>
+                        <Stack mb={2} flexDirection="row"
+                               justifyContent='space-between'>
+                            <Typography id="modal-modal-title"
+                                        variant="h6" component="h2">
+                                Registered Users!
+                            </Typography>
+                            <IconButton sx={{bottom: 4}}>
+                                <CloseIcon onClick={handleClosModalForUsers}/>
+                            </IconButton>
+                        </Stack>
+                        {registeredUsers.length > 0 ? (
+                            <TableContainer component={Paper}>
+                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                            <TableCell sx={{paddingLeft: 3}}>Title</TableCell>
+                                            <TableCell align="left">Full Name</TableCell>
+                                            <TableCell align="left">Cell Phone</TableCell>
+                                            <TableCell align="left">Email</TableCell>
+                                            <TableCell align="left">StartDate</TableCell>
+                                            <TableCell align="right"/>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <>
+                                            {registeredUsers.map((row) => (
+                                                <TableRow
+                                                    key={row.UserId}
+                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.Title}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
+                                                        {row.FirstName} {row.LastName}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.CellPhone}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.Email}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {format(new Date(row.AddedDateToLicence), 'dd/MM/yyyy')}
+                                                    </TableCell>
+                                                    <TableCell align="right"/>
+                                                </TableRow>
+                                            ))}
+                                        </>
+                                    </TableBody>
+                                </Table>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    component="div"
+                                    count={count}
+                                    page={pageNumberForUsers}
+                                    onPageChange={handleChangePageForUsers}
+                                    rowsPerPage={pageSizeForUsers}
+                                    onRowsPerPageChange={handleChangeRowsPerPageForUsers}
+                                />
+                            </TableContainer>
+                        ) : (
+                            <Box>
+                                <img src="/static/illustrations/no.png" alt="login"/>
+                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
+                            </Box>
+                        )}
+                    </CustomBox>
                 </Modal>
             </Container>
         </RootStyle>
-    )
-        ;
+    );
 }

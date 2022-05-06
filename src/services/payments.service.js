@@ -5,7 +5,7 @@ import authHeader from "./auth-header";
 const URL = `${Global.API_URL}Payments/`;
 
 export default class PaymentsService {
-    makePayment(balanceId) {
-        return axios.post(`${URL}MakePayment`, balanceId, {headers: authHeader()});
+    makePayment(id) {
+        return axios.post(`${URL}MakePayment`, id, {headers: authHeader()});
     }
 }
