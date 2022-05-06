@@ -57,6 +57,7 @@ import {format} from "date-fns";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Alert from '@mui/material/Alert';
+import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 
 export default function Tasks() {
@@ -65,6 +66,7 @@ export default function Tasks() {
     const date = today.setDate(today.getDate());
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const clientsServise = new ClientsServise();
     const catchMessagee = Global.catchMessage;
@@ -348,15 +350,15 @@ export default function Tasks() {
                 if (result.data.Success) {
                     getAllTasks()
                     setOpenModal(false)
-                    popupMessageService.AlertSuccessMessage(result.data.Message)
+                    toastService.AlertSuccessMessage(result.data.Message)
                 }
             },
             (error) => {
                 setOpenModal(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                toastService.AlertErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     }
 

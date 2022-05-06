@@ -30,7 +30,6 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import MapsHomeWorkOutlinedIcon from '@mui/icons-material/MapsHomeWorkOutlined';
-import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import LocalAtmOutlinedIcon from '@mui/icons-material/LocalAtmOutlined';
 import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined';
@@ -49,6 +48,8 @@ import Modal from "@mui/material/Modal";
 import SmsHistoryService from "../services/smsHistory.service";
 import PaymentHistoriesService from "../services/paymentHistories.service";
 import LicenceUsersService from "../services/licenceUsers.service";
+import {tableCellClasses} from "@mui/material/TableCell";
+import Scrollbar from "../components/Scrollbar";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -68,11 +69,30 @@ const CustomBox = styled(Page)(({theme}) => ({
         backgroundColor: '#fff',
         border: '2px solid #fff',
         p: 4,
-        borderRadius: 15,
-        padding: 35
+        borderRadius: 17,
+        padding: 40
     }
 }));
 
+const StyledTableCell = styled(TableCell)(({theme}) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({theme}) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 // ----------------------------------------------------------------------
 
 export default function AdminLicencesDetails() {
@@ -87,11 +107,11 @@ export default function AdminLicencesDetails() {
     const [profilename, setProfileName] = useState("")
     const [taxOffice, setTaxOffice] = useState("")
     const [billAddress, setBillAddress] = useState("")
-    const [pageNumber, setPageNumber] =useState(0);
+    const [pageNumber, setPageNumber] = useState(0);
     const [pageSize, setPageSize] = useState(4);
-    const [pageNumberForPayment, setPageNumberForPayment] =useState(0);
+    const [pageNumberForPayment, setPageNumberForPayment] = useState(0);
     const [pageSizeForPayment, setPageSizeForPayment] = useState(4);
-    const [pageNumberForUsers, setPageNumberForUsers] =useState(0);
+    const [pageNumberForUsers, setPageNumberForUsers] = useState(0);
     const [pageSizeForUsers, setPageSizeForUsers] = useState(3);
     const [count, setCount] = useState(10);
     const [countForPayment, setCountForPayment] = useState(200);
@@ -341,20 +361,6 @@ export default function AdminLicencesDetails() {
                                         border: '6px solid #fff',
                                     }}>
                                         <ListItemIcon>
-                                            <BusinessOutlinedIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText id="switch-list-label-wifi" primary="Bill Address :"/>
-                                        <Typography
-                                            sx={{display: 'inline'}}
-                                            component="span"
-                                            variant="body1"
-                                            color="text.primary"
-                                        >
-                                            {billAddress}
-                                        </Typography>
-                                    </ListItem>
-                                    <ListItem sx={{paddingLeft: 2.7}}>
-                                        <ListItemIcon>
                                             <LanguageOutlinedIcon/>
                                         </ListItemIcon>
                                         <ListItemText id="switch-list-label-bluetooth" primary="Country / City :"/>
@@ -367,11 +373,7 @@ export default function AdminLicencesDetails() {
                                             {country} / {city}
                                         </Typography>
                                     </ListItem>
-                                    <ListItem sx={{
-                                        backgroundColor: '#f7f7f7',
-                                        padding: 2,
-                                        border: '6px solid #fff',
-                                    }}>
+                                    <ListItem sx={{paddingLeft: 2.7}}>
                                         <ListItemIcon>
                                             <LocalAtmOutlinedIcon/>
                                         </ListItemIcon>
@@ -385,7 +387,11 @@ export default function AdminLicencesDetails() {
                                             ${balance}
                                         </Typography>
                                     </ListItem>
-                                    <ListItem sx={{paddingLeft: 2.7}}>
+                                    <ListItem sx={{
+                                        backgroundColor: '#f7f7f7',
+                                        padding: 2,
+                                        border: '6px solid #fff',
+                                    }}>
                                         <ListItemIcon>
                                             <PersonPinOutlinedIcon/>
                                         </ListItemIcon>
@@ -399,11 +405,7 @@ export default function AdminLicencesDetails() {
                                             {personType}
                                         </Typography>
                                     </ListItem>
-                                    <ListItem sx={{
-                                        backgroundColor: '#f7f7f7',
-                                        padding: 2,
-                                        border: '6px solid #fff',
-                                    }}>
+                                    <ListItem sx={{paddingLeft: 2.7}}>
                                         <ListItemIcon>
                                             <ToggleOffOutlinedIcon/>
                                         </ListItemIcon>
@@ -472,58 +474,65 @@ export default function AdminLicencesDetails() {
                                 <CloseIcon onClick={handleClosModal}/>
                             </IconButton>
                         </Stack>
-                        {smsHistories.length > 0 ? (
-                            <TableContainer component={Paper}>
-                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
-                                            <TableCell sx={{paddingLeft: 3}}>Recipient Name</TableCell>
-                                            <TableCell align="left">Recipient Role</TableCell>
-                                            <TableCell align="left">Date</TableCell>
-                                            <TableCell align="left">Phone Number</TableCell>
-                                            <TableCell align="right"/>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <>
-                                            {smsHistories.map((row) => (
-                                                <TableRow
-                                                    key={row.SmsHistoryId}
-                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
-                                                        {row.RecipientName}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.RecipientRole}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {format(new Date(row.Date), 'dd/MM/yyyy')}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.PhoneNumber}
-                                                    </TableCell>
-                                                    <TableCell align="right"/>
+                        <Card sx={{minWidth: 650}}>
+                            <Scrollbar>
+                                {smsHistories.length > 0 ? (
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                                    <StyledTableCell sx={{paddingLeft: 5}}>Recipient
+                                                        Name</StyledTableCell>
+                                                    <StyledTableCell align="left">Recipient Role</StyledTableCell>
+                                                    <StyledTableCell align="left">Date</StyledTableCell>
+                                                    <StyledTableCell align="left">Phone Number</StyledTableCell>
+                                                    <StyledTableCell align="right"/>
                                                 </TableRow>
-                                            ))}
-                                        </>
-                                    </TableBody>
-                                </Table>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    component="div"
-                                    count={count}
-                                    page={pageNumber}
-                                    onPageChange={handleChangePage}
-                                    rowsPerPage={pageSize}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                />
-                            </TableContainer>
-                        ) : (
-                            <Box>
-                                <img src="/static/illustrations/no.png" alt="login"/>
-                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
-                            </Box>
-                        )}
+                                            </TableHead>
+                                            <TableBody>
+                                                <>
+                                                    {smsHistories.map((row) => (
+                                                        <StyledTableRow
+                                                            key={row.SmsHistoryId}
+                                                            sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                            <StyledTableCell component="th" scope="row"
+                                                                             sx={{paddingLeft: 5}}>
+                                                                {row.RecipientName}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.RecipientRole}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {format(new Date(row.Date), 'dd/MM/yyyy')}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.PhoneNumber}
+                                                            </StyledTableCell>
+                                                            <TableCell align="right"/>
+                                                        </StyledTableRow>
+                                                    ))}
+                                                </>
+                                            </TableBody>
+                                        </Table>
+                                        <TablePagination
+                                            rowsPerPageOptions={[5, 10, 25]}
+                                            component="div"
+                                            count={count}
+                                            page={pageNumber}
+                                            onPageChange={handleChangePage}
+                                            rowsPerPage={pageSize}
+                                            onRowsPerPageChange={handleChangeRowsPerPage}
+                                        />
+                                    </TableContainer>
+                                ) : (
+                                    <Box>
+                                        <img src="/static/illustrations/no.png" alt="login"/>
+                                        <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data
+                                            Found</Typography>
+                                    </Box>
+                                )}
+                            </Scrollbar>
+                        </Card>
                     </CustomBox>
                 </Modal>
                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
@@ -542,54 +551,61 @@ export default function AdminLicencesDetails() {
                                 <CloseIcon onClick={handleClosModalForPayment}/>
                             </IconButton>
                         </Stack>
-                        {paymentHistories.length > 0 ? (
-                            <TableContainer component={Paper} sx={{maxHeight: 350}}>
-                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
-                                            <TableCell sx={{paddingLeft: 3}}>Profile Name</TableCell>
-                                            <TableCell align="left">Payment Date</TableCell>
-                                            <TableCell align="left">Balance</TableCell>
-                                            <TableCell align="right"/>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <>
-                                            {paymentHistories.map((row) => (
-                                                <TableRow
-                                                    key={row.Id}
-                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
-                                                        {row.LicenceProfileName}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {format(new Date(row.PaymentDate), 'dd/MM/yyyy')}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.Balance}
-                                                    </TableCell>
-                                                    <TableCell align="right"/>
+                        <Card sx={{minWidth: 500}}>
+                            <Scrollbar>
+                                {paymentHistories.length > 0 ? (
+                                    <TableContainer component={Paper} sx={{maxHeight: 350}}>
+                                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                                    <StyledTableCell sx={{paddingLeft: 5}}>Profile
+                                                        Name</StyledTableCell>
+                                                    <StyledTableCell align="left">Payment Date</StyledTableCell>
+                                                    <StyledTableCell align="left">Balance</StyledTableCell>
+                                                    <StyledTableCell align="right"/>
                                                 </TableRow>
-                                            ))}
-                                        </>
-                                    </TableBody>
-                                </Table>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    component="div"
-                                    count={countForPayment}
-                                    page={pageNumberForPayment}
-                                    onPageChange={handleChangePageForPayment}
-                                    rowsPerPage={pageSizeForPayment}
-                                    onRowsPerPageChange={handleChangeRowsPerPageForPayment}
-                                />
-                            </TableContainer>
-                        ) : (
-                            <Box>
-                                <img src="/static/illustrations/no.png" alt="login"/>
-                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
-                            </Box>
-                        )}
+                                            </TableHead>
+                                            <TableBody>
+                                                <>
+                                                    {paymentHistories.map((row) => (
+                                                        <StyledTableRow
+                                                            key={row.Id}
+                                                            sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                            <StyledTableCell component="th" scope="row"
+                                                                             sx={{paddingLeft: 5}}>
+                                                                {row.LicenceProfileName}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {format(new Date(row.PaymentDate), 'dd/MM/yyyy')}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.Balance}
+                                                            </StyledTableCell>
+                                                            <TableCell align="right"/>
+                                                        </StyledTableRow>
+                                                    ))}
+                                                </>
+                                            </TableBody>
+                                        </Table>
+                                        <TablePagination
+                                            rowsPerPageOptions={[5, 10, 25]}
+                                            component="div"
+                                            count={countForPayment}
+                                            page={pageNumberForPayment}
+                                            onPageChange={handleChangePageForPayment}
+                                            rowsPerPage={pageSizeForPayment}
+                                            onRowsPerPageChange={handleChangeRowsPerPageForPayment}
+                                        />
+                                    </TableContainer>
+                                ) : (
+                                    <Box>
+                                        <img src="/static/illustrations/no.png" alt="login"/>
+                                        <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data
+                                            Found</Typography>
+                                    </Box>
+                                )}
+                            </Scrollbar>
+                        </Card>
                     </CustomBox>
                 </Modal>
                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
@@ -608,62 +624,68 @@ export default function AdminLicencesDetails() {
                                 <CloseIcon onClick={handleClosModalForUsers}/>
                             </IconButton>
                         </Stack>
-                        {registeredUsers.length > 0 ? (
-                            <TableContainer component={Paper}>
-                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
-                                            <TableCell sx={{paddingLeft: 3}}>Title</TableCell>
-                                            <TableCell align="left">Full Name</TableCell>
-                                            <TableCell align="left">Cell Phone</TableCell>
-                                            <TableCell align="left">Email</TableCell>
-                                            <TableCell align="left">StartDate</TableCell>
-                                            <TableCell align="right"/>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <>
-                                            {registeredUsers.map((row) => (
-                                                <TableRow
-                                                    key={row.UserId}
-                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.Title}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
-                                                        {row.FirstName} {row.LastName}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.CellPhone}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {row.Email}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {format(new Date(row.AddedDateToLicence), 'dd/MM/yyyy')}
-                                                    </TableCell>
-                                                    <TableCell align="right"/>
+                        <Card sx={{minWidth: 720}}>
+                            <Scrollbar>
+                                {registeredUsers.length > 0 ? (
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                                    <StyledTableCell sx={{paddingLeft: 4}}>Title</StyledTableCell>
+                                                    <StyledTableCell align="left">Full Name</StyledTableCell>
+                                                    <StyledTableCell align="left">Cell Phone</StyledTableCell>
+                                                    <StyledTableCell align="left">Email</StyledTableCell>
+                                                    <StyledTableCell align="left">StartDate</StyledTableCell>
+                                                    <StyledTableCell align="right"/>
                                                 </TableRow>
-                                            ))}
-                                        </>
-                                    </TableBody>
-                                </Table>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    component="div"
-                                    count={count}
-                                    page={pageNumberForUsers}
-                                    onPageChange={handleChangePageForUsers}
-                                    rowsPerPage={pageSizeForUsers}
-                                    onRowsPerPageChange={handleChangeRowsPerPageForUsers}
-                                />
-                            </TableContainer>
-                        ) : (
-                            <Box>
-                                <img src="/static/illustrations/no.png" alt="login"/>
-                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
-                            </Box>
-                        )}
+                                            </TableHead>
+                                            <TableBody>
+                                                <>
+                                                    {registeredUsers.map((row) => (
+                                                        <StyledTableRow
+                                                            key={row.UserId}
+                                                            sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                            <StyledTableCell component="th" scope="row"
+                                                                             sx={{paddingLeft: 4}}>
+                                                                {row.Title}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.FirstName} {row.LastName}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.CellPhone}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {row.Email}
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
+                                                                {format(new Date(row.AddedDateToLicence), 'dd/MM/yyyy')}
+                                                            </StyledTableCell>
+                                                            <TableCell align="right"/>
+                                                        </StyledTableRow>
+                                                    ))}
+                                                </>
+                                            </TableBody>
+                                        </Table>
+                                        <TablePagination
+                                            rowsPerPageOptions={[5, 10, 25]}
+                                            component="div"
+                                            count={count}
+                                            page={pageNumberForUsers}
+                                            onPageChange={handleChangePageForUsers}
+                                            rowsPerPage={pageSizeForUsers}
+                                            onRowsPerPageChange={handleChangeRowsPerPageForUsers}
+                                        />
+                                    </TableContainer>
+                                ) : (
+                                    <Box>
+                                        <img src="/static/illustrations/no.png" alt="login"/>
+                                        <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data
+                                            Found</Typography>
+                                    </Box>
+                                )}
+                            </Scrollbar>
+                        </Card>
                     </CustomBox>
                 </Modal>
             </Container>

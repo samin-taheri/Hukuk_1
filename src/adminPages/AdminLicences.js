@@ -9,7 +9,6 @@ import {
     Button,
     TableRow,
     TableBody,
-    TableCell,
     Container,
     Typography,
     TableContainer,
@@ -30,7 +29,29 @@ import minusOutline from '@iconify/icons-eva/minus-outline';
 import plusOutline from '@iconify/icons-eva/plus-outline';
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
 // ----------------------------------------------------------------------
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
 export default function AdminLicences() {
     const [allLicences, setAllLicences] = useState([]);
@@ -236,47 +257,44 @@ export default function AdminLicences() {
                             <>
                                 {allLicences.length > 0 ? (
                                     <TableContainer component={Paper}>
-                                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                                        <Table sx={{minWidth: 650}} aria-label="customized table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell sx={{paddingLeft: 7}}>Profile Name</TableCell>
-                                                    <TableCell align="left">Start Date</TableCell>
-                                                    <TableCell align="left">Website</TableCell>
-                                                    <TableCell align="left">Email</TableCell>
-                                                    <TableCell align="center">Details</TableCell>
-                                                    <TableCell align="right"/>
+                                                    <StyledTableCell sx={{paddingLeft: 7}}>Profile Name</StyledTableCell>
+                                                    <StyledTableCell align="left">Start Date</StyledTableCell>
+                                                    <StyledTableCell align="left">Website</StyledTableCell>
+                                                    <StyledTableCell align="left">Email</StyledTableCell>
+                                                    <StyledTableCell align="left">Details</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <>
                                                     {allLicences.map((row) => (
-                                                        <TableRow
+                                                        <StyledTableRow
                                                             key={row.LicenceId}
                                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                                            <TableCell component="th" scope="row" sx={{paddingLeft: 7}}>
+                                                            <StyledTableCell component="th" scope="row" sx={{paddingLeft: 7}}>
                                                                 {row.ProfilName}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row">
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
                                                                 {format(new Date(row.StartDate), 'dd/MM/yyyy')}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row">
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
                                                                 {row.WebSite}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row">
+                                                            </StyledTableCell>
+                                                            <StyledTableCell component="th" scope="row">
                                                                 {row.Email}
-                                                            </TableCell>
-                                                            <TableCell align="right">
+                                                            </StyledTableCell>
+                                                            <StyledTableCell align="left">
                                                                 <Button
                                                                     variant="contained"
                                                                     onClick={() => navigate('/adminDashboard/licences/licencesDetails/' + row.LicenceId)}
-                                                                    sx={{backgroundColor: '#b1b9be'}}
                                                                     startIcon={<Icon icon={layersOutline}/>}
                                                                 >
                                                                     Details
                                                                 </Button>
-                                                            </TableCell>
-                                                            <TableCell align="right"/>
-                                                        </TableRow>
+                                                            </StyledTableCell>
+                                                        </StyledTableRow>
                                                     ))}
                                                 </>
                                             </TableBody>

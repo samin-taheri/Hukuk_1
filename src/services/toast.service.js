@@ -1,26 +1,46 @@
-import Alert from '@mui/material/Alert';
+import Swal from 'sweetalert2';
 
 export default class ToastService {
     AlertErrorMessage(message) {
-       return <Alert variant="outlined" severity="error">
-            {message}
-        </Alert>
+        Swal.fire({
+            text: message,
+            target: '#custom-target',
+            customClass: {
+                container: 'position-absolute'
+            },
+            toast: true,
+            position: 'bottom-right',
+            title: 'Error!',
+            icon: 'error',
+
+        })
     }
 
     AlertSuccessMessage(message) {
-        return <Alert variant="outlined" severity="success">
-            {message}
-        </Alert>
+        return    Swal.fire({
+            text: message,
+            target: '#custom-target',
+            customClass: {
+                container: 'position-absolute'
+            },
+            toast: true,
+            position: 'bottom-right',
+            title: 'Success!',
+            icon: 'success'
+        })
     }
 
-    AlertWarningMessage(message) {
-        return <Alert variant="outlined" severity="warning">
-            {message}
-        </Alert>
-    }
     AlertInfoMessage(message) {
-        return <Alert variant="outlined" severity="info">
-            {message}
-        </Alert>
+        Swal.fire({
+            text: message,
+            target: '#custom-target',
+            customClass: {
+                container: 'position-absolute'
+            },
+            toast: true,
+            position: 'bottom-right',
+            title: 'Info!',
+            icon: 'info'
+        })
     }
 }
