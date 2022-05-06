@@ -56,6 +56,7 @@ import TaskStatusesService from "../services/taskStatuses.service";
 import {format} from "date-fns";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Alert from '@mui/material/Alert';
 // ----------------------------------------------------------------------
 
 export default function Tasks() {
@@ -734,9 +735,9 @@ export default function Tasks() {
                                                         </Button>
                                                     }
                                                 </> :
-                                                <Typography variant="body1" gutterBottom mb={3} color='red'>
-                                                    {message}
-                                                </Typography>}
+                                                <Stack sx={{ width: '100%' }} spacing={2}>
+                                                <Alert severity="error">{message}</Alert>
+                                                </Stack>}
                                         </Stack>
                                     </Box>
                                 </Modal>

@@ -65,6 +65,7 @@ import {alpha, styled} from "@mui/material/styles";
 import MenuPopover from "../components/MenuPopover";
 import LicenceUsersService from "../services/licenceUsers.service";
 import plusCircleOutline from "@iconify/icons-eva/plus-circle-outline";
+import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 export default function Cases() {
 
@@ -72,6 +73,7 @@ export default function Cases() {
     const date = today.setDate(today.getDate());
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const licenceUsersService = new LicenceUsersService();
     const catchMessagee = Global.catchMessage;
