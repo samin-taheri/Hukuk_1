@@ -8,8 +8,8 @@ import {
     Container, Divider,
     IconButton,
     Paper,
-    Stack, Table, TableCell,
-    TableContainer, TableRow,
+    Stack, Table, TableBody, TableCell,
+    TableContainer, TableHead, TablePagination, TableRow,
     Typography
 } from '@mui/material';
 // components
@@ -43,7 +43,12 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
-import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import CloseIcon from "@material-ui/icons/Close";
+import Modal from "@mui/material/Modal";
+import SmsHistoryService from "../services/smsHistory.service";
+import plusFill from "@iconify/icons-eva/plus-fill";
+import layersOutline from "@iconify/icons-eva/layers-outline";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -52,23 +57,22 @@ const RootStyle = styled(Page)(({theme}) => ({
     }
 }));
 
-const actions = [
-    { icon: <SmsOutlinedIcon />, name: 'SMS History' },
-    { icon: <AccountBalanceWalletOutlinedIcon />, name: 'Payment History' },
-    { icon: <ReceiptOutlinedIcon />, name: 'Payment List' }
-];
-
 // ----------------------------------------------------------------------
 
 export default function AdminLicencesDetails() {
     const {id} = useParams()
     const popupMessageService = new PopupMessageService();
     const licencesService = new LicencesService();
+    const smsHistoryService = new SmsHistoryService();
     const catchMessagee = Global.catchMessage;
     const [phoneNumber, setPhoneNumber] = useState("")
     const [profilename, setProfileName] = useState("")
     const [taxOffice, setTaxOffice] = useState("")
     const [billAddress, setBillAddress] = useState("")
+    const [pageNumber, setPageNumber] =useState(0);
+    const [pageSize, setPageSize] = useState(4);
+    const [count, setCount] = useState(10);
+    const [smsHistories, setSmsHistories] = useState([])
     const [city, setCity] = useState("")
     const [country, setCountry] = useState("")
     const [balance, setBalance] = useState("")
@@ -79,11 +83,11 @@ export default function AdminLicencesDetails() {
     const date = today.setDate(today.getDate());
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const [startDate, setStartDate] = useState(defaultValue);
-
+    const [openModalForDetails, setOpenModalForDetails] = useState(false);
     const navigate = useNavigate();
 
-    const getAllCaseUpdateHistory = (id) => {
-        licencesService.getByIdAsAdmin(id).then(
+    const getAllCaseUpdateHistory = (Lid) => {
+        licencesService.getByIdAsAdmin(Lid).then(
             (result) => {
                 let details = result.data.Data
                 setProfileName(details.ProfilName)
@@ -105,6 +109,37 @@ export default function AdminLicencesDetails() {
             popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
+
+    const handleChangePage = (event, newPage) => {
+        getAllSmsHistories(newPage, pageSize, id)
+        setPageNumber(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setPageSize(event.target.value);
+        setPageNumber(1);
+        getAllSmsHistories(1, event.target.value, id)
+    };
+
+    function getAllSmsHistories(pageNumber, pageSize, licenceId) {
+        smsHistoryService.getAllAsAdmin(pageNumber, pageSize, licenceId).then(
+            (result) => {
+                if (result.data.Success) {
+                    setSmsHistories(result.data.Data)
+                }
+                setOpenModalForDetails(true)
+            },
+            (error) => {
+                popupMessageService.AlertErrorMessage(error.response.data.Message);
+            }
+        ).catch(() => {
+            popupMessageService.AlertErrorMessage(catchMessagee)
+        })
+    }
+
+    const handleClosModal = () => {
+        setOpenModalForDetails(false)
+    }
 
     useEffect(() => {
         getAllCaseUpdateHistory(id)
@@ -282,37 +317,132 @@ export default function AdminLicencesDetails() {
                                         </ListItemIcon>
                                         <ListItemText id="switch-list-label-wifi" primary="Status :"/>
                                         {isActive ? (
-                                                <Label variant="ghost" color="success" sx={{fontSize: 13}}>
-                                                    {sentenceCase('Active')}
-                                                </Label>
+                                            <Label variant="ghost" color="success" sx={{fontSize: 13}}>
+                                                {sentenceCase('Active')}
+                                            </Label>
                                         ) : (
-                                                <Label variant="ghost" color="error" sx={{fontSize: 13}}>
-                                                    {sentenceCase('Passive')}
-                                                </Label>
+                                            <Label variant="ghost" color="error" sx={{fontSize: 13}}>
+                                                {sentenceCase('Passive')}
+                                            </Label>
                                         )}
                                     </ListItem>
                                 </List>
                             </Card>
                         </>
                     }
-                    <Box sx={{ height: 320, transform: 'translateX(0px)', flexGrow: 1, marginRight: 4, marginTop: -18 }}>
+                    <Box sx={{height: 320, transform: 'translateX(0px)', flexGrow: 1, marginRight: 4, marginTop: -18}}>
                         <SpeedDial
                             direction='down'
                             ariaLabel="SpeedDial basic example"
-                            sx={{ position: 'absolute', bottom: 16, right: 0 }}
-                            icon={<SpeedDialIcon />}
+                            sx={{position: 'absolute', bottom: 16, right: 0}}
+                            icon={<SpeedDialIcon/>}
                         >
-                            {actions.map((action) => (
-                                <SpeedDialAction
-                                    key={action.name}
-                                    icon={action.icon}
-                                    tooltipTitle={action.name}
-                                />
-                            ))}
+                            <SpeedDialAction
+                                icon={<SmsOutlinedIcon/>}
+                                tooltipTitle='SMS History'
+                                onClick={(e) => {
+                                    getAllSmsHistories(pageNumber, pageSize, id, e)
+                                }}
+                            />
+                            <SpeedDialAction
+                                key={Math.random().toString(36).substr(2, 9)}
+                                icon={<AccountBalanceWalletOutlinedIcon/>}
+                                tooltipTitle='Payment History'
+                            />
+                            <SpeedDialAction
+                                key={Math.random().toString(36).substr(2, 9)}
+                                icon={<PeopleAltOutlinedIcon/>}
+                                tooltipTitle='Registered Users'
+                            />
                         </SpeedDial>
                     </Box>
                 </Stack>
+                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
+                       hideBackdrop={true}
+                       disableEscapeKeyDown={true}
+                       open={openModalForDetails}
+                       aria-labelledby="modal-modal-title"
+                       aria-describedby="modal-modal-description"
+                >
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            minWidth: 700,
+                            maxWidth: 700,
+                            backgroundColor: 'background.paper',
+                            border: '2px solid #fff',
+                            p: 4,
+                            borderRadius: 2
+                        }}>
+                        <Stack mb={2} flexDirection="row"
+                               justifyContent='space-between'>
+                            <Typography id="modal-modal-title"
+                                        variant="h6" component="h2">
+                                SMS History!
+                            </Typography>
+                            <IconButton sx={{bottom: 4}}>
+                                <CloseIcon onClick={handleClosModal}/>
+                            </IconButton>
+                        </Stack>
+                        {smsHistories.length > 0 ? (
+                            <TableContainer component={Paper}>
+                                <Table sx={{minWidth: 650, marginTop: 2}} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow sx={{backgroundColor: '#f7f7f7'}}>
+                                            <TableCell sx={{paddingLeft: 3}}>Recipient Name</TableCell>
+                                            <TableCell align="left">Recipient Role</TableCell>
+                                            <TableCell align="left">Date</TableCell>
+                                            <TableCell align="left">Phone Number</TableCell>
+                                            <TableCell align="right"/>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <>
+                                            {smsHistories.map((row) => (
+                                                <TableRow
+                                                    key={row.SmsHistoryId}
+                                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                                    <TableCell component="th" scope="row" sx={{paddingLeft: 3}}>
+                                                        {row.RecipientName}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.RecipientRole}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {format(new Date(row.Date), 'dd/MM/yyyy')}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {row.PhoneNumber}
+                                                    </TableCell>
+                                                    <TableCell align="right"/>
+                                                </TableRow>
+                                            ))}
+                                        </>
+                                    </TableBody>
+                                </Table>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    component="div"
+                                    count={count}
+                                    page={pageNumber}
+                                    onPageChange={handleChangePage}
+                                    rowsPerPage={pageSize}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                />
+                            </TableContainer>
+                        ) : (
+                            <Box>
+                                <img src="/static/illustrations/no.png" alt="login"/>
+                                <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No Data Found</Typography>
+                            </Box>
+                        )}
+                    </Box>
+                </Modal>
             </Container>
         </RootStyle>
-    );
+    )
+        ;
 }

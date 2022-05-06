@@ -1039,7 +1039,7 @@ export default function Tasks() {
                                                                             {open[row.TaskkId] && (
                                                                                 <Box sx={{ margin: 1, padding: 1.5 }}>
                                                                                     <Table size="small" aria-label="purchases" sx={{[`& .${tableCellClasses.root}`]: {
-                                                                                            border: '2px solid #fff', backgroundColor: '#f7f9fa'}}}>
+                                                                                            border: '2px solid #fff', backgroundColor: '#fafafa'}}}>
                                                                                         <TableHead>
                                                                                             <TableRow>
                                                                                                 <TableCell component="th" scope="row" align="left">Start Date</TableCell>

@@ -122,13 +122,6 @@ export default function Cases() {
     const [anchorEl, setAnchorEl] = React.useState([]);
     const open = Boolean(anchorEl);
 
-    //const handleClick = (event) => {
-    //    setAnchorEl(event.currentTarget);
-    //};
-    //const handleClose2 = (id) => {
-    //    setAnchorEl(null);
-    //};
-
     const handleClick = (id, event) => {
         let tableMenus = [...anchorEl];
         tableMenus[id] = event.currentTarget;
@@ -140,7 +133,6 @@ export default function Cases() {
         tableMenus[id] = null;
         setAnchorEl(tableMenus);
     };
-
 
     function filtering(cases) {
         let filteredCaseTypes = cases

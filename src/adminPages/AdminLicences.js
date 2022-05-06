@@ -1,6 +1,5 @@
 import {Icon} from '@iconify/react';
 import React, {useEffect, useState} from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
 import CircularProgress from '@mui/material/CircularProgress';
 // material
 import {
@@ -25,7 +24,7 @@ import {Global} from "../Global";
 import LicencesService from "../services/licences.service";
 import {format} from "date-fns";
 import layersOutline from "@iconify/icons-eva/layers-outline";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import minusOutline from '@iconify/icons-eva/minus-outline';
 import plusOutline from '@iconify/icons-eva/plus-outline';
@@ -49,6 +48,8 @@ export default function AdminLicences() {
     const popupMessageService = new PopupMessageService();
     const catchMessagee = Global.catchMessage;
     const [count, setCount] = useState(10);
+    const {id} = useParams();
+
 
     const handleChangePage = (event, newPage) => {
         console.log("newPageNumber : ", newPage)

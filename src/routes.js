@@ -45,6 +45,7 @@ import AdminBalanceTracking from "./adminPages/AdminBalanceTracking";
 import CaseUpdateHistory from "./pages/CaseUpdateHistory";
 import AdminLicencesDetails from "./adminPages/AdminLicencesDetails";
 import Casees from "./pages/Casees";
+import AdminSmsHistory from "./adminPages/AdminSmsHistory";
 
 // ----------------------------------------------------------------------
 
@@ -95,6 +96,7 @@ export default function Router() {
         { path: 'users', element: <AdminUsers /> },
         { path: 'balanceTracking', element: <AdminBalanceTracking /> },
         { path: 'licences/licencesDetails/:id', element: <AdminLicencesDetails /> },
+        { path: 'licences/licencesDetails/smsHistory/:id', element: <AdminSmsHistory /> }
       ]
     },
     {

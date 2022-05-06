@@ -8,4 +8,8 @@ export default class SmsHistoryService {
     getAll(pageNumber, pageSize) {
         return axios.get(`${URL}GetAll?pageNumber=${pageNumber}&pageSize=${pageSize}`, { headers: authHeader() });
     }
+    getAllAsAdmin(pageNumber, pageSize, licenceId) {
+        return axios.get(`${URL}GetAllAsAdmin?pageNumber=${pageNumber}&pageSize=${pageSize}&licenceId=${licenceId}`, {headers: authHeader()
+        });
+    }
 }

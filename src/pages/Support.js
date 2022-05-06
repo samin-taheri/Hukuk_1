@@ -92,7 +92,6 @@ export default function Support() {
                 if (result.data.Success) {
                     getAllSupportMessages()
                     setMessage("")
-                    popupMessageService.AlertSuccessMessage(result.data.Message)
                 }
             },
             (error) => {

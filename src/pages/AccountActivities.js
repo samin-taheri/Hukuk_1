@@ -694,7 +694,7 @@ export default function AccountActivities() {
                                                                                            aria-label="purchases" sx={{
                                                                                         [`& .${tableCellClasses.root}`]: {
                                                                                             border: '2px solid #fff',
-                                                                                            backgroundColor: '#f7f9fa'
+                                                                                            backgroundColor: '#fafafa'
                                                                                         }
                                                                                     }}>
                                                                                         <TableHead>
