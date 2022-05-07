@@ -38,6 +38,7 @@ import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRen
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import {Global} from "../Global";
+import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 
 
@@ -59,6 +60,7 @@ export default function User() {
 
   const caseStatusesService = new CaseStatusesService();
   const popupMessageService = new PopupMessageService();
+  const toastService = new ToastService();
   const authService = new AuthService();
 
   const catchMessagee = Global.catchMessage;
@@ -67,11 +69,11 @@ export default function User() {
   const changeActivity = (cId) => {
     caseStatusesService.changeActivity2(cId).then(result => {
       getAllCaseStatuses()
-      popupMessageService.AlertSuccessMessage(result.data.Message);
+      toastService.AlertSuccessMessage(result.data.Message);
     }, error => {
-      popupMessageService.AlertErrorMessage(error.response.data.Message)
+      toastService.AlertErrorMessage(error.response.data.Message)
     }).catch(()=> {
-      popupMessageService.AlertErrorMessage(catchMessagee)
+      toastService.AlertErrorMessage(catchMessagee)
     })
   };
 

@@ -38,6 +38,7 @@ import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import {Global} from "../Global";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
+import ToastService from "../services/toast.service";
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +58,7 @@ export default function TaskType() {
 
     const taskTypeService = new TaskTypeService();
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
 
     const catchMessagee = Global.catchMessage;
@@ -65,11 +67,11 @@ export default function TaskType() {
     const changeActivity = (cId) => {
         taskTypeService.changeActivity2(cId).then(result => {
             getAllTaskTypes()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
     function filtering(taskTypes) {

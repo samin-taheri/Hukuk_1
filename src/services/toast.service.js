@@ -12,7 +12,9 @@ export default class ToastService {
             position: 'bottom-right',
             title: 'Error!',
             icon: 'error',
-
+            confirmButtonText: 'Close',
+            hideOnOverlayClick: true,
+            hideOnContentClick: true
         })
     }
 
@@ -26,7 +28,8 @@ export default class ToastService {
             toast: true,
             position: 'bottom-right',
             title: 'Success!',
-            icon: 'success'
+            icon: 'success',
+            confirmButtonText: 'Close'
         })
     }
 
@@ -40,7 +43,8 @@ export default class ToastService {
             toast: true,
             position: 'bottom-right',
             title: 'Info!',
-            icon: 'info'
+            icon: 'info',
+            confirmButtonText: 'Close'
         })
     }
 }

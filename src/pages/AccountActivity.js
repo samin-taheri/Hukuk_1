@@ -40,6 +40,7 @@ import {Global} from "../Global";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import TransactionActivityTypeService from "../services/transactionActivityType.service";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
+import ToastService from "../services/toast.service";
 
 
 // ----------------------------------------------------------------------
@@ -61,6 +62,7 @@ export default function AccountActivity() {
     const [transactionActivityTypeForFilter, setTransactionActivityTypeForFilter] = useState(-1);
     const accountActivityService = new AccountActivityService();
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const tatService = new TransactionActivityTypeService();
     const catchMessagee = Global.catchMessage;
@@ -69,11 +71,11 @@ export default function AccountActivity() {
     const changeActivity = (cId) => {
         accountActivityService.changeActivity2(cId).then(result => {
             getAllAccountActivities()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
 

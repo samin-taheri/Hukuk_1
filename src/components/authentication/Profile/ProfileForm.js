@@ -10,7 +10,6 @@ import {useNavigate} from 'react-router-dom';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import {Stack, TextField, InputAdornment, Avatar, Box, Typography, Container, Card, Switch} from '@mui/material';
 import {LoadingButton} from '@mui/lab';
-import account from "../../../_mocks_/account";
 import PopupMessageService from "../../../services/popupMessage.service";
 import ProfileService from "../../../services/profile.service";
 import FormControl from "@mui/material/FormControl";
@@ -20,9 +19,10 @@ import CityService from "../../../services/city.service";
 import CountryService from "../../../services/country.service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Page from "../../Page";
-import {Icon} from "@iconify/react";
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
-import bellOutline from "@iconify/icons-eva/bell-outline";
+import UserProfileAvatarService from "../../../services/userProfileAvatar.service";
+import {value} from "lodash/seq";
+import account from "../../../_mocks_/account";
 // ----------------------------------------------------------------------
 
 export default function ProfileForm() {
@@ -32,8 +32,8 @@ export default function ProfileForm() {
     const [cellPhone, setCellPhone] = useState('');
     const [email, setEmail] = useState('');
     const [title, setTitle] = useState('');
-    const [profileImage, setProfileImage] = useState('');
-    const [profileImageFile, setProfileImageFile] = useState('');
+    const [profileImage, setProfileImage] = useState(0);
+    const [avatar, setAvatar] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const [allCountries, setAllCountries] = useState([]);
@@ -44,6 +44,7 @@ export default function ProfileForm() {
     const profileService = new ProfileService();
     const popupMessageService = new PopupMessageService();
     const cityService = new CityService();
+    const userProfileAvatarService = new UserProfileAvatarService();
     const countryService = new CountryService();
     const catchMessagee = Global.catchMessage;
 
@@ -70,8 +71,7 @@ export default function ProfileForm() {
             email: email,
             cityId: selectedCityId,
             countryId: selectedCountryId,
-            profileImage: profileImage,
-            profileImageFile: profileImageFile,
+            userProfileAvatarId: profileImage,
         }
         let re = profileService.updateUserProfile(obj)
         re.then(
@@ -81,7 +81,6 @@ export default function ProfileForm() {
                     setIsLoading(false)
                     popupMessageService.AlertSuccessMessage(result.data.Message)
                     navigate('/dashboard');
-
                 }
             },
             (error) => {
@@ -113,6 +112,31 @@ export default function ProfileForm() {
         })
     }
 
+    const getUserAvatar = () => {
+        userProfileAvatarService.getAll().then(
+            (response) => {
+                setAvatar(response.data.Data);
+                const AvatarFromApi = response.data.Data;
+                const list = [];
+                AvatarFromApi.forEach((item) => {
+                    list.push({
+                        value: item.UserProfileAvatarId,
+                        label: item.ProfileAvatarPath,
+                        key: item.ProfileAvatarPath
+                    });
+                });
+                setProfileImage(list[0].value)
+                setAvatar(list);
+            },
+            (error) => {
+                popupMessageService.AlertErrorMessage(error.response.data.Message);
+            }
+        )
+            .catch(() => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    };
+
     function getAllCities(id) {
         cityService.getAll(id).then(result => {
                 let id = result.data.Data[0].CityId
@@ -130,6 +154,7 @@ export default function ProfileForm() {
     useEffect(() => {
         userInfo();
         getAllCountries();
+        getUserAvatar();
     }, []);
 
 
@@ -141,15 +166,47 @@ export default function ProfileForm() {
                         Profile
                     </Typography>
                 </Stack>
-                <Stack flexDirection='row' alignItems='space-between' sx={{marginBottom: '0%' }}>
-                    <Card justifyContent="center" sx={{padding: 6, maxWidth: 300, minWidth:300, marginLeft: 8}}>
-                        <Stack ml={4} mt={3} sx={{ borderRadius: 10 ,width: 130, height: 130, border: '1px dashed #b1b9be', padding: '0.4em', p: 4}}>
-                            <Avatar src={account.photoURL} alt="photoURL" sx={{width: 110, height: 110, right: '35%', bottom: '35%'}}/>
+                <Stack flexDirection='row' alignItems='space-between' sx={{marginBottom: '0%'}}>
+                    <Card justifyContent="center" sx={{padding: 4, maxWidth: 300, minWidth: 300, marginLeft: 8}}>
+                        <Stack ml={6.5} mt={3} sx={{
+                            borderRadius: 10,
+                            width: 130,
+                            height: 130,
+                            border: '1px dashed #b1b9be',
+                            padding: '0.4em',
+                            p: 4
+                        }}>
+                            <Avatar src={'https://webapi.emlakofisimden.com/' + profileImage} alt="photoURL"
+                                    sx={{width: 110, height: 110, right: '35%', bottom: '35%'}}/>
                         </Stack>
-                        <Stack flexDirection='row' mt={4}>
-                        <AddAPhotoOutlinedIcon  sx={{color:'#7f8181'}}/>
-                        <Typography textAlign='center' fontSize={13} color='#7f8181' paddingTop={0}>Allowed *.jpeg, *.jpg, *.png, *.gif
-                            max size of 3.1 MB</Typography>
+                        <Stack flexDirection='row' mt={4} sx={{border: '1px dashed #b1b9be', p: 1, borderRadius: 1.5, paddingTop: 3.3}}>
+                            <AddAPhotoOutlinedIcon sx={{color: '#7f8181', marginRight: 1, width: 18, height: 18, marginLeft: 1}}/>
+                            <Typography textAlign='center' fontSize={13} color='#7f8181'>Select Avatar :</Typography>
+                        {avatar.length > 0 ? (
+                            <Stack mt={-2.5} ml={2}>
+                                <TextField
+                                    sx={{maxWidth: 80}}
+                                    variant="standard"
+                                    select
+                                    fullWidth
+                                    value={profileImage}
+                                    onChange={(event) => setProfileImage(event.target.value)}
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                >
+                                    {avatar.map((item) => (
+                                        <MenuItem
+                                            key={Math.random().toString(36).substr(2, 9)}
+                                            value={item.value}
+                                        >
+                                            <Avatar src={'https://webapi.emlakofisimden.com/' + item.label}
+                                                    alt="photoURL" sx={{width: 45, height: 45,}}/>
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Stack>
+                        ) : null}
                         </Stack>
                     </Card>
                     <Card justifyContent="space-around" sx={{padding: 6, maxWidth: 600, marginLeft: 2}}>

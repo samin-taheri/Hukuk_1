@@ -37,6 +37,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import {Global} from "../Global";
+import ToastService from "../services/toast.service";
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,7 @@ export default function ProcessType() {
 
     const processTypeService = new ProcessTypeService();
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
 
     const catchMessagee = Global.catchMessage;
@@ -64,11 +66,11 @@ export default function ProcessType() {
     const changeActivity = (cId) => {
         processTypeService.changeActivity2(cId).then(result => {
             getAllProcessTypes()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
     function filtering(processTypes) {

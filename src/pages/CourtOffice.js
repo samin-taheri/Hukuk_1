@@ -46,6 +46,7 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import {Global} from "../Global";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
+import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 
 
@@ -74,6 +75,7 @@ export default function CourtOffice() {
 
     const courtOfficeService = new CourtOfficesService();
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const countryService = new CountryService();
     const cityService = new CityService();
@@ -131,9 +133,9 @@ export default function CourtOffice() {
     const changeActivity = (cId) => {
         courtOfficeService.changeActivity2(cId).then(result => {
             getAllCourtOffices()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         })
     };
     function filtering(courtOffice) {

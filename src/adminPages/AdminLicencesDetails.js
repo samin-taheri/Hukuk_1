@@ -50,6 +50,9 @@ import PaymentHistoriesService from "../services/paymentHistories.service";
 import LicenceUsersService from "../services/licenceUsers.service";
 import {tableCellClasses} from "@mui/material/TableCell";
 import Scrollbar from "../components/Scrollbar";
+import Fab from "@mui/material/Fab";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -114,7 +117,6 @@ export default function AdminLicencesDetails() {
     const [pageNumberForUsers, setPageNumberForUsers] = useState(0);
     const [pageSizeForUsers, setPageSizeForUsers] = useState(3);
     const [count, setCount] = useState(10);
-    const [countForPayment, setCountForPayment] = useState(200);
     const [smsHistories, setSmsHistories] = useState([])
     const [paymentHistories, setPaymentHistories] = useState([])
     const [registeredUsers, setRegisteredUsers] = useState([])
@@ -168,18 +170,19 @@ export default function AdminLicencesDetails() {
         getAllSmsHistories(1, event.target.value, id)
     };
 
+    const previousValues = () => {
+        if (pageNumberForPayment > 0 ) {
+            getAllPaymentHistories(pageNumberForPayment - 1, pageSizeForPayment, id)
+            setPageNumberForPayment(pageNumberForPayment - 1)
+        }
+    }
 
-    const handleChangePageForPayment = (event, newPage) => {
-        getAllPaymentHistories(newPage, pageSizeForPayment, id)
-        setPageNumberForPayment(newPage);
-    };
-
-    const handleChangeRowsPerPageForPayment = (event) => {
-        setPageSizeForPayment(event.target.value);
-        setPageNumberForPayment(1);
-        getAllPaymentHistories(1, event.target.value, id)
-    };
-
+    const nextValues = () => {
+        if (paymentHistories.length >= 3) {
+            getAllPaymentHistories(pageNumberForPayment + 1, pageSizeForPayment, id)
+            setPageNumberForPayment(pageNumberForPayment + 1)
+        }
+    }
 
     const handleChangePageForUsers = (event, newPage) => {
         getAllRegisteredUsers(newPage, pageSizeForUsers, id)
@@ -550,12 +553,30 @@ export default function AdminLicencesDetails() {
                             <IconButton sx={{bottom: 4}}>
                                 <CloseIcon onClick={handleClosModalForPayment}/>
                             </IconButton>
+                            {/*
+                            <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={55}>
+                                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                                    <Box sx={{m: 0, position: 'relative'}}>
+                                        <Fab size="large" type="submit" variant="contained" onClick={previousValues}
+                                             color={'primary'}>
+                                            <ArrowBackIosOutlinedIcon/>
+                                        </Fab>
+                                    </Box>
+                                    <Box sx={{m: 0, position: 'relative', marginLeft: 3}}>
+                                        <Fab size="large" type="submit" variant="contained" onClick={nextValues}
+                                             color={'primary'}>
+                                            <ArrowForwardIosOutlinedIcon/>
+                                        </Fab>
+                                    </Box>
+                                </Box>
+                            </Stack>
+                            */}
                         </Stack>
-                        <Card sx={{minWidth: 500}}>
+                        <Card sx={{minWidth: 300}}>
                             <Scrollbar>
                                 {paymentHistories.length > 0 ? (
                                     <TableContainer component={Paper} sx={{maxHeight: 350}}>
-                                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                                        <Table sx={{minWidth: 450}} aria-label="simple table">
                                             <TableHead>
                                                 <TableRow sx={{backgroundColor: '#f7f7f7'}}>
                                                     <StyledTableCell sx={{paddingLeft: 5}}>Profile
@@ -587,15 +608,6 @@ export default function AdminLicencesDetails() {
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={countForPayment}
-                                            page={pageNumberForPayment}
-                                            onPageChange={handleChangePageForPayment}
-                                            rowsPerPage={pageSizeForPayment}
-                                            onRowsPerPageChange={handleChangeRowsPerPageForPayment}
-                                        />
                                     </TableContainer>
                                 ) : (
                                     <Box>

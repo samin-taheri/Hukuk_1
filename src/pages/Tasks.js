@@ -127,11 +127,11 @@ export default function Tasks() {
     const changeActivity = (cId) => {
         tasksService.changeActivity2(cId).then(result => {
             getAllTasks()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
 

@@ -62,6 +62,7 @@ export default function AccountPopover() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [profileImage, setProfileImage] = useState(0);
 
   const navigate = useNavigate();
   const authService = new AuthService()
@@ -74,10 +75,10 @@ export default function AccountPopover() {
         setFirstName(info.FirstName)
         setLastName(info.LastName)
         setEmail(info.Email)
+        setProfileImage(info.UserProfileAvatarId)
       }
     })
   }
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -92,7 +93,6 @@ export default function AccountPopover() {
   useEffect(() => {
     userInfo();
   }, []);
-
 
   return (
     <>
@@ -116,7 +116,7 @@ export default function AccountPopover() {
           })
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL"/>
+        <Avatar src={'https://webapi.emlakofisimden.com/' + profileImage} alt="photoURL"/>
       </IconButton>
 
       <MenuPopover

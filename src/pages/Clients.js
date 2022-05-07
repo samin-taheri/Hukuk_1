@@ -54,11 +54,13 @@ import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 
 export default function Clients() {
 
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const catchMessagee = Global.catchMessage;
     const countryService = new CountryService();
@@ -214,11 +216,11 @@ export default function Clients() {
     const changeActivity = (cId) => {
         clientsService.changeActivity2(cId).then(result => {
             getAllClients()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
     useEffect(() => {

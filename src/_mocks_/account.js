@@ -3,7 +3,7 @@
 const account = {
   displayName: 'Name Surname',
   email: 'email@mail.com',
-  photoURL: '/static/mock-images/avatars/avatar_1.jpeg'
+  photoURL: 'https://webapi.emlakofisimden.com/' + 'ProfileImages/Screen Shot 2022-04-26 at 16.26.11.png'
 };
 
 export default account;

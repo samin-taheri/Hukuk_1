@@ -25,12 +25,14 @@ import {format} from "date-fns";
 import layersOutline from "@iconify/icons-eva/layers-outline";
 import {useNavigate, useParams} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
-import minusOutline from '@iconify/icons-eva/minus-outline';
-import plusOutline from '@iconify/icons-eva/plus-outline';
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
+import plusFill from "@iconify/icons-eva/plus-fill";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 // ----------------------------------------------------------------------
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -71,6 +73,16 @@ export default function AdminLicences() {
     const [count, setCount] = useState(10);
     const {id} = useParams();
 
+    function filtering(licences) {
+        let filteredLicences = licences
+        if (userId > 0)
+            filteredLicences = filteredLicences.filter(c => c.UserId === userId)
+        if (isActive > -1)
+            filteredLicences = filteredLicences.filter(c => c.IsActive == isActive)
+        filteredLicences = filteredLicences.filter(c => c.ProfilName == profileName)
+        filteredLicences = filteredLicences.filter(c => c.Email == email)
+        return filteredLicences
+    }
 
     const handleChangePage = (event, newPage) => {
         console.log("newPageNumber : ", newPage)
@@ -132,23 +144,16 @@ export default function AdminLicences() {
                     <Typography variant="h4" gutterBottom>
                         Licences
                     </Typography>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => {
-                            setOpen(!open)
-                            appearFilter()
-                        }}
-                    >
-                        {open ? <Button variant="contained" startIcon={<Icon icon={minusOutline}/>}>Unfilter</Button> :
-                            <Button variant="contained" startIcon={<Icon icon={plusOutline}/>}>Filter</Button>}
-                    </IconButton>
+                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={plusFill}/>}>
+                        Filter
+                    </Button>
                 </Stack>
                 <Stack spacing={2}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{margin: 1}}>
                             <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
                                 <Stack mb={0} justifyContent="space-around">
+                                    <Typography variant="body1" gutterBottom mb={3}>
+                                        Profile Name
+                                    </Typography>
                                     <Box sx={{maxWidth: 240, minWidth: 240}}>
                                         <FormControl fullWidth size="small">
                                             <TextField
@@ -161,7 +166,7 @@ export default function AdminLicences() {
                                                 InputProps={{
                                                     startAdornment: (
                                                         <InputAdornment position="start">
-                                                            <ToggleOffOutlinedIcon/>
+                                                            <AccountCircleOutlinedIcon/>
                                                         </InputAdornment>
                                                     )
                                                 }}
@@ -170,6 +175,9 @@ export default function AdminLicences() {
                                     </Box>
                                 </Stack>
                                 <Stack mb={0} justifyContent="space-around">
+                                    <Typography variant="body1" gutterBottom mb={3}>
+                                        Email
+                                    </Typography>
                                     <Box sx={{maxWidth: 240, minWidth: 240}}>
                                         <FormControl fullWidth size="small">
                                             <TextField
@@ -182,7 +190,7 @@ export default function AdminLicences() {
                                                 InputProps={{
                                                     startAdornment: (
                                                         <InputAdornment position="start">
-                                                            <ToggleOffOutlinedIcon/>
+                                                            <EmailOutlinedIcon/>
                                                         </InputAdornment>
                                                     )
                                                 }}
@@ -191,6 +199,9 @@ export default function AdminLicences() {
                                     </Box>
                                 </Stack>
                                 <Stack mb={0} justifyContent="space-around">
+                                    <Typography variant="body1" gutterBottom mb={3}>
+                                        User
+                                    </Typography>
                                     <Box sx={{maxWidth: 240, minWidth: 240}}>
                                         <FormControl fullWidth size="small">
                                             <TextField
@@ -203,7 +214,7 @@ export default function AdminLicences() {
                                                 InputProps={{
                                                     startAdornment: (
                                                         <InputAdornment position="start">
-                                                            <ToggleOffOutlinedIcon/>
+                                                            <PersonOutlineOutlinedIcon/>
                                                         </InputAdornment>
                                                     )
                                                 }}
@@ -212,6 +223,9 @@ export default function AdminLicences() {
                                     </Box>
                                 </Stack>
                                 <Stack mb={0} justifyContent="space-around">
+                                    <Typography variant="body1" gutterBottom mb={3}>
+                                        Status
+                                    </Typography>
                                     <Box sx={{maxWidth: 240, minWidth: 240}}>
                                         <FormControl fullWidth size="small">
                                             <TextField
@@ -243,8 +257,6 @@ export default function AdminLicences() {
                                     </Box>
                                 </Stack>
                             </Stack>
-                        </Box>
-                    </Collapse>
                 </Stack>
                 <Card sx={{marginTop: 5}}>
                     <Scrollbar>

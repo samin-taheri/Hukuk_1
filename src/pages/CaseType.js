@@ -40,6 +40,7 @@ import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRen
 import {Global} from "../Global";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
 import Swal from "sweetalert2";
+import ToastService from "../services/toast.service";
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ export default function CaseType() {
 
     const caseTypeService = new CaseTypeService();
     const popupMessageService = new PopupMessageService();
+    const toastService = new ToastService();
     const authService = new AuthService();
     const catchMessagee = Global.catchMessage;
 
@@ -67,11 +69,11 @@ export default function CaseType() {
     const changeActivity = (cId) => {
         caseTypeService.changeActivity2(cId).then(result => {
             getAllCaseTypes()
-            popupMessageService.AlertSuccessMessage(result.data.Message);
+            toastService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
+            toastService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            popupMessageService.AlertErrorMessage(catchMessagee)
+            toastService.AlertErrorMessage(catchMessagee)
         })
     };
     function filtering(caseTypes) {
