@@ -170,20 +170,6 @@ export default function AdminLicencesDetails() {
         getAllSmsHistories(1, event.target.value, id)
     };
 
-    const previousValues = () => {
-        if (pageNumberForPayment > 0 ) {
-            getAllPaymentHistories(pageNumberForPayment - 1, pageSizeForPayment, id)
-            setPageNumberForPayment(pageNumberForPayment - 1)
-        }
-    }
-
-    const nextValues = () => {
-        if (paymentHistories.length >= 3) {
-            getAllPaymentHistories(pageNumberForPayment + 1, pageSizeForPayment, id)
-            setPageNumberForPayment(pageNumberForPayment + 1)
-        }
-    }
-
     const handleChangePageForUsers = (event, newPage) => {
         getAllRegisteredUsers(newPage, pageSizeForUsers, id)
         setPageNumberForUsers(newPage);
@@ -477,7 +463,7 @@ export default function AdminLicencesDetails() {
                                 <CloseIcon onClick={handleClosModal}/>
                             </IconButton>
                         </Stack>
-                        <Card sx={{minWidth: 650}}>
+                        <Stack sx={{minWidth: 650}}>
                             <Scrollbar>
                                 {smsHistories.length > 0 ? (
                                     <TableContainer component={Paper}>
@@ -535,7 +521,7 @@ export default function AdminLicencesDetails() {
                                     </Box>
                                 )}
                             </Scrollbar>
-                        </Card>
+                        </Stack>
                     </CustomBox>
                 </Modal>
                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
@@ -553,26 +539,8 @@ export default function AdminLicencesDetails() {
                             <IconButton sx={{bottom: 4}}>
                                 <CloseIcon onClick={handleClosModalForPayment}/>
                             </IconButton>
-                            {/*
-                            <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={55}>
-                                <Box sx={{display: 'flex', alignItems: 'center'}}>
-                                    <Box sx={{m: 0, position: 'relative'}}>
-                                        <Fab size="large" type="submit" variant="contained" onClick={previousValues}
-                                             color={'primary'}>
-                                            <ArrowBackIosOutlinedIcon/>
-                                        </Fab>
-                                    </Box>
-                                    <Box sx={{m: 0, position: 'relative', marginLeft: 3}}>
-                                        <Fab size="large" type="submit" variant="contained" onClick={nextValues}
-                                             color={'primary'}>
-                                            <ArrowForwardIosOutlinedIcon/>
-                                        </Fab>
-                                    </Box>
-                                </Box>
-                            </Stack>
-                            */}
                         </Stack>
-                        <Card sx={{minWidth: 300}}>
+                        <Stack sx={{minWidth: 300}}>
                             <Scrollbar>
                                 {paymentHistories.length > 0 ? (
                                     <TableContainer component={Paper} sx={{maxHeight: 350}}>
@@ -617,7 +585,7 @@ export default function AdminLicencesDetails() {
                                     </Box>
                                 )}
                             </Scrollbar>
-                        </Card>
+                        </Stack>
                     </CustomBox>
                 </Modal>
                 <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.3)"}}
@@ -636,7 +604,7 @@ export default function AdminLicencesDetails() {
                                 <CloseIcon onClick={handleClosModalForUsers}/>
                             </IconButton>
                         </Stack>
-                        <Card sx={{minWidth: 720}}>
+                        <Stack sx={{minWidth: 720}}>
                             <Scrollbar>
                                 {registeredUsers.length > 0 ? (
                                     <TableContainer component={Paper}>
@@ -697,7 +665,7 @@ export default function AdminLicencesDetails() {
                                     </Box>
                                 )}
                             </Scrollbar>
-                        </Card>
+                        </Stack>
                     </CustomBox>
                 </Modal>
             </Container>

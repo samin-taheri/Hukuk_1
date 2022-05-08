@@ -27,15 +27,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles';
+import TableCell, {tableCellClasses} from '@mui/material/TableCell';
+import {styled} from '@mui/material/styles';
 import plusFill from "@iconify/icons-eva/plus-fill";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import LicenceUsersService from "../services/licenceUsers.service";
 // ----------------------------------------------------------------------
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
@@ -45,7 +47,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(({theme}) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
     },
@@ -65,9 +67,12 @@ export default function AdminLicences() {
     const [email, setEmail] = useState("");
     const [isActive, setIsActive] = useState(0);
     const [open, setOpen] = React.useState(false);
+    const [allUsers, setAllUsers] = useState([]);
+    const [usersAdd, setUsersAdd] = useState(0);
     const navigate = useNavigate();
 
     const licencesService = new LicencesService();
+    const licenceUsersService = new LicenceUsersService();
     const popupMessageService = new PopupMessageService();
     const catchMessagee = Global.catchMessage;
     const [count, setCount] = useState(10);
@@ -133,8 +138,36 @@ export default function AdminLicences() {
         setUserId(event.target.value);
     };
 
+    const getAllUsers = () => {
+        licenceUsersService
+            .getAll()
+            .then(
+                (response) => {
+                    setAllUsers(response.data.Data);
+                    const CaseTypesFromApi = response.data.Data;
+                    const list = [];
+                    CaseTypesFromApi.forEach((item) => {
+                        list.push({
+                            value: item.User.Id,
+                            label: item.User.Title,
+                            key: item.User.Title
+                        });
+                    });
+                    setUsersAdd(list[0].value)
+                    setAllUsers(list);
+                },
+                (error) => {
+                    popupMessageService.AlertErrorMessage(error.response.data.Message);
+                }
+            )
+            .catch(() => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    };
+
     useEffect(() => {
         getAllLicences(userId, profileName, email, isActive, pageNumber, pageSize);
+        getAllUsers()
     }, []);
 
     return (
@@ -149,114 +182,125 @@ export default function AdminLicences() {
                     </Button>
                 </Stack>
                 <Stack spacing={2}>
-                            <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
-                                <Stack mb={0} justifyContent="space-around">
-                                    <Typography variant="body1" gutterBottom mb={3}>
-                                        Profile Name
-                                    </Typography>
-                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
-                                        <FormControl fullWidth size="small">
-                                            <TextField
-                                                size='small'
-                                                id="demo-simple-select"
-                                                value={profileName}
-                                                key={createRandomKey}
-                                                label="Profile Name"
-                                                onChange={handleChangeProfileName}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <AccountCircleOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                                <Stack mb={0} justifyContent="space-around">
-                                    <Typography variant="body1" gutterBottom mb={3}>
-                                        Email
-                                    </Typography>
-                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
-                                        <FormControl fullWidth size="small">
-                                            <TextField
-                                                size='small'
-                                                id="demo-simple-select"
-                                                value={email}
-                                                key={createRandomKey}
-                                                label="Email"
-                                                onChange={handleChangeEmail}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <EmailOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                                <Stack mb={0} justifyContent="space-around">
-                                    <Typography variant="body1" gutterBottom mb={3}>
-                                        User
-                                    </Typography>
-                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
-                                        <FormControl fullWidth size="small">
-                                            <TextField
-                                                size='small'
-                                                id="demo-simple-select"
-                                                value={userId}
-                                                key={createRandomKey}
-                                                label="User Id"
-                                                onChange={handleChangeUserId}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <PersonOutlineOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                                <Stack mb={0} justifyContent="space-around">
-                                    <Typography variant="body1" gutterBottom mb={3}>
-                                        Status
-                                    </Typography>
-                                    <Box sx={{maxWidth: 240, minWidth: 240}}>
-                                        <FormControl fullWidth size="small">
-                                            <TextField
-                                                select
-                                                size='small'
-                                                id="demo-simple-select"
-                                                value={isActive}
-                                                key={createRandomKey}
-                                                label="Status"
-                                                onChange={handleChangeStatus}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <ToggleOffOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            >
-                                                <MenuItem key={Math.random().toString(36).substr(2, 9)}
-                                                          value={-1}>All</MenuItem>
-                                                <MenuItem key={Math.random().toString(36).substr(2, 9)} value={1}>
-                                                    Active
+                    <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
+                        <Stack mb={0} justifyContent="space-around">
+                            <Typography variant="body1" gutterBottom mb={3}>
+                                Profile Name
+                            </Typography>
+                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                <FormControl fullWidth size="small">
+                                    <TextField
+                                        size='small'
+                                        id="demo-simple-select"
+                                        value={profileName}
+                                        key={createRandomKey}
+                                        label="Profile Name"
+                                        onChange={handleChangeProfileName}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <AccountCircleOutlinedIcon/>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                </FormControl>
+                            </Box>
+                        </Stack>
+                        <Stack mb={0} justifyContent="space-around">
+                            <Typography variant="body1" gutterBottom mb={3}>
+                                Email
+                            </Typography>
+                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                <FormControl fullWidth size="small">
+                                    <TextField
+                                        size='small'
+                                        id="demo-simple-select"
+                                        value={email}
+                                        key={createRandomKey}
+                                        label="Email"
+                                        onChange={handleChangeEmail}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <EmailOutlinedIcon/>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                </FormControl>
+                            </Box>
+                        </Stack>
+                        <Stack mb={0} justifyContent="space-around">
+                            <Typography variant="body1" gutterBottom mb={3}>
+                                Users
+                            </Typography>
+                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                <FormControl fullWidth size="small">
+                                    {allUsers.length > 0 ? (
+                                        <TextField
+                                            select
+                                            size='small'
+                                            label="Users"
+                                            value={userId}
+                                            key={Math.random().toString(36).substr(2, 9)}
+                                            onChange={(event) => setUserId(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <PeopleAltOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        >
+                                            {allUsers.map((item) => (
+                                                <MenuItem
+                                                    key={Math.random().toString(36).substr(2, 9)}
+                                                    value={item.value}
+                                                >
+                                                    {item.label}
                                                 </MenuItem>
-                                                <MenuItem key={Math.random().toString(36).substr(2, 9)} value={0}>
-                                                    Passive
-                                                </MenuItem>
-                                            </TextField>
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                            </Stack>
+                                            ))}
+                                        </TextField>
+                                    ) : null}
+                                </FormControl>
+                            </Box>
+                        </Stack>
+                        <Stack mb={0} justifyContent="space-around">
+                            <Typography variant="body1" gutterBottom mb={3}>
+                                Status
+                            </Typography>
+                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                                <FormControl fullWidth size="small">
+                                    <TextField
+                                        select
+                                        size='small'
+                                        id="demo-simple-select"
+                                        value={isActive}
+                                        key={createRandomKey}
+                                        label="Status"
+                                        onChange={handleChangeStatus}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <ToggleOffOutlinedIcon/>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    >
+                                        <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                  value={-1}>All</MenuItem>
+                                        <MenuItem key={Math.random().toString(36).substr(2, 9)} value={1}>
+                                            Active
+                                        </MenuItem>
+                                        <MenuItem key={Math.random().toString(36).substr(2, 9)} value={0}>
+                                            Passive
+                                        </MenuItem>
+                                    </TextField>
+                                </FormControl>
+                            </Box>
+                        </Stack>
+                    </Stack>
                 </Stack>
                 <Card sx={{marginTop: 5}}>
                     <Scrollbar>
@@ -272,7 +316,8 @@ export default function AdminLicences() {
                                         <Table sx={{minWidth: 650}} aria-label="customized table">
                                             <TableHead>
                                                 <TableRow>
-                                                    <StyledTableCell sx={{paddingLeft: 7}}>Profile Name</StyledTableCell>
+                                                    <StyledTableCell sx={{paddingLeft: 7}}>Profile
+                                                        Name</StyledTableCell>
                                                     <StyledTableCell align="left">Start Date</StyledTableCell>
                                                     <StyledTableCell align="left">Website</StyledTableCell>
                                                     <StyledTableCell align="left">Email</StyledTableCell>
@@ -285,7 +330,8 @@ export default function AdminLicences() {
                                                         <StyledTableRow
                                                             key={row.LicenceId}
                                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                                                            <StyledTableCell component="th" scope="row" sx={{paddingLeft: 7}}>
+                                                            <StyledTableCell component="th" scope="row"
+                                                                             sx={{paddingLeft: 7}}>
                                                                 {row.ProfilName}
                                                             </StyledTableCell>
                                                             <StyledTableCell component="th" scope="row">

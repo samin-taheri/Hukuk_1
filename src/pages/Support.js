@@ -36,6 +36,9 @@ import {green} from '@mui/material/colors';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import account from "../_mocks_/account";
+import {useNavigate} from "react-router-dom";
+import AuthService from "../services/auth.service";
+import ProfileService from "../services/profile.service";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -59,13 +62,24 @@ export default function Support() {
 
     const popupMessageService = new PopupMessageService();
     const chatSupportService = new ChatSupportService();
+    const profileService = new ProfileService();
     const catchMessagee = Global.catchMessage;
     const [message, setMessage] = useState("");
     const [supportMessages, setSupportMessages] = useState([]);
+    const [profileImage, setProfileImage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
+
+    function userInfo() {
+        profileService.getUserInfo().then(result => {
+            if (result.data.Success) {
+                let info = result.data.Data
+                setProfileImage(info.ProfileImage)
+            }
+        })
+    }
 
     const getAllSupportMessages = () => {
         chatSupportService.getAllMessegaAsUser().then(
@@ -151,6 +165,7 @@ export default function Support() {
 
     useEffect(() => {
         getAllSupportMessages()
+        userInfo()
         makeTheMessageRead()
         if (messageEl) {
             messageEl.current.addEventListener('DOMNodeInserted', event => {
@@ -195,7 +210,7 @@ export default function Support() {
                 <Stack flexDirection='column' alignItems='space-between'>
                     <Card sx={{minWidth: 450, maxWidth: 950, marginLeft: 7, paddingTop: 3}}>
                         <Stack flexDirection='row' alignItems='space-between'>
-                        <Avatar src={account.photoURL} alt="photoURL" sx={{marginLeft: 4, marginTop: -1}}/>
+                        <Avatar src={'https://webapi.emlakofisimden.com/' + profileImage} alt="photoURL" sx={{marginLeft: 4, marginTop: -1}}/>
                             <Typography variant="h6" gutterBottom sx={{paddingBottom: 1.5, paddingLeft: 2.4, color: 'primary'}}>
                                 Messages
                             </Typography>

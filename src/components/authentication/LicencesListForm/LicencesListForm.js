@@ -78,8 +78,6 @@ export default function LicencesListForm() {
     const licenceUsersService = new LicenceUsersService();
     const personTypesService = new PersonTypesService();
     const authService = new AuthService();
-    const cityService = new CityService();
-    const countryService = new CountryService();
     const catchMessagee = Global.catchMessage;
 
     const {id} = useParams();
@@ -608,7 +606,7 @@ export default function LicencesListForm() {
 
 
                                             <Stack sx={{flexDirection: 'row', marginTop: 4}}>
-                                                <Avatar src={account.photoURL} alt="photoURL"/>
+                                                <Avatar src={account.photoURL2} alt="photoURL"/>
                                                 <Stack sx={{flexDirection: 'column', paddingLeft: 3}}>
                                                     <Typography gutterBottom component="div" fontSize={16}
                                                                 fontWeight='bold' key={row.LicenceUserId}>

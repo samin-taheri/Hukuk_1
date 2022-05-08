@@ -3,7 +3,6 @@ import {useEffect, useRef, useState} from 'react';
 import homeOutline from '@iconify/icons-eva/home-outline';
 import personDoneOutline from '@iconify/icons-eva/person-done-outline';
 import npmOutline from '@iconify/icons-eva/npm-outline';
-import settingsOutline from '@iconify/icons-eva/settings-outline';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import archiveOutline from '@iconify/icons-eva/archive-outline';
 
@@ -11,19 +10,10 @@ import archiveOutline from '@iconify/icons-eva/archive-outline';
 import { alpha } from '@mui/material/styles';
 import {Button, Box, Divider, MenuItem, Typography, IconButton, Avatar} from '@mui/material';
 // components
-import personOutline from '@iconify/icons-eva/person-outline';
  import MenuPopover from '../../components/MenuPopover';
 //
-import account from '../../_mocks_/account';
 import AuthService from '../../services/auth.service';
-import LicencesService from "../../services/licences.service";
-import LicenceUsersService from "../../services/licenceUsers.service";
 import ProfileService from "../../services/profile.service";
-import PopupMessageService from "../../services/popupMessage.service";
-import CityService from "../../services/city.service";
-import CountryService from "../../services/country.service";
-import {Global} from "../../Global";
-
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -36,11 +26,6 @@ const MENU_OPTIONS = [
     label: 'Profile',
     icon: personDoneOutline,
     linkTo: '/dashboard/profile'
-  },
-  {
-    label: 'Settings',
-    icon: settingsOutline,
-    linkTo: '#'
   },
   {
     label: 'Connected Licences',
@@ -75,7 +60,7 @@ export default function AccountPopover() {
         setFirstName(info.FirstName)
         setLastName(info.LastName)
         setEmail(info.Email)
-        setProfileImage(info.UserProfileAvatarId)
+        setProfileImage(info.ProfileImage)
       }
     })
   }

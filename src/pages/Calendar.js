@@ -382,8 +382,8 @@ export default function Calendar() {
                                         </Stack>
                                         <Stack spacing={2}>
                                             <Stack mb={0} alignItems="center" justifyContent="space-around">
-                                                <Stack mb={3} spacing={2}>
-                                                    <Box sx={{maxWidth: 630, minWidth: 630}}>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <TextField
                                                             autoFocus
                                                             fullWidth
@@ -400,8 +400,6 @@ export default function Calendar() {
                                                             }}
                                                         />
                                                     </Box>
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allEvents.length > 0 ? (
                                                         <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
@@ -432,6 +430,8 @@ export default function Calendar() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
+                                                </Stack>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allClients.length > 0 ? (
                                                         <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
@@ -462,8 +462,6 @@ export default function Calendar() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allCases.length > 0 ? (
                                                         <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
@@ -494,6 +492,8 @@ export default function Calendar() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
+                                                </Stack>
+                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
                                                     {allUsers.length > 0 ? (
                                                         <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                             <FormControl fullWidth size="small">
@@ -524,26 +524,6 @@ export default function Calendar() {
                                                             </FormControl>
                                                         </Box>
                                                     ) : null}
-                                                </Stack>
-                                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                                    <Box sx={{maxWidth: 305, minWidth: 305}}>
-                                                        <FormControl fullWidth size="small">
-                                                            <TextField
-                                                                type='text'
-                                                                size="small"
-                                                                label="Information"
-                                                                value={infoForAdd}
-                                                                onChange={(event) => setInfoForAdd(event.target.value)}
-                                                                InputProps={{
-                                                                    startAdornment: (
-                                                                        <InputAdornment position="start">
-                                                                            <DnsOutlinedIcon/>
-                                                                        </InputAdornment>
-                                                                    )
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                    </Box>
                                                     <Box sx={{maxWidth: 305, minWidth: 305}}>
                                                         <FormControl fullWidth size="small">
                                                             <TextField
@@ -612,6 +592,27 @@ export default function Calendar() {
                                                             />
                                                         </FormControl>
                                                     </Box>
+                                                </Stack>
+                                                <Stack mb={3}>
+                                                <Box sx={{maxWidth: 630, minWidth: 630}}>
+                                                    <FormControl fullWidth size="small">
+                                                        <TextField
+                                                            multiline
+                                                            type='text'
+                                                            size="small"
+                                                            label="Information"
+                                                            value={infoForAdd}
+                                                            onChange={(event) => setInfoForAdd(event.target.value)}
+                                                            InputProps={{
+                                                                startAdornment: (
+                                                                    <InputAdornment position="start">
+                                                                        <DnsOutlinedIcon/>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                </Box>
                                                 </Stack>
                                             </Stack>
                                             {eventId > 0 ?

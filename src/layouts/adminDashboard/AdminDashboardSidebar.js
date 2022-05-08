@@ -63,7 +63,7 @@ export default function AdminDashboardSidebar({ isOpenSidebar, onCloseSidebar })
                 </Box>
             </Box>
             <Box sx={{ mb: 5, mx: 2.5 }}>
-                <Link underline="none" component={RouterLink} to="/adminDashboard">
+                <Link underline="none" component={RouterLink} to="/adminDashboard/support">
                     <AccountStyle>
                         <Icon icon={heartOutline} width={23} height={23} />
                         <Box sx={{ ml: 2 }}>

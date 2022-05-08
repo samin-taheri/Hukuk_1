@@ -33,7 +33,8 @@ export default function ProfileForm() {
     const [email, setEmail] = useState('');
     const [title, setTitle] = useState('');
     const [profileImage, setProfileImage] = useState(0);
-    const [avatar, setAvatar] = useState('');
+    const [avatar, setAvatar] = useState([]);
+    const [p, setp] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const [allCountries, setAllCountries] = useState([]);
@@ -58,6 +59,7 @@ export default function ProfileForm() {
                 setEmail(info.Email)
                 setSelectedCityId(info.City.CityId)
                 setSelectedCountryId(info.City.Country.CountryId)
+                setp(info.ProfileImage)
                 setCellPhone(info.CellPhone)
             }
         })
@@ -80,7 +82,6 @@ export default function ProfileForm() {
                     userInfo()
                     setIsLoading(false)
                     popupMessageService.AlertSuccessMessage(result.data.Message)
-                    navigate('/dashboard');
                 }
             },
             (error) => {
@@ -176,7 +177,7 @@ export default function ProfileForm() {
                             padding: '0.4em',
                             p: 4
                         }}>
-                            <Avatar src={'https://webapi.emlakofisimden.com/' + profileImage} alt="photoURL"
+                            <Avatar src={'https://webapi.emlakofisimden.com/' + p} alt="photoURL"
                                     sx={{width: 110, height: 110, right: '35%', bottom: '35%'}}/>
                         </Stack>
                         <Stack flexDirection='row' mt={4} sx={{border: '1px dashed #b1b9be', p: 1, borderRadius: 1.5, paddingTop: 3.3}}>

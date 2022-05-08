@@ -46,6 +46,7 @@ import CaseUpdateHistory from "./pages/CaseUpdateHistory";
 import AdminLicencesDetails from "./adminPages/AdminLicencesDetails";
 import Casees from "./pages/Casees";
 import AdminSmsHistory from "./adminPages/AdminSmsHistory";
+import AdminSupport from "./adminPages/AdminSupport";
 
 // ----------------------------------------------------------------------
 
@@ -92,6 +93,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/adminDashboard/admin" replace /> },
         { path: 'admin', element: <AdminDashboard /> },
+        { path: 'support', element: <AdminSupport /> },
         { path: 'licences', element: <AdminLicences /> },
         { path: 'users', element: <AdminUsers /> },
         { path: 'balanceTracking', element: <AdminBalanceTracking /> },

@@ -86,7 +86,7 @@ export default function AdminAccountPopover() {
             >
                 <Box sx={{ my: 1.5, px: 2.5 }}>
                     <Typography variant="subtitle1" noWrap>
-                        Sam
+                        Administrator
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
                         {localStorage.getItem('Email')}
