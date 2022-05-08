@@ -13,7 +13,7 @@ import {
     Typography,
     TableContainer,
     Paper,
-    TableHead, TablePagination, Box, TextField, InputAdornment, Collapse, IconButton,
+    TableHead, Box, TextField, InputAdornment, IconButton
 } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -23,18 +23,21 @@ import {Global} from "../Global";
 import LicencesService from "../services/licences.service";
 import {format} from "date-fns";
 import layersOutline from "@iconify/icons-eva/layers-outline";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import {styled} from '@mui/material/styles';
-import plusFill from "@iconify/icons-eva/plus-fill";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import LicenceUsersService from "../services/licenceUsers.service";
+import optionsOutline from '@iconify/icons-eva/options-outline';
+import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 // ----------------------------------------------------------------------
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -66,41 +69,27 @@ export default function AdminLicences() {
     const [profileName, setProfileName] = useState("");
     const [email, setEmail] = useState("");
     const [isActive, setIsActive] = useState(0);
-    const [open, setOpen] = React.useState(false);
     const [allUsers, setAllUsers] = useState([]);
-    const [usersAdd, setUsersAdd] = useState(0);
     const navigate = useNavigate();
-
     const licencesService = new LicencesService();
     const licenceUsersService = new LicenceUsersService();
     const popupMessageService = new PopupMessageService();
     const catchMessagee = Global.catchMessage;
-    const [count, setCount] = useState(10);
-    const {id} = useParams();
 
-    function filtering(licences) {
-        let filteredLicences = licences
-        if (userId > 0)
-            filteredLicences = filteredLicences.filter(c => c.UserId === userId)
-        if (isActive > -1)
-            filteredLicences = filteredLicences.filter(c => c.IsActive == isActive)
-        filteredLicences = filteredLicences.filter(c => c.ProfilName == profileName)
-        filteredLicences = filteredLicences.filter(c => c.Email == email)
-        return filteredLicences
+    const previousValues = () => {
+        if (pageNumber > 0 && allLicences.length > 0) {
+            getAllLicences(userId, profileName, email, isActive,pageNumber - 1, pageSize)
+            setPageNumber(pageNumber - 1)
+        }
     }
 
-    const handleChangePage = (event, newPage) => {
-        console.log("newPageNumber : ", newPage)
-        getAllLicences(userId, profileName, email, isActive, newPage, pageSize)
-        setPageNumber(newPage);
-    };
+    const nextValues = () => {
+        if (allLicences.length >= 3) {
+            getAllLicences(userId, profileName, email, isActive,pageNumber + 1, pageSize)
+            setPageNumber(pageNumber + 1)
+        }
+    }
 
-    const handleChangeRowsPerPage = (event) => {
-        setPageSize(event.target.value);
-        setPageNumber(1);
-        getAllLicences(userId, profileName, email, isActive, 1, event.target.value)
-    };
-    //List all the Case Statuses of current licence
     const getAllLicences = (userId, profileName, email, isActive, pageNumber, pageSize) => {
         licencesService.getAllLicencesAsAdmin(userId, profileName, email, isActive, pageNumber, pageSize).then(
             (result) => {
@@ -134,9 +123,6 @@ export default function AdminLicences() {
     const handleChangeEmail = (event) => {
         setEmail(event.target.value);
     };
-    const handleChangeUserId = (event) => {
-        setUserId(event.target.value);
-    };
 
     const getAllUsers = () => {
         licenceUsersService
@@ -153,7 +139,7 @@ export default function AdminLicences() {
                             key: item.User.Title
                         });
                     });
-                    setUsersAdd(list[0].value)
+                    setUserId(list[0].value)
                     setAllUsers(list);
                 },
                 (error) => {
@@ -177,17 +163,17 @@ export default function AdminLicences() {
                     <Typography variant="h4" gutterBottom>
                         Licences
                     </Typography>
-                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={plusFill}/>}>
+                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={optionsOutline}/>}>
                         Filter
                     </Button>
                 </Stack>
                 <Stack spacing={2}>
-                    <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-around">
+                    <Stack mb={0} flexDirection="row" alignItems="center" justifyContent="space-around">
                         <Stack mb={0} justifyContent="space-around">
-                            <Typography variant="body1" gutterBottom mb={3}>
+                            <Typography variant="body1" gutterBottom mb={2}>
                                 Profile Name
                             </Typography>
-                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                            <Box sx={{maxWidth: 300, minWidth: 300}}>
                                 <FormControl fullWidth size="small">
                                     <TextField
                                         size='small'
@@ -208,10 +194,10 @@ export default function AdminLicences() {
                             </Box>
                         </Stack>
                         <Stack mb={0} justifyContent="space-around">
-                            <Typography variant="body1" gutterBottom mb={3}>
+                            <Typography variant="body1" gutterBottom mb={2}>
                                 Email
                             </Typography>
-                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                            <Box sx={{maxWidth: 300, minWidth: 300}}>
                                 <FormControl fullWidth size="small">
                                     <TextField
                                         size='small'
@@ -232,10 +218,10 @@ export default function AdminLicences() {
                             </Box>
                         </Stack>
                         <Stack mb={0} justifyContent="space-around">
-                            <Typography variant="body1" gutterBottom mb={3}>
+                            <Typography variant="body1" gutterBottom mb={2}>
                                 Users
                             </Typography>
-                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                            <Box sx={{maxWidth: 300, minWidth: 300}}>
                                 <FormControl fullWidth size="small">
                                     {allUsers.length > 0 ? (
                                         <TextField
@@ -266,11 +252,13 @@ export default function AdminLicences() {
                                 </FormControl>
                             </Box>
                         </Stack>
-                        <Stack mb={0} justifyContent="space-around">
-                            <Typography variant="body1" gutterBottom mb={3}>
+                    </Stack>
+                    <Stack mb={3} marginTop={-7} flexDirection="row" alignItems="center" justifyContent="flex-start">
+                        <Stack mb={0} ml={4}>
+                            <Typography variant="body1" gutterBottom mb={2}>
                                 Status
                             </Typography>
-                            <Box sx={{maxWidth: 240, minWidth: 240}}>
+                            <Box sx={{maxWidth: 300, minWidth: 300}}>
                                 <FormControl fullWidth size="small">
                                     <TextField
                                         select
@@ -357,15 +345,21 @@ export default function AdminLicences() {
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={count}
-                                            page={pageNumber}
-                                            onPageChange={handleChangePage}
-                                            rowsPerPage={pageSize}
-                                            onRowsPerPageChange={handleChangeRowsPerPage}
-                                        />
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={98}>
+                                            <Typography sx={{fontSize: 12, paddingTop: 0.8}} gutterBottom color='#637281'>Tap to change the page :</Typography>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:5}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValues}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValues}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <TableCell sx={{width: '40%'}}>

@@ -1,5 +1,6 @@
 // material
 import {
+    Box,
     Card,
     Container, IconButton, Paper,
     Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
@@ -13,11 +14,13 @@ import arrowBackOutline from "@iconify/icons-eva/arrow-back-outline";
 import {useNavigate} from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
 import CircularProgress from "@mui/material/CircularProgress";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import SmsHistoryService from "../services/smsHistory.service";
 import PopupMessageService from "../services/popupMessage.service";
 import {Global} from "../Global";
 import {format} from "date-fns";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 // ----------------------------------------------------------------------
 
 export default function SentMessages() {
@@ -29,19 +32,20 @@ export default function SentMessages() {
     const catchMessagee = Global.catchMessage;
     const [pageNumber, setPageNumber] =useState(0);
     const [pageSize, setPageSize] = useState(3);
-    const [count, setCount] = useState(10);
 
-    const handleChangePage = (event, newPage) => {
-        console.log("newPageNumber : ",newPage)
-        getAllSentMessages(newPage,pageSize)
-        setPageNumber(newPage);
-    };
+    const previousValues = () => {
+        if (pageNumber > 0 && allSentMessages.length > 0) {
+            getAllSentMessages(pageNumber - 1, pageSize)
+            setPageNumber(pageNumber - 1)
+        }
+    }
 
-    const handleChangeRowsPerPage = (event) => {
-        setPageSize(event.target.value);
-        setPageNumber(1);
-        getAllSentMessages(1, event.target.value)
-    };
+    const nextValues = () => {
+        if (allSentMessages.length >= 3) {
+            getAllSentMessages(pageNumber + 1, pageSize)
+            setPageNumber(pageNumber + 1)
+        }
+    }
 
     const getAllSentMessages = (pageNumber, pageSize) => {
         smsHistoryService.getAll(pageNumber, pageSize).then(
@@ -116,20 +120,27 @@ export default function SentMessages() {
                                                             <TableCell component="th" scope="row">
                                                                 {row.PhoneNumber}
                                                             </TableCell>
+                                                            <TableCell align="right"/>
                                                         </TableRow>
                                                     ))}
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={count}
-                                            page={pageNumber}
-                                            onPageChange={handleChangePage}
-                                            rowsPerPage={pageSize}
-                                            onRowsPerPageChange={handleChangeRowsPerPage}
-                                        />
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={74}>
+                                            <Typography sx={{fontSize: 12, paddingTop: 0.8}} gutterBottom color='#637281'>Tap to change the page :</Typography>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:5}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValues}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValues}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <TableCell sx={{width: '40%'}}>

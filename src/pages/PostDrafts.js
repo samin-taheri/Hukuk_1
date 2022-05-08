@@ -215,7 +215,7 @@ export default function PostDrafts() {
                     </Modal>
                 <Grid container sx={{flexDirection: 'row', paddingLeft: 7, top: 10}}>
                     {isLoading === true ?
-                        <Stack sx={{color: 'grey.500', padding: 10}} spacing={2} direction="row"
+                        <Stack sx={{color: 'grey.500', paddingLeft: 53, paddingTop: 25}} spacing={2} direction="row"
                                justifyContent='center'>
                             <CircularProgress color="inherit"/>
                         </Stack>

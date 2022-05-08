@@ -47,6 +47,7 @@ import AdminLicencesDetails from "./adminPages/AdminLicencesDetails";
 import Casees from "./pages/Casees";
 import AdminSmsHistory from "./adminPages/AdminSmsHistory";
 import AdminSupport from "./adminPages/AdminSupport";
+import AdminUsersDetails from "./adminPages/AdminUsersDetails";
 
 // ----------------------------------------------------------------------
 
@@ -96,6 +97,7 @@ export default function Router() {
         { path: 'support', element: <AdminSupport /> },
         { path: 'licences', element: <AdminLicences /> },
         { path: 'users', element: <AdminUsers /> },
+        { path: 'users/usersDetails/:id', element: <AdminUsersDetails /> },
         { path: 'balanceTracking', element: <AdminBalanceTracking /> },
         { path: 'licences/licencesDetails/:id', element: <AdminLicencesDetails /> },
         { path: 'licences/licencesDetails/smsHistory/:id', element: <AdminSmsHistory /> }

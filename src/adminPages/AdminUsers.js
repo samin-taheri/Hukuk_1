@@ -25,11 +25,15 @@ import MenuItem from "@mui/material/MenuItem";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import {styled} from '@mui/material/styles';
-import plusFill from "@iconify/icons-eva/plus-fill";
+import optionsOutline from '@iconify/icons-eva/options-outline';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import UserService from "../services/user.service";
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+import layersOutline from "@iconify/icons-eva/layers-outline";
+import {useNavigate} from "react-router-dom";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 // ----------------------------------------------------------------------
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -53,7 +57,7 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
 }));
 
 export default function AdminLicences() {
-    const [allLicences, setAllLicences] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(0);
     const [pageSize, setPageSize] = useState(3);
@@ -65,25 +69,13 @@ export default function AdminLicences() {
     const userService = new UserService();
     const popupMessageService = new PopupMessageService();
     const catchMessagee = Global.catchMessage;
-    const [count, setCount] = useState(10);
+    const navigate = useNavigate();
 
-    const handleChangePage = (event, newPage) => {
-        console.log("newPageNumber : ", newPage)
-        getAllLicences(firstName, lastName, cellPhone, isActive, email, newPage, pageSize)
-        setPageNumber(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setPageSize(event.target.value);
-        setPageNumber(1);
-        getAllLicences(firstName, lastName, cellPhone, isActive, email, 1, event.target.value)
-    };
-    //List all the Case Statuses of current licence
-    const getAllLicences = (firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize) => {
+    const getAllUsers = (firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize) => {
         userService.getAllUsersAsAdmin(firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize).then(
             (result) => {
                 if (result.data.Success) {
-                    setAllLicences(result.data.Data);
+                    setAllUsers(result.data.Data);
                     setIsLoading(false)
                 }
             },
@@ -95,13 +87,27 @@ export default function AdminLicences() {
         })
     };
 
+    const previousValues = () => {
+        if (pageNumber > 0 && allUsers.length > 0) {
+            getAllUsers(firstName, lastName, cellPhone, isActive, email,pageNumber - 1, pageSize)
+            setPageNumber(pageNumber - 1)
+        }
+    }
+
+    const nextValues = () => {
+        if (allUsers.length >= 3) {
+            getAllUsers(firstName, lastName, cellPhone, isActive, email,pageNumber + 1, pageSize)
+            setPageNumber(pageNumber + 1)
+        }
+    }
+
     const appearFilter = () => {
-        getAllLicences(firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize)
+        getAllUsers(firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize)
     }
 
     useEffect(() => {
-        getAllLicences(firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize);
-        console.log(allLicences)
+        getAllUsers(firstName, lastName, cellPhone, isActive, email, pageNumber, pageSize);
+        console.log(allUsers)
     }, []);
 
     return (
@@ -111,7 +117,7 @@ export default function AdminLicences() {
                     <Typography variant="h4" gutterBottom>
                         Users
                     </Typography>
-                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={plusFill}/>}>
+                    <Button onClick={appearFilter} variant="contained" startIcon={<Icon icon={optionsOutline}/>}>
                         Filter
                     </Button>
                 </Stack>
@@ -253,7 +259,7 @@ export default function AdminLicences() {
                             </Stack>
                             :
                             <>
-                                {allLicences.length > 0 ? (
+                                {allUsers.length > 0 ? (
                                     <TableContainer component={Paper}>
                                         <Table sx={{minWidth: 650}} aria-label="customized table">
                                             <TableHead>
@@ -263,14 +269,14 @@ export default function AdminLicences() {
                                                     <StyledTableCell align="left">Full Name</StyledTableCell>
                                                     <StyledTableCell align="left">Cellphone</StyledTableCell>
                                                     <StyledTableCell align="left">Email</StyledTableCell>
-                                                    <StyledTableCell align="left">City /
-                                                        Country</StyledTableCell>
+                                                    <StyledTableCell align="left">City / Country</StyledTableCell>
+                                                    <StyledTableCell align="left">Details</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <>
 
-                                                    {allLicences.map((row) => (
+                                                    {allUsers.map((row) => (
                                                         <StyledTableRow
                                                             key={row.Id}
                                                             sx={{'&:last-child td, &:last-child th': {border: 0}}}>
@@ -292,21 +298,36 @@ export default function AdminLicences() {
                                                             <StyledTableCell component="th" scope="row">
                                                                 {row.City} / {row.Country}
                                                             </StyledTableCell>
+                                                            <StyledTableCell align="left">
+                                                                <Button
+                                                                    variant="contained"
+                                                                    onClick={() => navigate('/adminDashboard/users/usersDetails/' + row.Id)}
+                                                                    startIcon={<Icon icon={layersOutline}/>}
+                                                                >
+                                                                    Details
+                                                                </Button>
+                                                            </StyledTableCell>
                                                         </StyledTableRow>
                                                     ))}
 
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={count}
-                                            page={pageNumber}
-                                            onPageChange={handleChangePage}
-                                            rowsPerPage={pageSize}
-                                            onRowsPerPageChange={handleChangeRowsPerPage}
-                                        />
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={98}>
+                                            <Typography sx={{fontSize: 12, paddingTop: 0.8}} gutterBottom color='#637281'>Tap to change the page :</Typography>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:5}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValues}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValues}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <TableCell sx={{width: '40%'}}>

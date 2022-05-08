@@ -53,6 +53,8 @@ import Scrollbar from "../components/Scrollbar";
 import Fab from "@mui/material/Fab";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -111,7 +113,7 @@ export default function AdminLicencesDetails() {
     const [taxOffice, setTaxOffice] = useState("")
     const [billAddress, setBillAddress] = useState("")
     const [pageNumber, setPageNumber] = useState(0);
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(3);
     const [pageNumberForPayment, setPageNumberForPayment] = useState(0);
     const [pageSizeForPayment, setPageSizeForPayment] = useState(4);
     const [pageNumberForUsers, setPageNumberForUsers] = useState(0);
@@ -159,16 +161,47 @@ export default function AdminLicencesDetails() {
         })
     };
 
-    const handleChangePage = (event, newPage) => {
-        getAllSmsHistories(newPage, pageSize, id)
-        setPageNumber(newPage);
-    };
+    const previousValues = () => {
+        if (pageNumber > 0 && smsHistories.length > 0) {
+            getAllSmsHistories(pageNumber - 1, pageSize, id)
+            setPageNumber(pageNumber - 1)
+        }
+    }
 
-    const handleChangeRowsPerPage = (event) => {
-        setPageSize(event.target.value);
-        setPageNumber(1);
-        getAllSmsHistories(1, event.target.value, id)
-    };
+    const nextValues = () => {
+        if (smsHistories.length >= 3) {
+            getAllSmsHistories(pageNumber + 1, pageSize, id)
+            setPageNumber(pageNumber + 1)
+        }
+    }
+
+    const previousValuesForPayment = () => {
+        if (pageNumberForPayment > 0 && paymentHistories.length > 0) {
+            getAllPaymentHistories(pageNumberForPayment - 1, pageSizeForPayment, id)
+            setPageNumberForPayment(pageNumberForPayment - 1)
+        }
+    }
+
+    const nextValuesForPayment = () => {
+        if (paymentHistories.length >= 3) {
+            getAllPaymentHistories(pageNumberForPayment + 1, pageSizeForPayment, id)
+            setPageNumberForPayment(pageNumberForPayment + 1)
+        }
+    }
+
+    const previousValuesForUsers = () => {
+        if (pageNumberForUsers > 0 && registeredUsers.length > 0) {
+            getAllRegisteredUsers(pageNumberForUsers - 1, pageSizeForUsers, id)
+            setPageNumberForUsers(pageNumberForUsers - 1)
+        }
+    }
+
+    const nextValuesForUsers = () => {
+        if (registeredUsers.length >= 3) {
+            getAllRegisteredUsers(pageNumberForUsers + 1, pageSizeForUsers, id)
+            setPageNumberForUsers(pageNumberForUsers + 1)
+        }
+    }
 
     const handleChangePageForUsers = (event, newPage) => {
         getAllRegisteredUsers(newPage, pageSizeForUsers, id)
@@ -258,7 +291,7 @@ export default function AdminLicencesDetails() {
                 </Stack>
                 <Stack flexDirection='row'>
                     {isLoading === true ?
-                        <Stack sx={{color: 'grey.500', paddingLeft: 60, paddingTop: 20}} spacing={2}
+                        <Stack sx={{color: 'grey.500', paddingLeft: 60, paddingTop: 25}} spacing={2}
                                direction="row"
                                justifyContent='center' alignSelf='center' left='50%'>
                             <CircularProgress color="inherit"/>
@@ -503,15 +536,20 @@ export default function AdminLicencesDetails() {
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={count}
-                                            page={pageNumber}
-                                            onPageChange={handleChangePage}
-                                            rowsPerPage={pageSize}
-                                            onRowsPerPageChange={handleChangeRowsPerPage}
-                                        />
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={65}>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:3}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValues}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValues}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <Box>
@@ -576,6 +614,20 @@ export default function AdminLicencesDetails() {
                                                 </>
                                             </TableBody>
                                         </Table>
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={56}>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:2}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValuesForPayment}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValuesForPayment}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <Box>
@@ -647,15 +699,20 @@ export default function AdminLicencesDetails() {
                                                 </>
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            rowsPerPageOptions={[5, 10, 25]}
-                                            component="div"
-                                            count={count}
-                                            page={pageNumberForUsers}
-                                            onPageChange={handleChangePageForUsers}
-                                            rowsPerPage={pageSizeForUsers}
-                                            onRowsPerPageChange={handleChangeRowsPerPageForUsers}
-                                        />
+                                        <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={75}>
+                                            <Box sx={{display: 'flex', alignItems: 'center', marginRight:3}}>
+                                                <Box sx={{m: 0, position: 'relative'}}>
+                                                    <IconButton onClick={previousValuesForUsers}>
+                                                        <ChevronLeftOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                                <Box sx={{m: 0, position: 'relative', marginLeft: 0.5}}>
+                                                    <IconButton onClick={nextValuesForUsers}>
+                                                        <ChevronRightOutlinedIcon sx={{width: 27, height: 27}}/>
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Stack>
                                     </TableContainer>
                                 ) : (
                                     <Box>
