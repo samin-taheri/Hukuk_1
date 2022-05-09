@@ -2,11 +2,10 @@
 import PropTypes from 'prop-types';
 import { Box, Card, Paper, Typography, CardHeader, CardContent } from '@mui/material';
 // utils
-import {alpha, styled} from "@mui/material/styles";
 import ConnectedClients from "../app/ConnectedClients";
-import UpcomingCases from "../app/UpcomingCases";
-import UpcomingEvents from "../app/UpcomingEvents";
-import UpcomingTasks from "../app/UpcomingTasks";
+import ConnectedCases from "../app/ConnectedCases";
+import ConnectedEvents from "../app/ConnectedEvents";
+import ConnectedTasks from "../app/ConnectedTasks";
 import React from "react";
 
 // ----------------------------------------------------------------------
@@ -30,9 +29,9 @@ export default function AppTrafficBySite({ title, subheader, list, ...other }) {
                     }}
                 >
                     <ConnectedClients/>
-                    <UpcomingTasks/>
-                    <UpcomingEvents/>
-                    <UpcomingCases/>
+                    <ConnectedTasks/>
+                    <ConnectedEvents/>
+                    <ConnectedCases/>
                 </Box>
             </CardContent>
         </Card>

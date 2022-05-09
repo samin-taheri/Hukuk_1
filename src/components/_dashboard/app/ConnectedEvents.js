@@ -1,8 +1,8 @@
+import sharpEventNote from '@iconify/icons-ic/sharp-event-note';
 // material
 import {styled} from '@mui/material/styles';
 import {Card, Typography, Stack} from '@mui/material';
 import {Icon} from "@iconify/react";
-import roundCases from '@iconify/icons-ic/round-cases';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({theme}) => ({
@@ -10,8 +10,8 @@ const RootStyle = styled(Card)(({theme}) => ({
     textAlign: 'center',
     paddingTop: 40,
     paddingRight: 50,
-    color: '#639674',
-    backgroundColor: '#e3f7e7',
+    color: '#a37e6e',
+    backgroundColor: '#f7eae3',
     width: 310,
     height: 184
 }));
@@ -20,31 +20,31 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
     margin: 'auto',
     display: 'flex',
     borderRadius: '50%',
-    marginLeft: -40,
+    marginLeft: -20,
     paddingTop: 0,
     alignItems: 'center',
-    width: theme.spacing(22),
-    height: theme.spacing(23),
+    width: theme.spacing(20),
+    height: theme.spacing(17),
     justifyContent: 'center',
-    color: '#639674',
+    color: '#a37e6e',
 }));
 
 // ----------------------------------------------------------------------
 
-export default function UpcomingCases() {
+export default function ConnectedEvents() {
     return (
 
         <RootStyle>
             <Stack flexDirection='row' mt={2}>
                 <IconWrapperStyle>
-                    <Icon icon={roundCases} width={350} height={350}/>
+                    <Icon icon={sharpEventNote} width={350} height={350}/>
                 </IconWrapperStyle>
                 <Stack flexDirection='column'>
                     <Typography variant="h3" sx={{}}>
                         677
                     </Typography>
                     <Typography variant="subtitle1" paddingLeft={0} paddingTop={1}>
-                         Connected Cases
+                        Connected Events
                     </Typography>
                 </Stack>
             </Stack>
