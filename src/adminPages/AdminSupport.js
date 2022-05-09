@@ -165,10 +165,7 @@ export default function Support() {
         })
     };
 
-    const messagesEndRef = useRef(null)
-
     const messageEl = useRef(null);
-
 
     const buttonSx = {
         ...(success && {

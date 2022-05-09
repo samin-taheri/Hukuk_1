@@ -2,7 +2,12 @@
 import PropTypes from 'prop-types';
 import { Box, Card, Paper, Typography, CardHeader, CardContent } from '@mui/material';
 // utils
-import { fShortenNumber } from '../../../utils/formatNumber';
+import {alpha, styled} from "@mui/material/styles";
+import ConnectedClients from "../app/ConnectedClients";
+import UpcomingCases from "../app/UpcomingCases";
+import UpcomingEvents from "../app/UpcomingEvents";
+import UpcomingTasks from "../app/UpcomingTasks";
+import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -15,27 +20,19 @@ AppTrafficBySite.propTypes = {
 export default function AppTrafficBySite({ title, subheader, list, ...other }) {
     return (
         <Card {...other}>
-            <CardHeader title={title} subheader={subheader} />
-
+            <CardHeader title="Total Counts"/>
             <CardContent>
                 <Box
                     sx={{
                         display: 'grid',
-                        gap: 2,
+                        gap: 3,
                         gridTemplateColumns: 'repeat(2, 1fr)',
                     }}
                 >
-                    {list.map((site) => (
-                        <Paper key={site.name} variant="outlined" sx={{ py: 2.5, textAlign: 'center', width: 120, height: 120, marginLeft: 1 }}>
-                            <Box sx={{ mb: 0.5 }}>{site.icon}</Box>
-
-                            <Typography variant="h6">{fShortenNumber(site.value)}</Typography>
-
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {site.name}
-                            </Typography>
-                        </Paper>
-                    ))}
+                    <ConnectedClients/>
+                    <UpcomingTasks/>
+                    <UpcomingEvents/>
+                    <UpcomingCases/>
                 </Box>
             </CardContent>
         </Card>

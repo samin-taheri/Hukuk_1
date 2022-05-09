@@ -35,9 +35,6 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import {green} from '@mui/material/colors';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
-import account from "../_mocks_/account";
-import {useNavigate} from "react-router-dom";
-import AuthService from "../services/auth.service";
 import ProfileService from "../services/profile.service";
 // ----------------------------------------------------------------------
 
@@ -130,11 +127,7 @@ export default function Support() {
             popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
-
-    const messagesEndRef = useRef(null)
-
     const messageEl = useRef(null);
-
 
     const buttonSx = {
         ...(success && {
