@@ -82,11 +82,11 @@ export default function AppConversionRates() {
                                                 <TimelineDot
                                                     sx={{
                                                         backgroundColor:
-                                                            (index == tasks.length -1 && 'success.main') ||
-                                                            (index == tasks.length -2 && 'primary.main') ||
-                                                            (index == tasks.length -3 && 'info.main') ||
-                                                            (index == tasks.length -4 && 'warning.main') ||
-                                                            'error.main'
+                                                            (index == tasks.length -1 && '#5faa79') ||
+                                                            (index == tasks.length -2 && '#43506c') ||
+                                                            (index == tasks.length -3 && '#8698bb') ||
+                                                            (index == tasks.length -4 && '#caca77') ||
+                                                            '#a94458'
                                                     }}
                                                 />
                                                 <TimelineConnector/>
