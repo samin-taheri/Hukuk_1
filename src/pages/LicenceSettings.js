@@ -24,7 +24,7 @@ import messageCircleOutline from '@iconify/icons-eva/message-circle-outline';
 import peopleOutline from '@iconify/icons-eva/people-outline';
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@material-ui/icons/Close";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PopupMessageService from 'src/services/popupMessage.service';
 import {Global} from "../Global";
 import roundUpdate from "@iconify/icons-ic/round-update";
@@ -61,6 +61,8 @@ import CurrentlyUsed from "../components/_dashboard/Box/CurrentlyUsed";
 import NumberOfCurrent from "../components/_dashboard/Box/NumberOfCurrent";
 import SMS from "../components/_dashboard/Box/SMS";
 import palette from "../theme/palette";
+import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
+import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
 // ----------------------------------------------------------------------
 
 export default function LicenceSettings() {
@@ -77,12 +79,27 @@ export default function LicenceSettings() {
     const [websiteEdit, setWebSiteEdit] = useState('');
     const [emailEdit, setEmailEdit] = useState('');
     const [imageFile, setImageFile] = useState('');
+    const [openModal, setOpen] = useState(false);
     const [cities, setCities] = useState([]);
     const [personTypeList, setPersonTypeList] = useState([]);
     const [countryId, setCountryId] = useState(0);
     const [histories, setHistories] = useState([]);
     const [smsOrders, setSmsOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [profilNameAdd, setProfilNameAdd] = useState("");
+    const [userIdAdd, setUserIdAdd] = useState(0);
+    const [personTypeIdAdd, setPersonTypeIdAdd] = useState(1);
+    const [billAddressAdd, setBillAddressAdd] = useState("");
+    const [taxNoAdd, setTaxNoAdd] = useState("");
+    const [taxOfficeAdd, setTaxOfficeAdd] = useState("");
+    const [webSiteAdd, setWebSiteAdd] = useState("");
+    const [emailAdd, setEmailAdd] = useState("");
+    const [phoneNumberAdd, setPhoneNumberAdd] = useState("");
+    const [cityIdAdd, setCityIdAdd] = useState(0);
+    const [valueR, setValueR] = useState('');
+    const [cityValue, setCityValue] = useState(0);
+    const [isCountrySelected, setIsCountrySelected] = useState(false);
+    const [countries, setCountries] = useState([]);
 
     const {id} = useParams();
     const catchMessagee = Global.catchMessage;
@@ -264,9 +281,138 @@ export default function LicenceSettings() {
         })
     };
 
+    const handleChange = (event) => {
+        setValueR(event.target.value);
+        setIsCountrySelected(true);
+        const cityService = new CityService();
+        cityService
+            .getAll(event.target.value)
+            .then((result) => {
+                    const citiesFromApi = result.data.Data;
+                    const list2 = [];
+                    // eslint-disable-next-line no-restricted-syntax,guard-for-in
+                    citiesFromApi.forEach((item) => {
+                        list2.push({
+                            value: item.CityId,
+                            label: item.CityName,
+                            key: item.CityName
+                        });
+                    });
+                    setCities(list2);
+                },
+                (error) => {
+                    popupMessageService.AlertErrorMessage(error.response.data.Message);
+                })
+            .catch((errors) => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    };
+
+    const handleCitiesChange = (event) => {
+        setCityValue(event.target.value);
+    };
+    useEffect(() => {
+        const countryService = new CountryService();
+        countryService
+            .getAll()
+            .then((result) => {
+                    setCountries(result.data.Data);
+
+                    const countriesFromApi = result.data.Data;
+                    const list = [];
+                    countriesFromApi.forEach((item) => {
+                        list.push({
+                            value: item.CountryId,
+                            label: item.CountryName,
+                            key: item.CountryName
+                        });
+                    });
+                    setCountries(list);
+                },
+                (error) => {
+                    popupMessageService.AlertErrorMessage(error.response.data.Message);
+                })
+            .catch((errors) => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    }, []);
+
+    const addNewLicence = () => {
+        let obj = {
+            profilName: profilNameAdd,
+            userId: id,
+            personTypeId: personTypeIdAdd,
+            billAddress: billAddressAdd,
+            taxNo: taxNoAdd,
+            taxOffice: taxOfficeAdd,
+            webSite: webSiteAdd,
+            email: emailAdd,
+            phoneNumber: phoneNumberAdd,
+            cityId: cityIdAdd
+        }
+        let re = licencesService.add(obj)
+        re.then(
+            (result) => {
+                if (result.data.Success) {
+                    setOpen(false)
+                    popupMessageService.AlertSuccessMessage(result.data.Message)
+                }
+            },
+            (error) => {
+                console.log()(error.response.data.Message);
+            }
+        ).catch(() => {
+            popupMessageService.AlertErrorMessage(catchMessagee)
+        })
+    };
+
+    const getAllPersonTypess = () => {
+        personTypesService
+            .getAll()
+            .then((result) => {
+                    setPersonTypeList(result.data.Data);
+                    const personTypesFromApi = result.data.Data;
+                    const list2 = [];
+                    personTypesFromApi.forEach((item) => {
+                        list2.push({
+                            value: item.PersonTypeId,
+                            label: item.PersonTypeName,
+                            key: item.PersonTypeName
+                        });
+                    });
+                    setPersonTypeIdAdd(list2[0].value)
+                    setPersonTypeList(list2);
+                },
+                (error) => {
+                    popupMessageService.AlertErrorMessage(error.response.data.Message);
+                })
+            .catch(() => {
+                popupMessageService.AlertErrorMessage(catchMessagee)
+            });
+    }
+
+    const handleOpen = () => {
+        setProfilNameAdd('')
+        setUserIdAdd(0)
+        setPersonTypeIdAdd(0)
+        setBillAddressAdd('')
+        setTaxNoAdd('')
+        setTaxOfficeAdd('')
+        setWebSiteAdd('')
+        setWebSiteAdd('')
+        setEmailAdd('')
+        setPhoneNumberAdd('')
+        setCityIdAdd(0)
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         getAllCities();
         getAllPersonTypes();
+        getAllPersonTypess();
         licenceInfo();
         getAllCountries();
         getAllPaymentHistories();
@@ -282,17 +428,6 @@ export default function LicenceSettings() {
                         Licence Settings
                     </Typography>
                 </Stack>
-                {/*
-                    <CurrentUsage/>
-                    <ClientSize/>
-                    <CaseSize/>
-                    <TransactionActivitySize/>
-                    <CurrentBalance/>
-                    <CurrentlyUsed/>
-                    <NumberOfCurrent/>
-                    <Messages/>
-                   */}
-
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={3}>
                         <ContinuingTasks />
@@ -631,7 +766,256 @@ export default function LicenceSettings() {
                         </Stack>
                     </Box>
                 </Modal>
-                <Button onClick={handleOpenPaymentHistories} sx={{left: '10%'}} variant="contained"
+                    <Button onClick={handleOpen} sx={{left: '10%'}} variant="contained"
+                            startIcon={<Icon icon={plusFill}/>}>
+                        Add Licence!
+                    </Button>
+                    <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}
+                           hideBackdrop={true}
+                           disableEscapeKeyDown={true}
+                           open={openModal}
+                           aria-labelledby="modal-modal-title"
+                           aria-describedby="modal-modal-description"
+                    >
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: 470,
+                                backgroundColor: 'background.paper',
+                                border: '2px solid #fff',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: 2
+                            }}
+                        >
+                            <Stack mb={5} flexDirection="row" justifyContent='space-between'>
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    Add new licence!
+                                </Typography>
+                                <CloseIcon onClick={handleClose}/>
+                            </Stack>
+                            <Stack spacing={2}>
+                                <Stack mb={3} alignItems="center" justifyContent="space-around">
+                                    <Stack mb={3} justifyContent="space-around">
+                                        <Box sx={{minWidth: 400}}>
+                                            <FormControl fullWidth size="small">
+                                                <TextField
+                                                    autoFocus
+                                                    fullWidth
+                                                    size="small"
+                                                    label="Licence Name"
+                                                    value={profilNameAdd}
+                                                    onChange={(event) => setProfilNameAdd(event.target.value)}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <DriveFileRenameOutlineOutlinedIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </Box>
+                                    </Stack>
+                                    {countries.length > 0 ? (
+                                        <Stack mb={3} justifyContent="space-around">
+                                            <Box sx={{minWidth: 400}}>
+                                                <FormControl fullWidth>
+                                                    <TextField
+                                                        select
+                                                        fullWidth
+                                                        size='small'
+                                                        value={valueR}
+                                                        key={Math.random().toString(36).substr(2, 9)}
+                                                        label="Country"
+                                                        onChange={handleChange}
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    <PublicOutlinedIcon/>
+                                                                </InputAdornment>
+                                                            )
+                                                        }}
+                                                    >
+                                                        {countries.map((item) => (
+                                                            <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                                      value={item.value}>
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
+                                                </FormControl>
+                                            </Box>
+                                        </Stack>
+                                    ) : null}
+
+                                    {cities.length > 0 && isCountrySelected ? (
+                                        <Stack mb={3} justifyContent="space-around">
+                                            <Box sx={{minWidth: 400}}>
+                                                <FormControl fullWidth>
+                                                    <TextField
+                                                        select
+                                                        fullWidth
+                                                        size='small'
+                                                        value={cityValue}
+                                                        key={Math.random().toString(36).substr(2, 9)}
+                                                        label="City"
+                                                        onChange={handleCitiesChange}
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    <BusinessOutlinedIcon/>
+                                                                </InputAdornment>
+                                                            )
+                                                        }}
+                                                    >
+                                                        {cities.map((item) => (
+                                                            <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                                      value={item.value}>
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
+                                                </FormControl>
+                                            </Box>
+                                        </Stack>
+                                    ) : null}
+
+                                    {personTypeList.length > 0 ? (
+                                        <Box mb={3} sx={{minWidth: 400}}>
+                                            <FormControl fullWidth size='small'>
+                                                <TextField
+                                                    select
+                                                    size='small'
+                                                    value={personTypeIdAdd}
+                                                    key={Math.random().toString(36).substr(2, 9)}
+                                                    label="Person Type"
+                                                    onChange={(event) => setPersonTypeIdAdd(event.target.value)}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <AdminPanelSettingsOutlinedIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                >
+                                                    {personTypeList.map((item) => (
+                                                        <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                                  value={item.value}>
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </FormControl>
+                                        </Box>
+                                    ) : null}
+
+                                    <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Phone Number"
+                                            value={phoneNumberAdd}
+                                            onChange={(event) => setPhoneNumberAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <PhoneInTalkOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Bill Adress"
+                                            value={billAddressAdd}
+                                            onChange={(event) => setBillAddressAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <HomeOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    </Stack>
+                                    <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Tax No"
+                                            value={taxNoAdd}
+                                            onChange={(event) => setTaxNoAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <AddBusinessOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Tax Office"
+                                            value={taxOfficeAdd}
+                                            onChange={(event) => setTaxOfficeAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <HomeWorkOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    </Stack>
+                                    <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Website"
+                                            value={webSiteAdd}
+                                            onChange={(event) => setWebSiteAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <WebOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Email"
+                                            value={emailAdd}
+                                            onChange={(event) => setEmailAdd(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <EmailOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    </Stack>
+                                </Stack>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    onClick={() => addNewLicence()}
+                                >
+                                    Add!
+                                </Button>
+                            </Stack>
+                        </Box>
+                    </Modal>
+                <Button onClick={handleOpenPaymentHistories} sx={{left: '12%'}} variant="contained"
                         startIcon={<Icon icon={outlinePayment}/>}>
                     Payment History
                 </Button>

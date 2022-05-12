@@ -75,40 +75,46 @@ export default function AppConversionRates() {
 
                         <>
                             {tasks.length > 0 ? (
-                                <>
-                                    {tasks.map((item, index) => (
-                                        <TimelineItem>
-                                            <TimelineSeparator>
-                                                <TimelineDot
-                                                    sx={{
-                                                        backgroundColor:
-                                                            (index == tasks.length -1 && '#5faa79') ||
-                                                            (index == tasks.length -2 && '#43506c') ||
-                                                            (index == tasks.length -3 && '#8698bb') ||
-                                                            (index == tasks.length -4 && '#caca77') ||
-                                                            '#a94458'
-                                                    }}
-                                                />
-                                                <TimelineConnector/>
+                                    <>
+                                        {tasks.map((item, index) => (
+                                            <TimelineItem>
+                                                <TimelineSeparator>
+                                                    <TimelineDot
+                                                        sx={{
+                                                            backgroundColor:
+                                                                (index == tasks.length - 1 && 'success.main') ||
+                                                                (index == tasks.length - 2 && 'primary.main') ||
+                                                                (index == tasks.length - 3 && 'info.main') ||
+                                                                (index == tasks.length - 4 && 'warning.main') ||
+                                                                'error.main'
+                                                        }}
+                                                    />
+                                                    <TimelineConnector/>
 
-                                            </TimelineSeparator>
-                                            <TimelineContent>
-                                                <Typography variant="subtitle2"
-                                                            key={item.EventtId}>{item.Title}</Typography>
-                                                <Typography variant="caption" sx={{color: 'text.secondary'}}>
-                                                    {days[new Date(item.StartDate).getDay()]} {monthNames[new Date(item.StartDate).getMonth()]} {format(new Date(item.StartDate), 'dd kk:mm')}
-                                                </Typography>
-                                                <Stack flexDirection='row'>
+                                                </TimelineSeparator>
+                                                <TimelineContent>
+                                                    <Typography variant="subtitle2"
+                                                                key={item.EventtId}>{item.Title}</Typography>
                                                     <Typography variant="caption" sx={{color: 'text.secondary'}}>
-                                                        {days[new Date(item.EndDate).getDay()]} {monthNames[new Date(item.EndDate).getMonth()]} {format(new Date(item.EndDate), 'dd kk:mm')}
+                                                        {days[new Date(item.StartDate).getDay()]} {monthNames[new Date(item.StartDate).getMonth()]} {format(new Date(item.StartDate), 'dd kk:mm')}
                                                     </Typography>
-                                                </Stack>
+                                                    <Stack flexDirection='row'>
+                                                        <Typography variant="caption" sx={{color: 'text.secondary'}}>
+                                                            {days[new Date(item.EndDate).getDay()]} {monthNames[new Date(item.EndDate).getMonth()]} {format(new Date(item.EndDate), 'dd kk:mm')}
+                                                        </Typography>
+                                                    </Stack>
 
-                                            </TimelineContent>
-                                        </TimelineItem>
-                                    ))}
+                                                </TimelineContent>
+                                            </TimelineItem>
+                                        ))}
+                                    </>
+                                ) :
+                                <>
+                                    <img src="/static/illustrations/no.png" alt="login"/>
+                                    <Typography variant="h3" gutterBottom textAlign='center'
+                                                color='#a9a9a9'>Please Add Event!</Typography>
                                 </>
-                            ) : null}
+                            }
                         </>
                     }
 

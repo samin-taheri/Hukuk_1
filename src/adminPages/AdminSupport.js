@@ -96,6 +96,7 @@ export default function Support() {
     const [success, setSuccess] = React.useState(false);
     const [userId, setUserId] = React.useState(0);
     const [licenceId, setLicenceId] = React.useState(0);
+    const [selectedFullName, setSelectedFullName] = React.useState("");
     const timer = React.useRef();
 
     const getAllSupportMessages = (userId, licenceId) => {
@@ -194,10 +195,11 @@ export default function Support() {
         }
     };
 
-    const getSelectedLicenceMessage = (userId, licenceId) => {
+    const getSelectedLicenceMessage = (userId, licenceId, fullName) => {
         setLicenceId(licenceId)
         setUserId(userId)
         getAllSupportMessages(userId, licenceId)
+        setSelectedFullName(fullName)
     }
     useEffect(() => {
         makeTheMessageRead(userId, licenceId)
@@ -252,7 +254,7 @@ export default function Support() {
                                     <>
                                         {row.LicenceId === licenceId ?
                                             <IconButton disableRipple sx={{ ml: 0, "&.MuiButtonBase-root:hover": {bgcolor: "transparent"}}}>
-                                            <AccountStyle3 key={row.LicenceId} onClick={() => getSelectedLicenceMessage(row.UserId, row.LicenceId)} sx={{ flexDirection: 'row', p: 1.6, border: '1px dashed #b1b9be', '&:hover': {backgroundColor: '#F4F6F8', boxShadow: 'none'}}}>
+                                            <AccountStyle3 key={row.LicenceId} onClick={() => getSelectedLicenceMessage(row.UserId, row.LicenceId, row.UserFullName +  '-' + row.LicenceProfileName)} sx={{ flexDirection: 'row', p: 1.6, border: '1px dashed #b1b9be', '&:hover': {backgroundColor: '#F4F6F8', boxShadow: 'none'}}}>
                                                 <Avatar
                                                     src={'https://webapi.emlakofisimden.com/' + row.UserProfileImage}
                                                     alt="photoURL"/>
@@ -271,7 +273,7 @@ export default function Support() {
                                             </IconButton>
                                             :
                                             <IconButton disableRipple sx={{ ml: 0, "&.MuiButtonBase-root:hover": {bgcolor: "transparent"}}}>
-                                            <AccountStyle2 key={row.LicenceId} onClick={() => getSelectedLicenceMessage(row.UserId, row.LicenceId)} sx={{ flexDirection: 'row', p: 1.6, border: '1px dashed #b1b9be', '&:hover': {backgroundColor: '#F4F6F8', boxShadow: 'none'}}}>
+                                            <AccountStyle2 key={row.LicenceId} onClick={() => getSelectedLicenceMessage(row.UserId, row.LicenceId,row.UserFullName +  '-' + row.LicenceProfileName)} sx={{ flexDirection: 'row', p: 1.6, border: '1px dashed #b1b9be', '&:hover': {backgroundColor: '#F4F6F8', boxShadow: 'none'}}}>
                                             <Avatar
                                                     src={'https://webapi.emlakofisimden.com/' + row.UserProfileImage}
                                                     alt="photoURL"/>
@@ -300,7 +302,7 @@ export default function Support() {
                                 <Avatar src={account.photoURL} alt="photoURL" sx={{marginLeft: 4, marginTop: -1}}/>
                                 <Typography variant="h6" gutterBottom
                                             sx={{paddingBottom: 1.5, paddingLeft: 2.4, color: 'primary'}}>
-                                    Messages
+                                    {selectedFullName}
                                 </Typography>
                             </Stack>
                             <Box ref={messageEl} justifyContent="center" sx={{
