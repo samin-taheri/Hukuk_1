@@ -55,9 +55,11 @@ export default function DashboardApp() {
           </Box>
           */}
                     <Grid container spacing={3}>
+                        {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                         <Grid item xs={12} md={6} lg={4} mt={8}>
                             <AppConversionRates/>
                         </Grid>
+                            ): null}
                         <Grid item xs={12} md={6} lg={7.8} mt={8}>
                             <AppTrafficBySite />
                         </Grid>

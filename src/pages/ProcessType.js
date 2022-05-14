@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import roundUpdate from '@iconify/icons-ic/round-update';
 import CloseIcon from '@material-ui/icons/Close';
@@ -37,7 +37,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import {Global} from "../Global";
-import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 
 // ----------------------------------------------------------------------
 
@@ -54,10 +54,10 @@ export default function ProcessType() {
     const [courtOfficeTypeIdForFilter, setCourtOfficeTypeIdForFilter] = useState(-1);
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [isLoading, setIsLoading] = useState(true);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
 
     const processTypeService = new ProcessTypeService();
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
 
     const catchMessagee = Global.catchMessage;
@@ -66,11 +66,11 @@ export default function ProcessType() {
     const changeActivity = (cId) => {
         processTypeService.changeActivity2(cId).then(result => {
             getAllProcessTypes()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
     function filtering(processTypes) {
@@ -83,7 +83,6 @@ export default function ProcessType() {
     }
     //List all the Case Statuses of current licence
     const getAllProcessTypes = () => {
-        if (authService.DoesHaveMandatoryClaim('ProcessTypeGetAll')) {
             processTypeService.getAll().then(
                 (result) => {
                     if (result.data.Success) {
@@ -97,7 +96,6 @@ export default function ProcessType() {
             ).catch(()=> {
                 popupMessageService.AlertErrorMessage(catchMessagee)
             })
-        }
     };
     // List all court office types
     const getAllCourtOfficeTypes = () => {
@@ -116,7 +114,9 @@ export default function ProcessType() {
                             key: item.CourtOfficeTypeName
                         });
                     });
-                    setCourtOfficeTypeAdd(list[0].value)
+                    if(list.length > 0) {
+                        setCourtOfficeTypeAdd(list[0].value)
+                    }
                     setCourtOfficeTypes(list);
                 },
                 (error) => {
@@ -137,6 +137,7 @@ export default function ProcessType() {
         setStatusForAdd(true)
         setCourtOfficeTypeAdd(courtOfficeTypes[0].value)
         setCaseTypeUodateId(0)
+        setIsErrorMessage(false)
         setOpen(true);
     };
     const handleClose = () => {
@@ -174,8 +175,8 @@ export default function ProcessType() {
                 }
             },
             (error) => {
-                setOpen(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(()=> {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -298,7 +299,9 @@ export default function ProcessType() {
                                             <Button sx={{top: 5}} size="large" type="submit" variant="contained"
                                                     onClick={() => addNewRecord()}>Add!</Button>
                                         }
-                                            <Typography sx={{ color: "red" }}>{errorMessage}</Typography>
+                                        {isErrorMessage ?
+                                            <Alert severity="error">{errorMessage}</Alert>
+                                            : null}
                                     </Stack>
                                 </Box>
                             </Modal>

@@ -44,6 +44,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import Label from "../components/Label";
 import moment from "moment";
 import {styled} from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
 // ----------------------------------------------------------------------
 
 const AccountStyle = styled('div')(({ theme }) => ({
@@ -94,6 +95,8 @@ export default function Calendar() {
     const [caseNo, setCaseNo] = useState("")
     const [userName, setUserName] = useState("")
     const [titleForAdd, setTitleForAdd] = useState("")
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -225,6 +228,7 @@ export default function Calendar() {
         setTitleForAdd("")
         setstartDateForAdd(defaultValue)
         setEndDateForAdd(defaultValue)
+        setIsErrorMessage(false)
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -313,8 +317,8 @@ export default function Calendar() {
                 }
             },
             (error) => {
-                setOpenModal(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -628,6 +632,9 @@ export default function Calendar() {
                                                     Add!
                                                 </Button>
                                             }
+                                            {isErrorMessage ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : null}
                                         </Stack>
                                     </Box>
                                 </Modal>

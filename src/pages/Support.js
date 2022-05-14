@@ -36,6 +36,7 @@ import {green} from '@mui/material/colors';
 import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import ProfileService from "../services/profile.service";
+import AuthService from "../services/auth.service";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({theme}) => ({
@@ -59,6 +60,7 @@ export default function Support() {
 
     const popupMessageService = new PopupMessageService();
     const chatSupportService = new ChatSupportService();
+    const authService = new AuthService();
     const profileService = new ProfileService();
     const catchMessagee = Global.catchMessage;
     const [message, setMessage] = useState("");
@@ -171,6 +173,8 @@ export default function Support() {
     return (
         <RootStyle title="Support | MediLaw">
             <Container>
+                {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
+                    <>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
                     <Typography variant="h4" gutterBottom>
                         Support
@@ -344,6 +348,8 @@ export default function Support() {
                         </Stack>
                     </Card>
                 </Stack>
+                    </>
+                ): <Typography>Sorry, you don't have the authorization to perform this action!</Typography>}
             </Container>
         </RootStyle>
     );

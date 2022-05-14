@@ -63,6 +63,7 @@ import SMS from "../components/_dashboard/Box/SMS";
 import palette from "../theme/palette";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
+import AuthService from "../services/auth.service";
 // ----------------------------------------------------------------------
 
 export default function LicenceSettings() {
@@ -105,6 +106,7 @@ export default function LicenceSettings() {
     const catchMessagee = Global.catchMessage;
     const personTypesService = new PersonTypesService();
     const smsOrdersService = new SmsOrdersService();
+    const authService= new AuthService();
     const licencesService = new LicencesService();
     const cityService = new CityService();
     const countryService = new CountryService();
@@ -428,6 +430,8 @@ export default function LicenceSettings() {
                         Licence Settings
                     </Typography>
                 </Stack>
+                {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
+                    <>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={3}>
                         <ContinuingTasks />
@@ -1100,6 +1104,8 @@ export default function LicenceSettings() {
                     </Box>
                 </Modal>
                 </Grid>
+                    </>
+                ): <Typography>Sorry, you don't have the authorization to perform this action!</Typography>}
             </Container>
         </Page>
     );

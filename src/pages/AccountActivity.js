@@ -1,6 +1,6 @@
 import {Icon} from '@iconify/react';
 import {sentenceCase} from 'change-case';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import roundUpdate from '@iconify/icons-ic/round-update';
 import CloseIcon from '@material-ui/icons/Close';
@@ -40,7 +40,7 @@ import {Global} from "../Global";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import TransactionActivityTypeService from "../services/transactionActivityType.service";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
-import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 
 
 // ----------------------------------------------------------------------
@@ -55,6 +55,7 @@ export default function AccountActivity() {
     const [profileName, setProfileName] = useState('');
     const [transactionActivityUpdateId, setTransactionActivityUpdateId] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [isLoading, setIsLoading] = useState(true);
     const [tats, setTats] = useState([]);
@@ -62,7 +63,6 @@ export default function AccountActivity() {
     const [transactionActivityTypeForFilter, setTransactionActivityTypeForFilter] = useState(-1);
     const accountActivityService = new AccountActivityService();
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
     const tatService = new TransactionActivityTypeService();
     const catchMessagee = Global.catchMessage;
@@ -71,11 +71,11 @@ export default function AccountActivity() {
     const changeActivity = (cId) => {
         accountActivityService.changeActivity2(cId).then(result => {
             getAllAccountActivities()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         }).catch(() => {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
 
@@ -123,7 +123,9 @@ export default function AccountActivity() {
                             key: item.CourtOfficeTypeName
                         });
                     });
-                    setCourtOfficeTypeAdd(list[0].value)
+                    if (list.length > 0) {
+                        setCourtOfficeTypeAdd(list[0].value)
+                    }
                     setCourtOfficeTypes(list);
                 },
                 (error) => {
@@ -147,6 +149,7 @@ export default function AccountActivity() {
         setProfileName("")
         setStatusForAdd(true)
         setTransactionActivityUpdateId(0)
+        setIsErrorMessage(false)
         setOpen(true);
     };
     const handleClose = () => {
@@ -199,8 +202,8 @@ export default function AccountActivity() {
                 }
             },
             (error) => {
-                setOpen(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -369,7 +372,9 @@ export default function AccountActivity() {
                                             <Button sx={{top: 5}} size="large" type="submit" variant="contained"
                                                     onClick={() => addNewRecord()}>Add!</Button>
                                         }
-                                        <Typography sx={{color: "red"}}>{errorMessage}</Typography>
+                                        {isErrorMessage ?
+                                            <Alert severity="error">{errorMessage}</Alert>
+                                            : null}
                                     </Stack>
                                 </Box>
                             </Modal>

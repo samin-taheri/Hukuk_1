@@ -22,6 +22,7 @@ import LicenceUsersService from "../services/licenceUsers.service";
 import PopupMessageService from "../services/popupMessage.service";
 import Page from "../components/Page";
 import palette from "../theme/palette";
+import AuthService from "../services/auth.service";
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ export default function ConnectedLicences() {
 
     const licenceUserService = new LicenceUsersService();
     const popupMessageService = new PopupMessageService();
+    const authService = new AuthService();
 
     const getAllLicenceUser = () => {
         if (true) {
@@ -50,6 +52,7 @@ export default function ConnectedLicences() {
 
     function AcceptRequest(id) {
         licenceUserService.ChangeAcceptence(id).then(result => {
+            getAllLicenceUser()
             popupMessageService.AlertSuccessMessage(result.data.Message);
         })
     }
@@ -65,6 +68,7 @@ export default function ConnectedLicences() {
                     Connected Licences!
                 </Typography>
                     </Stack>
+                    {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                 <Stack spacing={2}>
                     <Card sx={{marginTop: 6, maxWidth:900, marginLeft: 10}}>
                         <Scrollbar>
@@ -145,6 +149,7 @@ export default function ConnectedLicences() {
                         </Scrollbar>
                     </Card>
                 </Stack>
+                        ): <Typography>Sorry, you don't have the authorization to perform this action!</Typography>}
             </Container>
         </Page>
     );

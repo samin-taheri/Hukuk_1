@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import roundUpdate from '@iconify/icons-ic/round-update';
 import CloseIcon from '@material-ui/icons/Close';
@@ -46,7 +46,7 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import {Global} from "../Global";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
-import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 // ----------------------------------------------------------------------
 
 
@@ -72,10 +72,10 @@ export default function CourtOffice() {
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
 
     const courtOfficeService = new CourtOfficesService();
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
     const countryService = new CountryService();
     const cityService = new CityService();
@@ -133,9 +133,9 @@ export default function CourtOffice() {
     const changeActivity = (cId) => {
         courtOfficeService.changeActivity2(cId).then(result => {
             getAllCourtOffices()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         })
     };
     function filtering(courtOffice) {
@@ -148,7 +148,6 @@ export default function CourtOffice() {
     }
     //List all the Case Statuses of current licence
     const getAllCourtOffices = () => {
-        if (authService.DoesHaveMandatoryClaim('CourtOfficeGetAll')) {
             courtOfficeService.getAll().then(
                 (result) => {
                     if (result.data.Success) {
@@ -163,7 +162,6 @@ export default function CourtOffice() {
                 popupMessageService.AlertErrorMessage(catchMessagee)
             })
         }
-    };
     // List all court office types
     const getAllCourtOfficeTypes = () => {
         const courtOfficeTypesService = new CourtOfficeTypesService();
@@ -181,7 +179,9 @@ export default function CourtOffice() {
                             key: item.CourtOfficeTypeName
                         });
                     });
-                    setCourtOfficeTypeAdd(list[0].value)
+                    if(list.length > 0) {
+                        setCourtOfficeTypeAdd(list[0].value)
+                    }
                     setCourtOfficeTypes(list);
                 },
                 (error) => {
@@ -207,6 +207,7 @@ export default function CourtOffice() {
         setDescriptionForAdd('')
         setStatusForAdd(true)
         setCourtOfficeUpdateId(0)
+        setIsErrorMessage(false)
         setOpen(true);
     };
     const handleClose = () => {
@@ -252,8 +253,8 @@ export default function CourtOffice() {
                 }
             },
             (error) => {
-                setOpen(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message)
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(()=> {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -535,7 +536,9 @@ export default function CourtOffice() {
                                             :
                                             <Button sx={{top: 5}} size="large" type="submit" variant="contained" onClick={() => addNewRecord()}>Add!</Button>
                                         }
-                                        <Typography sx={{ color: "red" }}>{errorMessage}</Typography>
+                                        {isErrorMessage ?
+                                            <Alert severity="error">{errorMessage}</Alert>
+                                            : null}
                                     </Stack>
                                 </Box>
                             </Modal>

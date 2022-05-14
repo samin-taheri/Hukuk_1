@@ -48,6 +48,7 @@ import Label from "../components/Label";
 import roundUpdate from "@iconify/icons-ic/round-update";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Alert from "@mui/material/Alert";
 // ----------------------------------------------------------------------
 
 export default function AccountActivities() {
@@ -81,6 +82,8 @@ export default function AccountActivities() {
     const [totalIncome, setTotalIncome] = useState(0)
     const [transactionActivityGetAll, setTransactionActivityGetAll] = useState([]);
     const [transactionActivityTypeForFilter, setTransactionActivityTypeForFilter] = useState(-1);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     function filtering(transactionActivityGetAll) {
         let filterdeTransactionActivities = transactionActivityGetAll
@@ -100,6 +103,7 @@ export default function AccountActivities() {
         setAmountForUpdate(0)
         setDateForUpdate(defaultValue)
         setIsItExpenseForUpdate(-1)
+        setIsErrorMessage(false)
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -253,8 +257,8 @@ export default function AccountActivities() {
                 }
             },
             (error) => {
-                setOpenModal(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -487,6 +491,9 @@ export default function AccountActivities() {
                                                     Add!
                                                 </Button>
                                             }
+                                            {isErrorMessage ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : null}
                                         </Stack>
                                     </Box>
                                 </Modal>

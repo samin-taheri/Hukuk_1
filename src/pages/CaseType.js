@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import roundUpdate from '@iconify/icons-ic/round-update';
 import CloseIcon from '@material-ui/icons/Close';
@@ -39,8 +39,7 @@ import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import {Global} from "../Global";
 import trash2Outline from "@iconify/icons-eva/trash-2-outline";
-import Swal from "sweetalert2";
-import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 
 // ----------------------------------------------------------------------
 
@@ -57,10 +56,10 @@ export default function CaseType() {
     const [courtOfficeTypeIdForFilter, setCourtOfficeTypeIdForFilter] = useState(-1);
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [isLoading, setIsLoading] = useState(true);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
 
     const caseTypeService = new CaseTypeService();
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
     const catchMessagee = Global.catchMessage;
 
@@ -69,11 +68,11 @@ export default function CaseType() {
     const changeActivity = (cId) => {
         caseTypeService.changeActivity2(cId).then(result => {
             getAllCaseTypes()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
     function filtering(caseTypes) {
@@ -86,7 +85,6 @@ export default function CaseType() {
     }
     //List all the Case Statuses of current licence
     const getAllCaseTypes = () => {
-        if (authService.DoesHaveMandatoryClaim('CaseTypeGetAll')) {
             caseTypeService.getAll().then(
                 (result) => {
                     if (result.data.Success) {
@@ -101,7 +99,6 @@ export default function CaseType() {
                 popupMessageService.AlertErrorMessage(catchMessagee)
             })
         }
-    };
     // List all court office types
     const getAllCourtOfficeTypes = () => {
         const courtOfficeTypesService = new CourtOfficeTypesService();
@@ -119,7 +116,9 @@ export default function CaseType() {
                             key: item.CourtOfficeTypeName
                         });
                     });
-                    setCourtOfficeTypeAdd(list[0].value)
+                    if(list.length > 0) {
+                        setCourtOfficeTypeAdd(list[0].value)
+                    }
                     setCourtOfficeTypes(list);
                 },
                 (error) => {
@@ -155,6 +154,7 @@ export default function CaseType() {
         setStatusForAdd(true)
         setCourtOfficeTypeAdd(courtOfficeTypes[0].value)
         setCaseTypeUodateId(0)
+        setIsErrorMessage(false)
         setOpen(true);
     };
     const handleClose = () => {
@@ -196,8 +196,8 @@ export default function CaseType() {
                 }
             },
             (error) => {
-                setOpen(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(()=> {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -352,13 +352,15 @@ export default function CaseType() {
                                             </Stack>
                                         </Stack>
                                         {caseTypeUpdateId > 0 ?
-                                            <Button sx={{top: 5}} size="large" type="submit" variant="contained"
+                                            <Button sx={{top: 0}} size="large" type="submit" variant="contained"
                                                     onClick={() => addNewRecord()}>Edit!</Button>
                                             :
-                                            <Button sx={{top: 5}} size="large" type="submit" variant="contained"
+                                            <Button sx={{top: 0}} size="large" type="submit" variant="contained"
                                                     onClick={() => addNewRecord()}>Add!</Button>
                                         }
-                                            <Typography sx={{ color: "red" }}>{errorMessage}</Typography>
+                                        {isErrorMessage ?
+                                            <Alert severity="error">{errorMessage}</Alert>
+                                            : null}
                                     </Stack>
                                 </Box>
                             </Modal>

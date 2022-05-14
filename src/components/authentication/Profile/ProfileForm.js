@@ -23,6 +23,7 @@ import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import UserProfileAvatarService from "../../../services/userProfileAvatar.service";
 import {value} from "lodash/seq";
 import account from "../../../_mocks_/account";
+import AuthService from "../../../services/auth.service";
 // ----------------------------------------------------------------------
 
 export default function ProfileForm() {
@@ -47,7 +48,13 @@ export default function ProfileForm() {
     const cityService = new CityService();
     const userProfileAvatarService = new UserProfileAvatarService();
     const countryService = new CountryService();
+    const authService = new AuthService();
     const catchMessagee = Global.catchMessage;
+
+    const Logout = () => {
+        authService.logout();
+        navigate('/login');
+    };
 
     function userInfo() {
         profileService.getUserInfo().then(result => {
@@ -82,6 +89,7 @@ export default function ProfileForm() {
                     userInfo()
                     setIsLoading(false)
                     popupMessageService.AlertSuccessMessage(result.data.Message)
+                    Logout()
                 }
             },
             (error) => {
@@ -162,6 +170,8 @@ export default function ProfileForm() {
     return (
         <Page title="Profile | MediLaw">
             <Container>
+                {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
+                    <>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
                     <Typography variant="h4" gutterBottom>
                         Profile
@@ -372,6 +382,8 @@ export default function ProfileForm() {
                         </LoadingButton>
                     </Card>
                 </Stack>
+                    </>
+                ): <Typography>Sorry, you don't have the authorization to perform this action!</Typography>}
             </Container>
         </Page>
 

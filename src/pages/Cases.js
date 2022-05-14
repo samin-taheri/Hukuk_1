@@ -66,6 +66,7 @@ import MenuPopover from "../components/MenuPopover";
 import LicenceUsersService from "../services/licenceUsers.service";
 import plusCircleOutline from "@iconify/icons-eva/plus-circle-outline";
 import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 // ----------------------------------------------------------------------
 export default function Cases() {
 
@@ -83,6 +84,8 @@ export default function Cases() {
     const [openModal, setOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [openModalForDetails, setOpenModalForDetails] = useState(false);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [courtOfficeTypeIdForFilter, setCourtOfficeTypeIdForFilter] = useState(-1);
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
@@ -178,18 +181,6 @@ export default function Cases() {
         setCaseIdForIgnore(newList)
     }
 
-    //Changing Activity of the current Case Status
-    const changeActivity = (cId, caseStatusId) => {
-        casesService.changeActivity2(cId, caseStatusId).then(result => {
-            getAllCases()
-            setCaseStatusAdd(caseStatusId.target.value)
-        }, error => {
-            popupMessageService.AlertErrorMessage(error.response.data.Message)
-        }).catch(() => {
-            popupMessageService.AlertErrorMessage(catchMessagee)
-        })
-    };
-
     function getAllCourtOfficeTypes() {
         courtOfficeTypesService.getAll().then(result => {
                 setCourtOfficeTypes(result.data.Data)
@@ -234,7 +225,9 @@ export default function Cases() {
                             key: item.Title
                         });
                     });
-                    setUsersForIgnoreForAdd(list[0].value)
+                    if (list.length > 0) {
+                        setUsersForIgnoreForAdd(list[0].value)
+                    }
                     setUsersForIgnore(list);
                 },
                 (error) => {
@@ -263,7 +256,9 @@ export default function Cases() {
                             key: item.CourtOfficeName
                         });
                     });
-                    setCourtOfficeAdd(list[0].value)
+                    if (list.length > 0) {
+                        setCourtOfficeAdd(list[0].value)
+                    }
                     setCourtOffices(list);
                 },
                 (error) => {
@@ -292,7 +287,9 @@ export default function Cases() {
                             key: item.CustomerName
                         });
                     });
-                    setClientsAdd(list[0].value)
+                    if (list.length > 0) {
+                        setClientsAdd(list[0].value)
+                    }
                     setClients(list);
                 },
                 (error) => {
@@ -320,7 +317,9 @@ export default function Cases() {
                             key: item.Description
                         });
                     });
-                    setCaseTypeAdd(list[0].value)
+                    if (list.length > 0) {
+                        setCaseTypeAdd(list[0].value)
+                    }
                     setCaseTypes(list);
                 },
                 (error) => {
@@ -348,7 +347,9 @@ export default function Cases() {
                             key: item.Description
                         });
                     });
-                    setCaseStatusAdd(list[0].value)
+                    if (list.length > 0){
+                        setCaseStatusAdd(list[0].value)
+                    }
                     setCaseStatuses(list);
                 },
                 (error) => {
@@ -368,6 +369,7 @@ export default function Cases() {
         setDecisionDate(defaultValue)
         setEndDate(defaultValue)
         setOpenModal(true)
+        setIsErrorMessage(false)
         setCaseIdForIgnore([])
     };
     const handleClose = () => {
@@ -481,8 +483,8 @@ export default function Cases() {
                 }
             },
             (error) => {
-                setOpenModal(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -939,6 +941,9 @@ export default function Cases() {
                                                     Add!
                                                 </Button>
                                             }
+                                            {isErrorMessage ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : null}
                                         </Stack>
                                     </Box>
                                 </Modal>

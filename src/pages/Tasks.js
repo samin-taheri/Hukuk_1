@@ -57,7 +57,6 @@ import {format} from "date-fns";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Alert from '@mui/material/Alert';
-import ToastService from "../services/toast.service";
 // ----------------------------------------------------------------------
 
 export default function Tasks() {
@@ -66,7 +65,6 @@ export default function Tasks() {
     const date = today.setDate(today.getDate());
     const defaultValue = new Date(date).toISOString().split('T')[0]
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
     const clientsServise = new ClientsServise();
     const catchMessagee = Global.catchMessage;
@@ -78,6 +76,8 @@ export default function Tasks() {
     const [openModal, setOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = React.useState(false);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [clientIdForFilter, setClientIdForFilter] = useState(-1);
@@ -127,11 +127,11 @@ export default function Tasks() {
     const changeActivity = (cId) => {
         tasksService.changeActivity2(cId).then(result => {
             getAllTasks()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         }).catch(() => {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
 
@@ -189,7 +189,9 @@ export default function Tasks() {
                             key: item.User.Title
                         });
                     });
-                    setUsersAdd(list[0].value)
+                    if(list.length > 0) {
+                        setUsersAdd(list[0].value)
+                    }
                     setAllUsers(list);
                 },
                 (error) => {
@@ -217,7 +219,9 @@ export default function Tasks() {
                             key: item.TaskTypeName
                         });
                     });
-                    setTaskTypesAdd(list[0].value)
+                    if(list.length > 0) {
+                        setTaskTypesAdd(list[0].value)
+                    }
                     setAllTaskTypes(list);
                 },
                 (error) => {
@@ -271,6 +275,7 @@ export default function Tasks() {
         setStartDate(defaultValue)
         setLastDate(defaultValue)
         setEndDate(defaultValue)
+        setIsErrorMessage(false)
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -350,15 +355,15 @@ export default function Tasks() {
                 if (result.data.Success) {
                     getAllTasks()
                     setOpenModal(false)
-                    toastService.AlertSuccessMessage(result.data.Message)
+                    popupMessageService.AlertSuccessMessage(result.data.Message)
                 }
             },
             (error) => {
-                setOpenModal(false)
-                toastService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     }
 
@@ -740,6 +745,9 @@ export default function Tasks() {
                                                 <Stack sx={{ width: '100%' }} spacing={2}>
                                                 <Alert severity="error">{message}</Alert>
                                                 </Stack>}
+                                            {isErrorMessage ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : null}
                                         </Stack>
                                     </Box>
                                 </Modal>

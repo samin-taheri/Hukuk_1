@@ -79,6 +79,7 @@ export default function AddUsers() {
     function SendRequest(userId) {
         licenceUser.add(userId).then(result => {
             popMessage.AlertSuccessMessage(result.data.Message)
+            GetAllUsers()
         }, error => {
             console.log(error.response.data);
         }).catch(() => {

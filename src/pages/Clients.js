@@ -54,13 +54,12 @@ import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ToastService from "../services/toast.service";
+import Alert from "@mui/material/Alert";
 // ----------------------------------------------------------------------
 
 export default function Clients() {
 
     const popupMessageService = new PopupMessageService();
-    const toastService = new ToastService();
     const authService = new AuthService();
     const catchMessagee = Global.catchMessage;
     const countryService = new CountryService();
@@ -85,6 +84,8 @@ export default function Clients() {
     const [phoneNumberForAdd, setPhoneNumberForAdd] = useState(0)
     const [isActiveForAdd, setIsActiveForAdd] = useState(false)
     const [time, setTime] = useState(true);
+    const [isErrorMessage, setIsErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     function filtering(transactionActivityGetAll) {
         let filterdeTransactionActivities = transactionActivityGetAll
@@ -108,6 +109,7 @@ export default function Clients() {
         setEmailForAdd("")
         setPhoneNumberForAdd(0)
         setIsActiveForAdd(true)
+        setIsErrorMessage(false)
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -206,8 +208,8 @@ export default function Clients() {
                 }
             },
             (error) => {
-                setOpenModal(false)
-                popupMessageService.AlertErrorMessage(error.response.data.Message);
+                setIsErrorMessage(true)
+                setErrorMessage(error.response.data.Message);
             }
         ).catch(() => {
             popupMessageService.AlertErrorMessage(catchMessagee)
@@ -216,11 +218,11 @@ export default function Clients() {
     const changeActivity = (cId) => {
         clientsService.changeActivity2(cId).then(result => {
             getAllClients()
-            toastService.AlertSuccessMessage(result.data.Message);
+            popupMessageService.AlertSuccessMessage(result.data.Message);
         }, error => {
-            toastService.AlertErrorMessage(error.response.data.Message)
+            popupMessageService.AlertErrorMessage(error.response.data.Message)
         }).catch(()=> {
-            toastService.AlertErrorMessage(catchMessagee)
+            popupMessageService.AlertErrorMessage(catchMessagee)
         })
     };
     useEffect(() => {
@@ -493,6 +495,9 @@ export default function Clients() {
                                                     Add!
                                                 </Button>
                                             }
+                                            {isErrorMessage ?
+                                                <Alert severity="error">{errorMessage}</Alert>
+                                                : null}
                                         </Stack>
                                     </Box>
                                 </Modal>

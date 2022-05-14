@@ -263,11 +263,11 @@ export default function PostDrafts() {
                                     ))}
                                 </>
                             ) : (
-                                <TableCell sx={{width: '40%'}}>
+                                <Stack>
                                     <img src="/static/illustrations/no.png" alt="login"/>
                                     <Typography variant="h3" gutterBottom textAlign='center'
                                                 color='#a9a9a9'>No Data Found</Typography>
-                                </TableCell>
+                                </Stack>
                             )}
                         </>
                     }
