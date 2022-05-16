@@ -122,7 +122,7 @@ export default function LicencesListForm() {
                                                         </Typography>
                                                         <Stack paddingTop={-3}>
                                                             <Typography
-                                                                fontSize={13}>{row.PersonType.PersonTypeName} - {row.City.CityName}</Typography>
+                                                                fontSize={12}>{row.PersonType.PersonTypeName} - {row.City.CityName}</Typography>
                                                         </Stack>
                                                     </Stack>
                                                     <LoadingButton

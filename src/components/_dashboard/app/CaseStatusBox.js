@@ -12,7 +12,7 @@ const RootStyle = styled(Card)(({ theme }) => ({
   textAlign: 'center',
   padding: theme.spacing(5, 0),
   color: theme.palette.green.darker,
-  backgroundColor: theme.palette.green.lighter
+  backgroundColor: theme.palette.green.lighter,
 }));
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
@@ -35,12 +35,13 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 export default function CaseStatusBox() {
   return (
-    <RootStyle>
+
       <Link
         to="/dashboard/definitions/caseStatus"
         component={RouterLink}
         style={{ textDecoration: 'none', color: '#372' }}
       >
+        <RootStyle>
         <IconWrapperStyle>
           <Icon icon={roundCases} width={24} height={24} />
         </IconWrapperStyle>
@@ -50,7 +51,8 @@ export default function CaseStatusBox() {
         <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
           Case Status
         </Typography>
+        </RootStyle>
       </Link>
-    </RootStyle>
+
   );
 }

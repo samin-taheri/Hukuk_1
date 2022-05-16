@@ -119,7 +119,9 @@ export default function Calendar() {
                             key: item.EventTypeName
                         });
                     });
-                    setEventTypeIdForAdd(list[0].value)
+                    if(list.length > 0) {
+                        setEventTypeIdForAdd(list[0].value)
+                    }
                     setAllEventTypes(list);
                 },
                 (error) => {
@@ -147,7 +149,9 @@ export default function Calendar() {
                             key: item.CaseNo
                         });
                     });
-                    setCaseeIdForAdd(list[0].value)
+                    if(list.length > 0) {
+                        setCaseeIdForAdd(list[0].value)
+                    }
                     setAllases(list);
                 },
                 (error) => {
@@ -175,7 +179,9 @@ export default function Calendar() {
                             key: item.User.Title
                         });
                     });
-                    setUserIdForAdd(list[0].value)
+                    if(list.length > 0) {
+                        setUserIdForAdd(list[0].value)
+                    }
                     setAllUsers(list);
                 },
                 (error) => {
@@ -203,7 +209,9 @@ export default function Calendar() {
                             key: item.CustomerName
                         });
                     });
-                    setCustomerIdForAdd(list[0].value)
+                    if(list.length > 0) {
+                        setCustomerIdForAdd(list[0].value)
+                    }
                     setAllClients(list);
                 },
                 (error) => {
