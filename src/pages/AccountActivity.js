@@ -150,6 +150,7 @@ export default function AccountActivity() {
         setStatusForAdd(true)
         setTransactionActivityUpdateId(0)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpen(true);
     };
     const handleClose = () => {

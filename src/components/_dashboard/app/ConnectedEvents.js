@@ -41,7 +41,7 @@ export default function ConnectedEvents() {
                 </IconWrapperStyle>
                 <Stack flexDirection='column'>
                     <Typography variant="h3" sx={{}}>
-                        677
+                        7
                     </Typography>
                     <Typography variant="subtitle1" paddingLeft={0} paddingTop={1}>
                         Connected Events

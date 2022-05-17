@@ -104,6 +104,7 @@ export default function AccountActivities() {
         setDateForUpdate(defaultValue)
         setIsItExpenseForUpdate(-1)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpenModal(true)
     };
     const handleClose = () => {

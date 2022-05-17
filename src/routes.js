@@ -44,7 +44,6 @@ import AdminUsers from "./adminPages/AdminUsers";
 import AdminBalanceTracking from "./adminPages/AdminBalanceTracking";
 import CaseUpdateHistory from "./pages/CaseUpdateHistory";
 import AdminLicencesDetails from "./adminPages/AdminLicencesDetails";
-import Casees from "./pages/Casees";
 import AdminSmsHistory from "./adminPages/AdminSmsHistory";
 import AdminSupport from "./adminPages/AdminSupport";
 import AdminUsersDetails from "./adminPages/AdminUsersDetails";

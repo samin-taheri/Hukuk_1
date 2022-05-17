@@ -106,7 +106,6 @@ export default function Balance() {
                         });
                     });
                     setAllReminders(list);
-
                 },
                 (error) => {
                     popupMessageService.AlertErrorMessage(error.response.data.Message);
@@ -152,8 +151,6 @@ export default function Balance() {
                                 ).catch(() => {
                                     popupMessageService.AlertErrorMessage(catchMessagee)
                                 })
-
-
                             })
                     }
                 },
@@ -214,7 +211,7 @@ export default function Balance() {
                         </Typography>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" marginLeft={87}>
                             <Button onClick={handleOpen} variant="contained" startIcon={<Icon icon={plusFill}/>}>
-                                New Record
+                                Edit Record
                             </Button>
                         </Stack>
                     </Stack>

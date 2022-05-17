@@ -110,6 +110,7 @@ export default function Clients() {
         setPhoneNumberForAdd(0)
         setIsActiveForAdd(true)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpenModal(true)
     };
     const handleClose = () => {

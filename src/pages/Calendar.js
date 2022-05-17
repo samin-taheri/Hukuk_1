@@ -237,6 +237,7 @@ export default function Calendar() {
         setstartDateForAdd(defaultValue)
         setEndDateForAdd(defaultValue)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -652,7 +653,7 @@ export default function Calendar() {
                     <Grid container sx={{flexDirection: 'row', paddingLeft: 5, top: 10}}>
                         <>
                             {isLoading === true ?
-                                <Stack sx={{color: 'grey.500', paddingLeft: 50, paddingTop: 25}} spacing={2} direction="row"
+                                <Stack sx={{color: 'grey.500', paddingLeft: 55, paddingTop: 25}} spacing={2} direction="row"
                                        justifyContent='center' alignSelf='center' left='50%'>
                                     <CircularProgress color="inherit"/>
                                 </Stack>

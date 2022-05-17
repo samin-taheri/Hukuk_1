@@ -93,7 +93,7 @@ export default function Tasks() {
     const [allTaskTypes, setAllTaskTypes] = useState([]);
     const [taskTypesAdd, setTaskTypesAdd] = useState(0);
     const [taskTypesForFilter, setTaskTypesForFilter] = useState(-1);
-    const [isActiveAdd, setIsActiveAdd] = useState(false);
+    const [isActiveAdd, setIsActiveAdd] = useState(true);
     const [taskStatusesForFilter, setTaskStatusesForFilter] = useState(-1);
     const [allTaskStatuses, setAllTaskStatuses] = useState([]);
     const [taskStatusAdd, setTaskStatusAdd] = useState(0);
@@ -276,6 +276,7 @@ export default function Tasks() {
         setLastDate(defaultValue)
         setEndDate(defaultValue)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpenModal(true)
     };
     const handleClose = () => {
@@ -602,7 +603,7 @@ export default function Tasks() {
                                                                     )
                                                                 }}
                                                             >
-                                                                <MenuItem key={createRandomKey} value>
+                                                                <MenuItem key={createRandomKey} value={true}>
                                                                     Active
                                                                 </MenuItem>
                                                                 <MenuItem key={createRandomKey} value={false}>

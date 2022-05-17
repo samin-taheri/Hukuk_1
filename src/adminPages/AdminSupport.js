@@ -258,10 +258,10 @@ export default function Support() {
                                                 <Avatar
                                                     src={'https://webapi.emlakofisimden.com/' + row.UserProfileImage}
                                                     alt="photoURL"/>
-                                                <Typography gutterBottom  color='#1d4d9f' sx={{paddingLeft: 2, paddingTop: 1, fontSize: 14}}>
+                                                <Typography gutterBottom  color='#1d4d9f' sx={{paddingLeft: 1, paddingTop: 1, fontSize: 12}}>
                                                     {row.LicenceProfileName} -
                                                 </Typography>
-                                                <Typography gutterBottom color='#1d4d9f' sx={{paddingLeft: 0.5, paddingTop: 1, fontSize: 14}}>
+                                                <Typography gutterBottom color='#1d4d9f' sx={{paddingLeft: 0.5, paddingTop: 1, fontSize: 12}}>
                                                     {row.UserFullName}
                                                 </Typography>
                                                     <Typography gutterBottom color='#1d4d9f' sx={{marginRight: 4, paddingTop: 0.6,position: 'absolute', right: '0'}}>
@@ -277,10 +277,10 @@ export default function Support() {
                                             <Avatar
                                                     src={'https://webapi.emlakofisimden.com/' + row.UserProfileImage}
                                                     alt="photoURL"/>
-                                                <Typography gutterBottom sx={{paddingLeft: 2, paddingTop: 1, fontSize: 14}}>
+                                                <Typography gutterBottom sx={{paddingLeft: 1, paddingTop: 1, fontSize: 12}}>
                                                     {row.LicenceProfileName} -
                                                 </Typography>
-                                                <Typography gutterBottom sx={{paddingLeft: 0.5, paddingTop: 1, fontSize: 14}}>
+                                                <Typography gutterBottom sx={{paddingLeft: 0.5, paddingTop: 1, fontSize: 12}}>
                                                     {row.UserFullName}
                                                 </Typography>
                                                 <Typography gutterBottom sx={{marginRight: 4, paddingTop: 0.6,position: 'absolute', right: '0'}}>
@@ -331,30 +331,6 @@ export default function Support() {
                                                         <>
                                                             {row.IsAnswer == true ?
                                                                 <Card sx={{
-                                                                    maxWidth: '36%',
-                                                                    minWidth: '37%',
-                                                                    marginTop: 2.2,
-                                                                    marginLeft: 2.5,
-                                                                    backgroundColor: '#fff',
-                                                                    maxHeight: 75,
-                                                                    boxShadow: 7
-                                                                }}>
-                                                                    <CardContent>
-                                                                        <Stack flexDirection='row'>
-                                                                            <Typography gutterBottom fontSize={12}
-                                                                                        component="div"
-                                                                                        key={row.ChatSupportId}>
-                                                                                {row.Message}
-                                                                            </Typography>
-                                                                        </Stack>
-                                                                        <Typography gutterBottom fontSize={10}
-                                                                                    component="div" color='gray'>
-                                                                            {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
-                                                                        </Typography>
-                                                                    </CardContent>
-                                                                </Card>
-                                                                :
-                                                                <Card sx={{
                                                                     maxWidth: '38%',
                                                                     minWidth: '37%',
                                                                     marginTop: 2.2,
@@ -394,6 +370,30 @@ export default function Support() {
                                                                         <Typography gutterBottom fontSize={10}
                                                                                     component="div" color='gray'
                                                                                     sx={{paddingLeft: 14}}>
+                                                                            {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
+                                                                        </Typography>
+                                                                    </CardContent>
+                                                                </Card>
+                                                                :
+                                                                <Card sx={{
+                                                                    maxWidth: '36%',
+                                                                    minWidth: '37%',
+                                                                    marginTop: 2.2,
+                                                                    marginLeft: 2.5,
+                                                                    backgroundColor: '#fff',
+                                                                    maxHeight: 75,
+                                                                    boxShadow: 7
+                                                                }}>
+                                                                    <CardContent>
+                                                                        <Stack flexDirection='row'>
+                                                                            <Typography gutterBottom fontSize={12}
+                                                                                        component="div"
+                                                                                        key={row.ChatSupportId}>
+                                                                                {row.Message}
+                                                                            </Typography>
+                                                                        </Stack>
+                                                                        <Typography gutterBottom fontSize={10}
+                                                                                    component="div" color='gray'>
                                                                             {format(new Date(row.Date), 'dd/MM/yyyy kk:mm')}
                                                                         </Typography>
                                                                     </CardContent>

@@ -567,210 +567,7 @@ export default function LicenceSettings() {
                         </Stack>
                     </Box>
                 </Modal>
-                <Button onClick={handleOpenEditLicence} sx={{left: '8%'}} variant="contained"
-                        startIcon={<Icon icon={roundUpdate}/>}>
-                    Edit Licence
-                </Button>
-                <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}
-                       hideBackdrop={true}
-                       disableEscapeKeyDown={true}
-                       open={openEditLicence}
-                       aria-labelledby="modal-modal-title"
-                       aria-describedby="modal-modal-description"
-                >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 470,
-                            backgroundColor: 'background.paper',
-                            border: '2px solid #fff',
-                            boxShadow: 24,
-                            p: 4,
-                            borderRadius: 2
-                        }}
-                    >
-                        <Stack mb={5} flexDirection="row" justifyContent='space-between'>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                                Add new licence!
-                            </Typography>
-                            <IconButton>
-                            <CloseIcon onClick={() => setOpenEditLicence(false)}/>
-                            </IconButton>
-                        </Stack>
-                        <Stack spacing={2}>
-                            <Stack mb={3} alignItems="center" justifyContent="space-around">
-                                <Stack mb={3} justifyContent="space-around">
-                                    <Box sx={{minWidth: 400}}>
-                                        <FormControl fullWidth size="small">
-                                            <TextField
-                                                autoFocus
-                                                fullWidth
-                                                size="small"
-                                                label="Licence Name"
-                                                value={profileNameEdit}
-                                                onChange={(event) => setProfileNameEdit(event.target.value)}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DriveFileRenameOutlineOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                                {cities.length > 0 ? (
-                                    <Box mb={3} sx={{minWidth: 400}}>
-                                        <FormControl fullWidth size='small'>
-                                            <TextField
-                                                select
-                                                size='small'
-                                                value={cityIdEdit}
-                                                key={Math.random().toString(36).substr(2, 9)}
-                                                label="City"
-                                                onChange={(event) => setCityIdEdit(event.target.value)}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <BusinessOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            >
-                                                {cities.map((item) => (
-                                                    <MenuItem key={Math.random().toString(36).substr(2, 9)}
-                                                              value={item.value}>
-                                                        {item.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </FormControl>
-                                    </Box>
-                                ) : null}
-                                {personTypeList.length > 0 ? (
-                                    <Box mb={3} sx={{minWidth: 400}}>
-                                        <FormControl fullWidth size='small'>
-                                            <TextField
-                                                select
-                                                size='small'
-                                                value={personTypeEdit}
-                                                key={Math.random().toString(36).substr(2, 9)}
-                                                label="Person Type"
-                                                onChange={(event) => setPersonTypeEdit(event.target.value)}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <AdminPanelSettingsOutlinedIcon/>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            >
-                                                {personTypeList.map((item) => (
-                                                    <MenuItem key={Math.random().toString(36).substr(2, 9)}
-                                                              value={item.value}>
-                                                        {item.label}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </FormControl>
-                                    </Box>
-                                ) : null}
-                                <Box mb={3} sx={{minWidth: 400}}>
-                                    <FormControl fullWidth size='small'>
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            label="Bill Adress"
-                                            multiline
-                                            value={billAddressEdit}
-                                            onChange={(event) => setBillAddressEdit(event.target.value)}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <HomeOutlinedIcon/>
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                    <TextField
-                                        fullWidth
-                                        size="small"
-                                        label="Tax No"
-                                        value={taxNoEdit}
-                                        onChange={(event) => setTaxNoEdit(event.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <AddBusinessOutlinedIcon/>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        size="small"
-                                        label="Tax Office"
-                                        value={taxOfficeEdit}
-                                        onChange={(event) => setTaxOfficeEdit(event.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <HomeWorkOutlinedIcon/>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    />
-                                </Stack>
-                                <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                                    <TextField
-                                        fullWidth
-                                        size="small"
-                                        label="Website"
-                                        value={websiteEdit}
-                                        onChange={(event) => setWebSiteEdit(event.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <WebOutlinedIcon/>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        size="small"
-                                        label="Email"
-                                        value={emailEdit}
-                                        onChange={(event) => setEmailEdit(event.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <EmailOutlinedIcon/>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                    />
-                                </Stack>
-                            </Stack>
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                onClick={() => editLicence()}
-                            >
-                                Edit!
-                            </Button>
-                        </Stack>
-                    </Box>
-                </Modal>
-                    <Button onClick={handleOpen} sx={{left: '10%'}} variant="contained"
+                    <Button onClick={handleOpen} sx={{left: '8%'}} variant="contained"
                             startIcon={<Icon icon={plusFill}/>}>
                         Add Licence!
                     </Button>
@@ -1015,6 +812,209 @@ export default function LicenceSettings() {
                                     onClick={() => addNewLicence()}
                                 >
                                     Add!
+                                </Button>
+                            </Stack>
+                        </Box>
+                    </Modal>
+                    <Button onClick={handleOpenEditLicence} sx={{left: '10%'}} variant="contained"
+                            startIcon={<Icon icon={roundUpdate}/>}>
+                        Edit Licence
+                    </Button>
+                    <Modal sx={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}
+                           hideBackdrop={true}
+                           disableEscapeKeyDown={true}
+                           open={openEditLicence}
+                           aria-labelledby="modal-modal-title"
+                           aria-describedby="modal-modal-description"
+                    >
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: 470,
+                                backgroundColor: 'background.paper',
+                                border: '2px solid #fff',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: 2
+                            }}
+                        >
+                            <Stack mb={5} flexDirection="row" justifyContent='space-between'>
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    Edit licence!
+                                </Typography>
+                                <IconButton>
+                                    <CloseIcon onClick={() => setOpenEditLicence(false)}/>
+                                </IconButton>
+                            </Stack>
+                            <Stack spacing={2}>
+                                <Stack mb={3} alignItems="center" justifyContent="space-around">
+                                    <Stack mb={3} justifyContent="space-around">
+                                        <Box sx={{minWidth: 400}}>
+                                            <FormControl fullWidth size="small">
+                                                <TextField
+                                                    autoFocus
+                                                    fullWidth
+                                                    size="small"
+                                                    label="Licence Name"
+                                                    value={profileNameEdit}
+                                                    onChange={(event) => setProfileNameEdit(event.target.value)}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <DriveFileRenameOutlineOutlinedIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </Box>
+                                    </Stack>
+                                    {cities.length > 0 ? (
+                                        <Box mb={3} sx={{minWidth: 400}}>
+                                            <FormControl fullWidth size='small'>
+                                                <TextField
+                                                    select
+                                                    size='small'
+                                                    value={cityIdEdit}
+                                                    key={Math.random().toString(36).substr(2, 9)}
+                                                    label="City"
+                                                    onChange={(event) => setCityIdEdit(event.target.value)}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <BusinessOutlinedIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                >
+                                                    {cities.map((item) => (
+                                                        <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                                  value={item.value}>
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </FormControl>
+                                        </Box>
+                                    ) : null}
+                                    {personTypeList.length > 0 ? (
+                                        <Box mb={3} sx={{minWidth: 400}}>
+                                            <FormControl fullWidth size='small'>
+                                                <TextField
+                                                    select
+                                                    size='small'
+                                                    value={personTypeEdit}
+                                                    key={Math.random().toString(36).substr(2, 9)}
+                                                    label="Person Type"
+                                                    onChange={(event) => setPersonTypeEdit(event.target.value)}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <AdminPanelSettingsOutlinedIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                >
+                                                    {personTypeList.map((item) => (
+                                                        <MenuItem key={Math.random().toString(36).substr(2, 9)}
+                                                                  value={item.value}>
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </FormControl>
+                                        </Box>
+                                    ) : null}
+                                    <Box mb={3} sx={{minWidth: 400}}>
+                                        <FormControl fullWidth size='small'>
+                                            <TextField
+                                                fullWidth
+                                                size="small"
+                                                label="Bill Adress"
+                                                multiline
+                                                value={billAddressEdit}
+                                                onChange={(event) => setBillAddressEdit(event.target.value)}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <HomeOutlinedIcon/>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Stack mb={3} direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Tax No"
+                                            value={taxNoEdit}
+                                            onChange={(event) => setTaxNoEdit(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <AddBusinessOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Tax Office"
+                                            value={taxOfficeEdit}
+                                            onChange={(event) => setTaxOfficeEdit(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <HomeWorkOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    </Stack>
+                                    <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Website"
+                                            value={websiteEdit}
+                                            onChange={(event) => setWebSiteEdit(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <WebOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            size="small"
+                                            label="Email"
+                                            value={emailEdit}
+                                            onChange={(event) => setEmailEdit(event.target.value)}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <EmailOutlinedIcon/>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    </Stack>
+                                </Stack>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    onClick={() => editLicence()}
+                                >
+                                    Edit!
                                 </Button>
                             </Stack>
                         </Box>

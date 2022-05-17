@@ -41,7 +41,7 @@ export default function ConnectedClients() {
                 </IconWrapperStyle>
                 <Stack flexDirection='column'>
                 <Typography variant="h3" sx={{}}>
-                    677
+                    10
                 </Typography>
                 <Typography variant="subtitle1" paddingLeft={0} paddingTop={1}>
                     Connected Clients

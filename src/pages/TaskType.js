@@ -154,6 +154,7 @@ export default function TaskType() {
         setCourtOfficeTypeAdd(courtOfficeTypes[0].value)
         setTaskTypeUpdateId(0)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpen(true);
     };
     const handleClose = () => {

@@ -208,6 +208,7 @@ export default function CourtOffice() {
         setStatusForAdd(true)
         setCourtOfficeUpdateId(0)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpen(true);
     };
     const handleClose = () => {

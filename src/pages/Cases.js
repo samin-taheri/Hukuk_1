@@ -370,6 +370,7 @@ export default function Cases() {
         setEndDate(defaultValue)
         setOpenModal(true)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setCaseIdForIgnore([])
     };
     const handleClose = () => {

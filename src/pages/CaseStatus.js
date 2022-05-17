@@ -142,6 +142,7 @@ export default function User() {
     setCourtOfficeTypeAdd(courtOfficeTypes[0].value)
     setCaseStatusUpdateId(0)
     setIsErrorMessage(false)
+    setErrorMessage("")
     setOpen(true);
   };
   const handleClose = () => {

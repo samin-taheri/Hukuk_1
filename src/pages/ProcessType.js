@@ -138,6 +138,7 @@ export default function ProcessType() {
         setCourtOfficeTypeAdd(courtOfficeTypes[0].value)
         setCaseTypeUodateId(0)
         setIsErrorMessage(false)
+        setErrorMessage("")
         setOpen(true);
     };
     const handleClose = () => {
