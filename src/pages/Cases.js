@@ -493,14 +493,20 @@ export default function Cases() {
     }
 
     useEffect(() => {
-        getAllCases()
-        getAllCourtOfficeTypes()
-        getAllCourtOffices()
-        getAllCustomers()
-        getAllCaseTypes()
-        getAllCaseStatuses()
-        getAllUsersForIgnore()
-        setTime(false)
+        if(authService.DoesHaveMandatoryClaim('CaseeGetAll')) {
+            getAllCases()
+            getAllCourtOfficeTypes()
+            getAllCourtOffices()
+            getAllCustomers()
+            getAllCaseTypes()
+            getAllCaseStatuses()
+            getAllUsersForIgnore()
+            setTime(false)
+        }
+        else {
+            popupMessageService.AlertErrorMessage("You are not authorized!")
+            navigate("/dashboard/app")
+        }
     }, []);
 
     return (

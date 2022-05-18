@@ -55,6 +55,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Alert from "@mui/material/Alert";
+import {useNavigate} from "react-router-dom";
 // ----------------------------------------------------------------------
 
 export default function Clients() {
@@ -86,6 +87,7 @@ export default function Clients() {
     const [time, setTime] = useState(true);
     const [isErrorMessage, setIsErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     function filtering(transactionActivityGetAll) {
         let filterdeTransactionActivities = transactionActivityGetAll
@@ -227,9 +229,16 @@ export default function Clients() {
         })
     };
     useEffect(() => {
-        getAllCountries()
-        getAllClients()
-        setTime(false)
+        if(authService.DoesHaveMandatoryClaim('CustomerGetAll')) {
+            getAllCountries()
+            getAllCountries()
+            getAllClients()
+            setTime(false)
+        }
+        else {
+            popupMessageService.AlertErrorMessage("You are not authorized!")
+            navigate("/dashboard/app")
+        }
     }, []);
 
     return (

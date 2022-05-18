@@ -45,6 +45,7 @@ import Label from "../components/Label";
 import moment from "moment";
 import {styled} from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
+import {useNavigate} from "react-router-dom";
 // ----------------------------------------------------------------------
 
 const AccountStyle = styled('div')(({ theme }) => ({
@@ -79,7 +80,7 @@ export default function Calendar() {
     const [eventId, setEventId] = useState(0);
     const [allUsers, setAllUsers] = useState([]);
     const [allEvents, setAllEventTypes] = useState([]);
-
+    const navigate = useNavigate();
     const [eventTypeIdForAdd, setEventTypeIdForAdd] = useState(0)
     const [customerIdForAdd, setCustomerIdForAdd] = useState(0)
     const [caseeIdForAdd, setCaseeIdForAdd] = useState(0)
@@ -335,12 +336,18 @@ export default function Calendar() {
     }
 
     useEffect(() => {
+    if(authService.DoesHaveMandatoryClaim('EventtGetAll')) {
         getAllUsers()
         getAllCases()
         getAllCustomers()
         getAllEvents()
         getAllEventTypes()
         setTime(false)
+    }
+    else {
+        popupMessageService.AlertErrorMessage("You are not authorized!")
+        navigate("/dashboard/app")
+    }
     }, []);
 
     return (

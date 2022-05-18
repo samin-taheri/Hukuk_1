@@ -49,6 +49,7 @@ import roundUpdate from "@iconify/icons-ic/round-update";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Alert from "@mui/material/Alert";
+import {useNavigate} from "react-router-dom";
 // ----------------------------------------------------------------------
 
 export default function AccountActivities() {
@@ -68,6 +69,7 @@ export default function AccountActivities() {
     const [tats, setTats] = useState([]);
     const [isItExpenseForUpdate, setIsItExpenseForUpdate] = useState(-1);
     const [time, setTime] = useState(true);
+    const navigate = useNavigate();
     //Transaction activity sub types
     const [tasts, setTasts] = useState([]);
     //selected transaction activity type id
@@ -267,12 +269,18 @@ export default function AccountActivities() {
     }
 
     useEffect(() => {
+    if(authService.DoesHaveMandatoryClaim('TransactionActivityGetAll')) {
         getAllTats()
         getAllTransactionActivities()
         getAllTotalBalance()
         getAllTotalExpense()
         getAllTotalIncome()
         setTime(false)
+    }
+    else {
+        popupMessageService.AlertErrorMessage("You are not authorized!")
+        navigate("/dashboard/app")
+    }
     }, []);
 
     return (

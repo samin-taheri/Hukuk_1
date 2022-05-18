@@ -57,6 +57,7 @@ import {format} from "date-fns";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Alert from '@mui/material/Alert';
+import {useNavigate} from "react-router-dom";
 // ----------------------------------------------------------------------
 
 export default function Tasks() {
@@ -78,6 +79,7 @@ export default function Tasks() {
     const [open, setOpen] = React.useState(false);
     const [isErrorMessage, setIsErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const [isActiveForFilter, setIsActiveForFilter] = useState(-1);
     const [clientIdForFilter, setClientIdForFilter] = useState(-1);
@@ -369,14 +371,19 @@ export default function Tasks() {
     }
 
     useEffect(() => {
+    if(authService.DoesHaveMandatoryClaim('TaskGetAll')) {
         getAllClients()
         getAllTasks()
         getAllUsers()
         getAllTaskTypes()
         getAllTaskStatuses()
         setTime(false)
-    }, []);
-
+    }
+    else {
+        popupMessageService.AlertErrorMessage("You are not authorized!")
+        navigate("/dashboard/app")
+    }
+}, []);
     return (
         <Page title="Tasks | MediLaw">
             {time === true ?

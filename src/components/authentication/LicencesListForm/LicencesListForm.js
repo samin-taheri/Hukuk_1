@@ -177,7 +177,7 @@ export default function LicencesListForm() {
                                                     </Typography>
                                                 </Stack>
                                                 <LoadingButton
-                                                    onClick={() => LoginWithLicence(row.LicenceId, row.ProfilName, row.Email)}
+                                                    onClick={() => LoginWithLicence(row.LicenceGetDto.LicenceId, row.LicenceGetDto.ProfilName, row.LicenceGetDto.Email)}
                                                     sx={{height: 30, marginLeft: 12, marginTop: 1}}
                                                     type="button"
                                                     size="medium"
