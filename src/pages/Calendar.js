@@ -336,7 +336,8 @@ export default function Calendar() {
     }
 
     useEffect(() => {
-    if(authService.DoesHaveMandatoryClaim('EventtGetAll')) {
+    if(authService.DoesHaveMandatoryClaim('EventtGetAll')||
+        authService.DoesHaveMandatoryClaim('LicenceOwner')) {
         getAllUsers()
         getAllCases()
         getAllCustomers()

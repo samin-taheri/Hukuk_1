@@ -493,7 +493,8 @@ export default function Cases() {
     }
 
     useEffect(() => {
-        if(authService.DoesHaveMandatoryClaim('CaseeGetAll')) {
+        if(authService.DoesHaveMandatoryClaim('CaseeGetAll')||
+            authService.DoesHaveMandatoryClaim('LicenceOwner')) {
             getAllCases()
             getAllCourtOfficeTypes()
             getAllCourtOffices()
@@ -875,7 +876,7 @@ export default function Cases() {
                                                             />
                                                         </FormControl>
                                                     </Box>
-                                                    {usersForIgnore.length > 0 ? (
+                                                    {usersForIgnore.length > 0 && authService.DoesHaveMandatoryClaim('LicenceOwner')  ? (
                                                         <Box sx={{maxWidth: 405, minWidth: 405}}>
                                                             <FormControl fullWidth size="small">
                                                                 <TextField

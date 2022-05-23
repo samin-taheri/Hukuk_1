@@ -229,7 +229,8 @@ export default function Clients() {
         })
     };
     useEffect(() => {
-        if(authService.DoesHaveMandatoryClaim('CustomerGetAll')) {
+        if(authService.DoesHaveMandatoryClaim('CustomerGetAll')||
+            authService.DoesHaveMandatoryClaim('LicenceOwner')) {
             getAllCountries()
             getAllCountries()
             getAllClients()

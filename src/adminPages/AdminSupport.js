@@ -331,8 +331,8 @@ export default function Support() {
                                                         <>
                                                             {row.IsAnswer == true ?
                                                                 <Card sx={{
-                                                                    maxWidth: '38%',
-                                                                    minWidth: '37%',
+                                                                    maxWidth: '40%',
+                                                                    minWidth: '40%',
                                                                     marginTop: 2.2,
                                                                     marginRight: 0,
                                                                     backgroundColor: '#ebf2ff',
@@ -376,8 +376,8 @@ export default function Support() {
                                                                 </Card>
                                                                 :
                                                                 <Card sx={{
-                                                                    maxWidth: '36%',
-                                                                    minWidth: '37%',
+                                                                    maxWidth: '45%',
+                                                                    minWidth: '50%',
                                                                     marginTop: 2.2,
                                                                     marginLeft: 2.5,
                                                                     backgroundColor: '#fff',

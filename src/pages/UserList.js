@@ -16,7 +16,7 @@ import {
 // layouts
 // components
 import Page from '../components/Page';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PopupMessageService from "../services/popupMessage.service";
 import LicenceUsersService from "../services/licenceUsers.service";
 import {Global} from "../Global";
@@ -156,9 +156,11 @@ export default function UserList() {
                                         </Table>
                                     </TableContainer>
                                 ) : (
-                                    <Typography id="transition-modal-title" pb={4} pt={2}>
-                                        No Item
-                                    </Typography>
+                                    <TableCell>
+                                    <img src="/static/illustrations/no.png" alt="login"/>
+                                    <Typography variant="h3" gutterBottom textAlign='center' color='#a9a9a9'>No
+                                    Data Found</Typography>
+                                    </TableCell>
                                 )}
                             </>
                         }

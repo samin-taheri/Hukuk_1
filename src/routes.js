@@ -106,6 +106,7 @@ export default function Router() {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
+        { element: <Navigate to="/login" replace /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: 'approveUser', element: <ApproveUser /> },

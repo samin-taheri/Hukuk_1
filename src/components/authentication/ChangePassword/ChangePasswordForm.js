@@ -42,7 +42,7 @@ export default function ChangePasswordForm() {
                         setIsLoading(false)
                         popupMessageService.AlertSuccessMessage(response.data.Message);
                         console.log(response.data.Message);
-                        navigate('/dashboard');
+                        navigate('/');
                     },
                     (error) => {
                         setIsLoading(false)

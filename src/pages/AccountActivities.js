@@ -269,7 +269,8 @@ export default function AccountActivities() {
     }
 
     useEffect(() => {
-    if(authService.DoesHaveMandatoryClaim('TransactionActivityGetAll')) {
+    if(authService.DoesHaveMandatoryClaim('TransactionActivityGetAll')||
+        authService.DoesHaveMandatoryClaim('LicenceOwner')) {
         getAllTats()
         getAllTransactionActivities()
         getAllTotalBalance()

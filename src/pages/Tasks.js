@@ -371,7 +371,8 @@ export default function Tasks() {
     }
 
     useEffect(() => {
-    if(authService.DoesHaveMandatoryClaim('TaskGetAll')) {
+    if(authService.DoesHaveMandatoryClaim('TaskGetAll') ||
+        authService.DoesHaveMandatoryClaim('LicenceOwner')) {
         getAllClients()
         getAllTasks()
         getAllUsers()

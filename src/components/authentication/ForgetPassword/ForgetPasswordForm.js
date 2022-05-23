@@ -85,7 +85,7 @@ export default function ForgetPasswordForm() {
                             <CircularProgress color="inherit" size={20}/>
                         </>
                     ) : null}
-                    Login
+                    Change Password
                 </LoadingButton>
             </Form>
         </FormikProvider>

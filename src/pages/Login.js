@@ -60,7 +60,8 @@ export default function Login() {
             <Typography variant="h4" gutterBottom>
               Sign in to MediLaw
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Test Account:  Phone Number: 5511839993</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Password: 123123123123</Typography>
           </Stack>
 
           <LoginForm />

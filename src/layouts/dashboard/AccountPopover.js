@@ -121,26 +121,80 @@ export default function AccountPopover() {
 
         <Divider sx={{ my: 1}} />
 
-        {MENU_OPTIONS.map((option) => (
           <MenuItem
-            key={option.label}
-            to={option.linkTo}
+            key='Home'
+            to='/dashboard'
             component={RouterLink}
             onClick={handleClose}
             sx={{ typography: 'body2', py: 1, px: 2.5 }}
           >
             <Box
               component={Icon}
-              icon={option.icon}
+              icon={homeOutline}
               sx={{
                 mr: 2,
                 width: 24,
                 height: 24
               }}
             />
-            {option.label}
+            Home
           </MenuItem>
-        ))}
+        <MenuItem
+            key='Profile'
+            to='/dashboard/profile'
+            component={RouterLink}
+            onClick={handleClose}
+            sx={{ typography: 'body2', py: 1, px: 2.5 }}
+        >
+          <Box
+              component={Icon}
+              icon={personDoneOutline}
+              sx={{
+                mr: 2,
+                width: 24,
+                height: 24
+              }}
+          />
+          Profile
+        </MenuItem>
+        <MenuItem
+            key='Connected Licences'
+            to='/dashboard/connectedLicences'
+            component={RouterLink}
+            onClick={handleClose}
+            sx={{ typography: 'body2', py: 1, px: 2.5 }}
+        >
+          <Box
+              component={Icon}
+              icon={archiveOutline}
+              sx={{
+                mr: 2,
+                width: 24,
+                height: 24
+              }}
+          />
+          Connected Licences
+        </MenuItem>
+        {authService.DoesHaveMandatoryClaim('admin')?
+        <MenuItem
+            key='Admin Panel'
+            to='/adminDashboard/admin'
+            component={RouterLink}
+            onClick={handleClose}
+            sx={{ typography: 'body2', py: 1, px: 2.5 }}
+        >
+          <Box
+              component={Icon}
+              icon={npmOutline}
+              sx={{
+                mr: 2,
+                width: 24,
+                height: 24
+              }}
+          />
+          Admin Panel
+        </MenuItem>
+            : null}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button onClick={() => Logout()} fullWidth color="inherit" variant="outlined">

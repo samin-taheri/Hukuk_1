@@ -26,40 +26,27 @@ export default function DashboardApp() {
     const navigate = useNavigate();
     const authService = new AuthService();
 
-    const steps = [
-        'Select master blaster campaign settings',
-        'Create an ad group',
-        'Create an ad',
-    ];
-
     useEffect(() => {
         if (!authService.IsAuth()) {
             navigate('/login');
         }
     }, []);
 
+    const navigateToLogin= ()=> {
+        navigate('/login');
+    }
+
     return (
         <Page title="Dashboard | MediLaw">
             <Container maxWidth="xl">
                 <Box sx={{pb: 10}}>
                     <Typography variant="h4">Hi, Welcome to MediLaw</Typography>
-                    {/*
-          <Box sx={{ width: '100%', marginTop:7 }}>
-            <Stepper activeStep={1} alternativeLabel>
-              {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-              ))}
-            </Stepper>
-          </Box>
-          */}
                     <Grid container spacing={3}>
                         {authService.DoesHaveMandatoryClaim('LicenceOwner') ? (
                         <Grid item xs={12} md={6} lg={4} mt={8}>
                             <AppConversionRates/>
                         </Grid>
-                            ): null}
+                            ): navigateToLogin()}
                         <Grid item xs={12} md={6} lg={7.8} mt={8}>
                             <AppTrafficBySite />
                         </Grid>
