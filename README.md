@@ -248,27 +248,27 @@ Finally, as with all other pages, there exists the filter option for various pro
 <img src=""/>
 </br>
 Figure 51:</br>
-<img src="https://user-images.githubusercontent.com/42031794/177759763-406aad4d-23ea-4764-8024-062ff66a1299.png"/>
+<img src="https://user-images.githubusercontent.com/42031794/177759763-406aad4d-23ea-4764-8024-062ff66a1299.png"/></br>
 
- </br>
-Figure 52:     </br>  
-![image](https://user-images.githubusercontent.com/42031794/177765218-99d2605f-0a57-4656-9207-8daa9b4ce0a9.png)
-</br>
-Figure 53:          </br>                                                                                                 
-![image](https://user-images.githubusercontent.com/42031794/177759803-860e0df8-5553-412a-b3e0-57f2be3e5154.png)
- </br>
+Figure 52:</br>  
+![image](https://user-images.githubusercontent.com/42031794/177765218-99d2605f-0a57-4656-9207-8daa9b4ce0a9.png)</br>
+
+Figure 53:</br>                                                                                                 
+![image](https://user-images.githubusercontent.com/42031794/177759803-860e0df8-5553-412a-b3e0-57f2be3e5154.png)</br>
+
 Figure 54:</br>
-![image](https://user-images.githubusercontent.com/42031794/177759809-0275ed62-a7dc-4113-9519-65789ccce5a1.png)
- </br></br>
+![image](https://user-images.githubusercontent.com/42031794/177759809-0275ed62-a7dc-4113-9519-65789ccce5a1.png)</br>
+
+</br>
 Figure 55:</br></br>
-![image](https://user-images.githubusercontent.com/42031794/177759817-962f38e2-b2ec-491d-bf66-402cb4500140.png)
- </br>
+![image](https://user-images.githubusercontent.com/42031794/177759817-962f38e2-b2ec-491d-bf66-402cb4500140.png)</br>
+
 Figure 56:</br> 
-![image](https://user-images.githubusercontent.com/42031794/177759827-a4fe2a7e-5074-4aa1-a541-70ae4b7dca14.png)
- </br>
-Figure 57: </br>
-![image](https://user-images.githubusercontent.com/42031794/177759848-da7498c9-e4f9-4c14-bd7f-ed733d5524b2.png)
- </br>
+![image](https://user-images.githubusercontent.com/42031794/177759827-a4fe2a7e-5074-4aa1-a541-70ae4b7dca14.png)</br>
+
+Figure 57:</br>
+![image](https://user-images.githubusercontent.com/42031794/177759848-da7498c9-e4f9-4c14-bd7f-ed733d5524b2.png)</br>
+
 Figure 58:
 </br>
 •	Transaction Activity page:
