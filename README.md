@@ -259,8 +259,7 @@ Figure 53:</br>
 Figure 54:</br>
 ![image](https://user-images.githubusercontent.com/42031794/177759809-0275ed62-a7dc-4113-9519-65789ccce5a1.png)</br>
 
-</br>
-Figure 55:</br></br>
+Figure 55:</br>
 ![image](https://user-images.githubusercontent.com/42031794/177759817-962f38e2-b2ec-491d-bf66-402cb4500140.png)</br>
 
 Figure 56:</br> 
